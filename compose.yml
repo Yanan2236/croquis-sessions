@@ -23,7 +23,6 @@ services:
         condition: service_healthy
     environment:
       DJANGO_SETTINGS_MODULE: config.settings
-      DATABASE_URL: ${DATABASE_URL}
     env_file:
       - .env.dev
     volumes:
