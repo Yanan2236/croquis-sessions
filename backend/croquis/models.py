@@ -24,6 +24,9 @@ class CroquisSession(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"CroquisSession {self.id} ({self.owner})"
 
     
 class MotifGroup(models.Model):
@@ -44,6 +47,9 @@ class MotifGroup(models.Model):
                 name='unique_group_per_owner',
             )
         ]
+        
+    def __str__(self):
+        return self.name
     
 class MotifTag(models.Model):
     owner = models.ForeignKey(
@@ -56,6 +62,9 @@ class MotifTag(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.group.name} / {self.name}"
     
     class Meta:
         constraints = [
@@ -70,6 +79,9 @@ class SessionTag(models.Model):
     tag = models.ForeignKey(MotifTag, on_delete=models.CASCADE, related_name='tag_sessions')
     
     is_primary = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.session} - {self.tag}"
     
     class Meta:
         constraints = [
@@ -96,6 +108,9 @@ class Focus(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    def __str__(self):
+        return self.title
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -107,6 +122,9 @@ class Focus(models.Model):
 class SessionFocus(models.Model):
     session = models.ForeignKey(CroquisSession, on_delete=models.CASCADE, related_name='session_focuses')
     focus = models.ForeignKey(Focus, on_delete=models.CASCADE, related_name='focus_sessions')
+    
+    def __str__(self):
+        return f"{self.session} - {self.focus}"
     
     class Meta:
         constraints = [
@@ -122,3 +140,6 @@ class Image(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Image {self.id} (Session {self.session.id})"
