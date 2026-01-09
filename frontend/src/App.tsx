@@ -1,10 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { api } from './lib/api'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  useEffect(() => {
+    console.log("import.meta.env:", import.meta.env.VITE_API_BASE_URL);
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/accounts/me/');
+        console.log("API OK:", res.data);
+      } catch (error) {
+        console.error("API Error:", error);
+      }
+    }
+    fetchData();
+  }, [])
 
   return (
     <>
