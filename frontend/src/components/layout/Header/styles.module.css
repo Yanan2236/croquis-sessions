@@ -1,11 +1,39 @@
 .header {
-  height: 60px;
-  border-bottom: 1px solid #ddd;
+  height: 56px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+.inner {
+  max-width: 1024px;
+  height: 100%;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+}
+
+.logo {
   display: flex;
   align-items: center;
 }
 
-.header__inner {
-  padding: 0 20px;
-  font-weight: 1000;
+.logoText {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
 }
