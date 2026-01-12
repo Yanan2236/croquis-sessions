@@ -1,145 +1,99 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
     
 
-class CroquisSession(models.Model):
-    owner = models.ForeignKey(
+
+class Subject(models.Model):
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='croquis_sessions'
+        related_name="subjects",
     )
-    duration_seconds = models.PositiveIntegerField()
-    note=models.TextField(blank=True)
-    
-    tags = models.ManyToManyField(
-        'MotifTag', 
-        through='SessionTag',
-        related_name='sessions',
-    )
-    focuses = models.ManyToManyField(
-        'Focus', 
-        through='SessionFocus',
-        related_name='sessions',
-    )
+    name = models.CharField(max_length=255)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return f"CroquisSession {self.id} ({self.owner})"
-
-    
-class MotifGroup(models.Model):
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='motif_groups'
-    )
-    name = models.CharField(max_length=200)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['owner', 'name'],
-                name='unique_group_per_owner',
-            )
-        ]
-        
     def __str__(self):
         return self.name
-    
-class MotifTag(models.Model):
-    owner = models.ForeignKey(
+
+
+
+class CroquisSession(models.Model):
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='motif_tags'
+        related_name="croquis_sessions",
     )
-    group = models.ForeignKey(MotifGroup, on_delete=models.CASCADE, related_name='tags')
-    name = models.CharField(max_length=200)
-    
+
+    started_at = models.DateTimeField(default=timezone.now)
+    ended_at = models.DateTimeField(blank=True, null=True)
+
+    subject = models.ForeignKey(
+        "Subject",
+        on_delete=models.PROTECT,
+        related_name="croquis_sessions",
+        help_text="セッションの主題",
+    )
+
+    intention = models.TextField(
+        blank=True,
+        null=True,
+        help_text="今セッションで意識すること",
+    )
+
+    # Session Review Fields
+    reflection = models.TextField(
+        blank=True,
+        null=True,
+        help_text="セッションの振り返り",
+    )
+
+    next_action = models.TextField(
+        blank=True,
+        null=True,
+        help_text="次回セッションで意識すること",
+    )
+
+    note = models.TextField(
+        blank=True,
+        null=True,
+        help_text="補足メモ（任意）",
+    )
+
+
+    is_public = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return f"{self.group.name} / {self.name}"
-    
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['owner', 'group', 'name'],
-                name='unique_tag_in_group_per_owner',
-            )
-        ]
-    
-class SessionTag(models.Model):
-    session = models.ForeignKey(CroquisSession, on_delete=models.CASCADE, related_name='session_tags')
-    tag = models.ForeignKey(MotifTag, on_delete=models.CASCADE, related_name='tag_sessions')
-    
-    is_primary = models.BooleanField(default=False)
-    
+        ordering = ['-started_at', 'created_at']
+
     def __str__(self):
-        return f"{self.session} - {self.tag}"
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['session', 'tag'],
-                name='unique_session_tag',
-            ),
-            models.UniqueConstraint(
-                fields=['session'],
-                condition=models.Q(is_primary=True),
-                name='unique_primary_tag_per_session',
-            ),
-        ]
+        return f"CroquisSession {self.id} - {self.user} - {self.subject}"
+
     
     
-class Focus(models.Model):
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+class Drawing(models.Model):
+    session = models.ForeignKey(
+        CroquisSession,
         on_delete=models.CASCADE,
-        related_name='focuses'
+        related_name="drawings",
     )
-    title = models.CharField(max_length=200)
-    
+
+    image_file = models.ImageField(upload_to="croquis_drawings/")
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="セッション内の並び順（任意）",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return self.title
-    
+
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['owner', 'title'],
-                name='unique_focus_per_owner',
-            )
-        ]
-    
-class SessionFocus(models.Model):
-    session = models.ForeignKey(CroquisSession, on_delete=models.CASCADE, related_name='session_focuses')
-    focus = models.ForeignKey(Focus, on_delete=models.CASCADE, related_name='focus_sessions')
-    
+        ordering = ["order", "created_at"]
+
     def __str__(self):
-        return f"{self.session} - {self.focus}"
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['session', 'focus'],
-                name='unique_session_focus',
-            )
-        ]
-    
-class Image(models.Model):
-    session = models.ForeignKey(CroquisSession, on_delete=models.CASCADE, related_name='images')
-    image_file = models.ImageField(upload_to='croquis_images/')
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return f"Image {self.id} (Session {self.session.id})"
+        return f"Drawing {self.id} (Session {self.session.id})"
