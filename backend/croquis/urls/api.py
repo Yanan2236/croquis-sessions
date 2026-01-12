@@ -1,6 +1,17 @@
-from django.urls import path, include
-from croquis.views.api.session import CroquisSessionListView
+from rest_framework.routers import DefaultRouter
+from rest_framework_nested.routers import NestedDefaultRouter
+
+from croquis.views.api import SessionViewSet, DrawingViewSet
+
+
+router = DefaultRouter()
+router.register(r"sessions", SessionViewSet, basename="session")
+
+session_router = NestedDefaultRouter(router, r"sessions", lookup="session")
+session_router.register(r"drawings", DrawingViewSet, basename="session-drawings")
+
 
 urlpatterns = [
-    path('session/', CroquisSessionListView.as_view(), name="croquis-session-list"),
+    *router.urls,
+    *session_router.urls,
 ]
