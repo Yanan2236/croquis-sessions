@@ -17,7 +17,3 @@ class DrawingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drawing
         fields = ['image_file']  
-    
-        
-    def create(self, validated_data):
-        pass
