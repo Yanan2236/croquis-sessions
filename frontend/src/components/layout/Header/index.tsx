@@ -14,7 +14,7 @@ export const Header = () => {
 
         <nav className={styles.nav}>
           <Link to="/sessions" className={styles.navLink}>Sessions</Link>
-
+          <Link to="/sessions/new" className={styles.navLink}>New Session</Link>
         </nav>
       </div>
     </header>
