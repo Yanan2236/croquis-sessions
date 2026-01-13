@@ -1,17 +1,35 @@
 from rest_framework import serializers
 from django.utils import timezone
 
-from croquis.models import CroquisSession
+from croquis.models import CroquisSession, Subject
 from croquis.exceptions import Conflict
 from croquis.serializers.api.drawings import DrawingSerializer
 
 class SessionStartSerializer(serializers.ModelSerializer):
+    subject_name = serializers.CharField(write_only=True)
+    
     class Meta:
         model = CroquisSession
-        fields = ["subject", "intention"]
+        fields = ["subject_name", "intention"]
         
+    def validate_subject_name(self, value):
+        value = value.strip()
+        value = value.replace("\u3000", " ")
+        value = " ".join(value.split())
+        
+        if not value:
+            raise serializers.ValidationError("subject_name is required.")
+        return value
+
     def create(self, validated_data):
         request = self.context["request"]
+        
+        subject, created = Subject.objects.get_or_create(
+            user=request.user,
+            name=validated_data["subject_name"], 
+        )
+        validated_data["subject"] = subject
+        validated_data.pop("subject_name")
         return CroquisSession.objects.create(user=request.user, **validated_data)
     
 class SessionFinishSerializer(serializers.ModelSerializer):

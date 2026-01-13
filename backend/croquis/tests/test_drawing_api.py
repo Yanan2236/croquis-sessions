@@ -49,7 +49,7 @@ class DrawingAPITest(TempMediaMixin, APITestCase):
 
         res = self.client.post(
             "/api/croquis/sessions/",
-            {"subject": subject.id, "intention": "test"},
+            {"subject_name": "anatomy", "intention": "test"},
             format="json",
         )
         self.assertEqual(res.status_code, status.HTTP_201_CREATED, getattr(res, "data", None))

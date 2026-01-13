@@ -17,6 +17,14 @@ class Subject(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'name'],
+                name='unique_subject_per_user'
+            )
+        ]
 
 
 
