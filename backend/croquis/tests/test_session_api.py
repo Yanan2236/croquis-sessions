@@ -19,41 +19,51 @@ class SessionAPITest(APITestCase):
 
     def test_create_session(self):
         url = reverse("session-list")
-        subject = Subject.objects.create(user=self.user, name="anatomy")
         payload = {
-            "subject": subject.id,
+            "subject_name": " practice     hands",
             "intention": "practice hands",
         }
 
         res = self.client.post(url, payload, format="json")
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED, res.data)
-        self.assertIn("id", res.data)
-        self.assertEqual(res.data["user"], self.user.id)
-        self.assertEqual(res.data["subject"], payload["subject"])
-        self.assertEqual(res.data["intention"], payload["intention"])
+        
+        subject = Subject.objects.get(user=self.user, name="practice hands")
+        self.assertEqual(res.data["subject"], subject.id)
+
+        session = CroquisSession.objects.get(user=self.user)
+        self.assertEqual(session.subject_id, subject.id)
 
 
-    def test_finish_session_patch(self):
-        create_url = reverse("session-list")
-        subject = Subject.objects.create(user=self.user, name="gesture")
-        create_payload = {"subject": subject.id, "intention": "quick poses"}
-        create_res = self.client.post(create_url, create_payload, format="json")
-        self.assertEqual(create_res.status_code, status.HTTP_201_CREATED, create_res.data)
-        session_id = create_res.data["id"]
+def test_finish_session_patch(self):
+    create_url = reverse("session-list")
+    create_payload = {"subject_name": "gesture", "intention": "quick poses"}
 
-        detail_url = reverse("session-detail", args=[session_id])
-        finish_payload = {
-            "reflection": "good",
-            "next_action": "more legs",
-            "note": "keep it simple",
-            "is_public": False,
-        }
+    create_res = self.client.post(create_url, create_payload, format="json")
+    self.assertEqual(create_res.status_code, status.HTTP_201_CREATED, create_res.data)
 
-        res = self.client.patch(detail_url, finish_payload, format="json")
+    session_id = create_res.data["id"]
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK, res.data)
-        self.assertIsNotNone(res.data["ended_at"])
-        self.assertEqual(res.data["reflection"], finish_payload["reflection"])
-        self.assertEqual(res.data["is_public"], finish_payload["is_public"])
+    subject = Subject.objects.get(user=self.user, name="gesture")
+    session = CroquisSession.objects.get(user=self.user, id=session_id)
+    self.assertEqual(session.subject_id, subject.id)
+
+    detail_url = reverse("session-detail", args=[session_id])
+    finish_payload = {
+        "reflection": "good",
+        "next_action": "more legs",
+        "note": "keep it simple",
+        "is_public": False,
+    }
+
+    res = self.client.patch(detail_url, finish_payload, format="json")
+
+    self.assertEqual(res.status_code, status.HTTP_200_OK, res.data)
+
+    self.assertIsNotNone(res.data["ended_at"])
+
+    self.assertEqual(res.data["reflection"], finish_payload["reflection"])
+    self.assertEqual(res.data["next_action"], finish_payload["next_action"])
+    self.assertEqual(res.data["note"], finish_payload["note"])
+    self.assertEqual(res.data["is_public"], finish_payload["is_public"])
+
 
