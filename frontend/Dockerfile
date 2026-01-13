@@ -1,11 +1,14 @@
-FROM node:20-alpine
+FROM node:20-bookworm
 
 WORKDIR /app
 
-COPY package*.json /app/
-RUN npm ci || npm install
+RUN apt-get update && apt-get install -y git \
+  && rm -rf /var/lib/apt/lists/*
 
-COPY . /app/
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
 
 EXPOSE 5173
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
