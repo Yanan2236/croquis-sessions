@@ -10,6 +10,11 @@ export type FinishSessionPayload = {
   is_public?: boolean | null;
 };
 
+export type FinishSessionVariables = {
+  sessionId: number;
+  payload: FinishSessionPayload;
+};
+
 export type CroquisSession = {
   id: number;
   started_at: string;

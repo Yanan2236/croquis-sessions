@@ -2,8 +2,8 @@ import { api } from "@/lib/api";
 import type {
   CroquisSession,
   StartSessionPayload,
-  FinishSessionPayload,
-} from "../types";
+  FinishSessionVariables,
+} from "@/features/sessions/types";
 
 
 export const startSession = async (payload: StartSessionPayload) => {
@@ -11,8 +11,9 @@ export const startSession = async (payload: StartSessionPayload) => {
   return response.data;
 };
 
-export const finishSession = (payload: FinishSessionPayload, sessionId: number, endedAt: string) => {
-  return api.patch<CroquisSession>(`/api/croquis/sessions/${sessionId}/`, { ...payload, ended_at: endedAt });
+export const finishSession = async ({ sessionId, payload }: FinishSessionVariables) => {
+  const response = await api.patch<CroquisSession>(`/api/croquis/sessions/${sessionId}/`, payload);
+  return response.data;
 };
 
 export const fetchSessionDetails = async (sessionId: number) => {
