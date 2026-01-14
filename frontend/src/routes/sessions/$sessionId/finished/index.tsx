@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchSessionDetails } from "@/features/sessions/api/sessions";
-import { SessionFinishForm } from "@/routes/sessions/components/SessionFinishForm";
 
-export const SessionDetail = () => {
+export const SessionFinishedPage = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
 
   const sessionIdNum = useMemo(() => {
@@ -14,12 +13,12 @@ export const SessionDetail = () => {
     return Number.isNaN(n) ? null : n;
   }, [sessionId]);
 
-  const {
+  const { 
     data: session,
     isPending,
     isError,
     error,
-  } = useQuery({
+   } = useQuery({
     queryKey: ["session", sessionIdNum],
     queryFn: () => fetchSessionDetails(sessionIdNum!),
     enabled: sessionIdNum !== null,
@@ -32,12 +31,11 @@ export const SessionDetail = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-
   return (
     <div>
+      <h1>おつかれさまでした！</h1>
+      <p>{session.duration_seconds}</p>
       <p>{session.subject.name}</p>
-      <p>{session.intention}</p>
-      <SessionFinishForm sessionId={sessionIdNum} />
     </div>
-  );
+  )
 };
