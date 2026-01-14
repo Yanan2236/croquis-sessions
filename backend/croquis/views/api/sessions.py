@@ -18,7 +18,7 @@ class SessionViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        return CroquisSession.objects.filter(user=self.request.user)
+        return CroquisSession.objects.select_related("subject").filter(user=self.request.user)
     
     def get_serializer_class(self):
         if self.action == "create":
@@ -48,5 +48,5 @@ class SessionViewSet(ModelViewSet):
         in_serializer.is_valid(raise_exception=True)
         session = in_serializer.save()
         
-        out_serializer = SessionSerializer(session, context=self.get_serializer_context())
+        out_serializer = SessionDetailSerializer(session, context=self.get_serializer_context())
         return Response(out_serializer.data, status=status.HTTP_200_OK)
