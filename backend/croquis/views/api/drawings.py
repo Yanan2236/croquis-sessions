@@ -12,7 +12,7 @@ from croquis.serializers.api.drawings import DrawingSerializer, DrawingCreateSer
 from croquis.exceptions import Conflict
 
 class DrawingViewSet(ModelViewSet):
-    http_method_names = ["get", "post", "put", "patch", "delete", "head", "options"]
+    http_method_names = ["get", "post", "head", "options"]
     
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -38,7 +38,6 @@ class DrawingViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         session = self.get_session()
-        self.ensure_session_editable(session)
         serializer.save(session=session)
 
     def perform_update(self, serializer):
