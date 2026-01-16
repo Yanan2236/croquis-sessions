@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from django.utils import timezone
+from django.db import transaction
+from django.db.models import F
 
 from croquis.models import CroquisSession, Subject
 from croquis.exceptions import Conflict
-from .subject import SubjectSerialzier
+from .subjects import SubjectSerializer
 from .drawings import DrawingSerializer
 
 class SessionStartSerializer(serializers.ModelSerializer):
@@ -47,12 +49,26 @@ class SessionFinishSerializer(serializers.ModelSerializer):
         if instance.ended_at is not None:
             raise Conflict("Session has already been finished.")
         
-        instance.ended_at = timezone.now()
-        
-        for key, value in validated_data.items():
-            setattr(instance, key, value)
+        ended_at = timezone.now()
+        started_at = instance.started_at
+        duration_seconds = 0
+        if started_at is not None:
+            duration_seconds = int((ended_at - started_at).total_seconds())
+            duration_seconds = max(0, duration_seconds)
             
-        instance.save()
+        with transaction.atomic():
+            instance.ended_at = ended_at
+            for key, value in validated_data.items():
+                setattr(instance, key, value)
+            instance.save(update_fields=["ended_at", *validated_data.keys()])
+            
+            subject_update = {
+                "total_duration_seconds": F("total_duration_seconds") + duration_seconds,
+                "latest_session": instance,
+            }
+            
+            Subject.objects.filter(id=instance.subject_id, user=instance.user).update(**subject_update)
+
         return instance
         
 
@@ -76,7 +92,7 @@ class SessionSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "user", "started_at", "ended_at", "created_at", "updated_at"]
         
 class SessionDetailSerializer(serializers.ModelSerializer):
-    subject = SubjectSerialzier(read_only=True)
+    subject = SubjectSerializer(read_only=True)
     drawings = DrawingSerializer(many=True, read_only=True)
     
     duration_seconds = serializers.SerializerMethodField()

@@ -12,6 +12,16 @@ class Subject(models.Model):
     )
     name = models.CharField(max_length=255)
     
+    total_duration_seconds = models.BigIntegerField(default=0)
+
+    latest_session = models.ForeignKey(
+        "CroquisSession",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="+",
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
