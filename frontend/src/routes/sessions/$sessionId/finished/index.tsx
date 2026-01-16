@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { fetchSessionDetails } from "@/features/sessions/api/sessions";
 
+import styles from "./styles.module.css";
+
 export const SessionFinishedPage = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
 
@@ -36,6 +38,19 @@ export const SessionFinishedPage = () => {
       <h1>おつかれさまでした！</h1>
       <p>{session.duration_seconds}</p>
       <p>{session.subject.name}</p>
+      <ul className={styles.previewList}>
+        {session.drawings.map((d) => (
+          <li key={d.id} className={styles.previewItem}>
+            <img
+              className={styles.previewImg}
+              src={d.image_url}
+              alt={`drawing-${d.id}`}
+              draggable={false}
+              loading="lazy"
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 };
