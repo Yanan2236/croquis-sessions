@@ -3,6 +3,9 @@ import type {
   CroquisSession,
   StartSessionPayload,
   FinishSessionVariables,
+  CroquisSessionDetails,
+  Drawing,
+  FinishAllVariables,
 } from "@/features/sessions/types";
 
 
@@ -17,6 +20,25 @@ export const finishSession = async ({ sessionId, payload }: FinishSessionVariabl
 };
 
 export const fetchSessionDetails = async (sessionId: number) => {
-  const response = await api.get<CroquisSession>(`/api/croquis/sessions/${sessionId}/`);
+  const response = await api.get<CroquisSessionDetails>(`/api/croquis/sessions/${sessionId}/`);
   return response.data;
+}
+
+export const uploadDrawing = async (sessionId: number, file: File) => {
+  const form = new FormData();
+  form.append("image_file", file);
+
+  const response = await api.post<Drawing>(`/api/croquis/sessions/${sessionId}/drawings/`, form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+}
+
+export const finishAll = async ({ sessionId, payload, files }: FinishAllVariables) => {
+  await finishSession({ sessionId, payload });
+
+  if (files.length === 0) return;
+  await Promise.all(files.map((file) => uploadDrawing(sessionId, file)));
 }

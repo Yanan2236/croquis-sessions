@@ -87,7 +87,6 @@ class SessionDetailSerializer(serializers.ModelSerializer):
         duration_seconds = int((obj.ended_at - obj.started_at).total_seconds())
         return max(0, duration_seconds)
     
-
     class Meta:
         model = CroquisSession
         fields = [
