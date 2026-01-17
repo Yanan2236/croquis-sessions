@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
-import { finishAll } from "@/features/sessions/api/sessions";
-import type { FinishSessionPayload, FileWithPreview } from "@/features/sessions/types";
+import { finishAll } from "@/features/sessions/api";
+import type { FinishSessionPayload } from "@/features/sessions/types";
+import type { FileWithPreview } from "@/features/drawings/types";
 
 import { Dropzone } from "@/routes/sessions/components/Dropzone";
 import styles from "./styles.module.css";
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export const SessionFinishForm = ({ sessionId }: Props) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [reflectionValue, setReflectionValue] = useState("");
@@ -31,6 +33,8 @@ export const SessionFinishForm = ({ sessionId }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: finishAll,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
+      queryClient.invalidateQueries({ queryKey: ["subjects"]})
       navigate(`/sessions/${sessionId}/finished`, { replace: true });
     },
     onError: (error: AxiosError) => {

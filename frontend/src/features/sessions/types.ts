@@ -1,3 +1,5 @@
+import type { Drawing } from "@/features/drawings/types";
+
 export type StartSessionPayload = {
   subject_name: string;
   intention?: string | null;
@@ -38,26 +40,12 @@ export type CroquisSessionDetails = {
   reflection: string | null;
   next_action: string | null;
   note: string | null;
-  drawings: number[];
+  drawings: Drawing[];
   subject: {
     id: number; 
     name: string;
   };
   user: number;
-};
-
-export type FileWithPreview = {
-  file: File;
-  previewUrl: string;
-};
-
-export type Drawing = {
-  id: number;
-  order:number;
-  image_url: string;
-  session: number;
-  created_at: string;
-  updated_at: string;
 };
 
 export type FinishAllVariables = {

@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import type {
   Drawing,
-} from "@/features/sessions/types";
+} from "@/features/drawings/types";  
 
 export const uploadDrawing = async (sessionId: number, file: File) => {
   const form = new FormData();

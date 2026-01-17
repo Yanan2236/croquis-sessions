@@ -1,12 +1,12 @@
 import { api } from "@/lib/api";
 import type {
   CroquisSession,
+  CroquisSessionDetails,
   StartSessionPayload,
   FinishSessionVariables,
-  CroquisSessionDetails,
-  Drawing,
   FinishAllVariables,
 } from "@/features/sessions/types";
+import type { Drawing } from "@/features/drawings/types";
 
 
 export const startSession = async (payload: StartSessionPayload) => {

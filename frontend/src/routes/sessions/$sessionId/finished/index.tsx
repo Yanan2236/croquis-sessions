@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchSessionDetails } from "@/features/sessions/api/sessions";
+import { fetchSessionDetails } from "@/features/sessions/api";
 
 import styles from "./styles.module.css";
 
