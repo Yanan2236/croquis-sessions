@@ -1,17 +1,3 @@
-:root {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  color: #213547;
-  background-color: #ffffff;
-}
-
 *,
 *::before,
 *::after {
@@ -20,12 +6,35 @@
 
 html,
 body {
-  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
@@ -33,18 +42,43 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
 }
 
-button {
-  font: inherit;
-  cursor: pointer;
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-img,
-svg,
-video {
-  max-width: 100%;
-  height: auto;
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  line-height: 1.5;
+  background: #fff;
+  color: #111;
 }

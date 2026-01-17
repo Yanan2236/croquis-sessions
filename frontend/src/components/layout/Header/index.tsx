@@ -13,6 +13,7 @@ export const Header = () => {
         </div>
 
         <nav className={styles.nav}>
+          <Link to="/subjects" className={styles.navLink}>Subjects</Link>
           <Link to="/sessions" className={styles.navLink}>Sessions</Link>
           <Link to="/sessions/new" className={styles.navLink}>New Session</Link>
         </nav>
