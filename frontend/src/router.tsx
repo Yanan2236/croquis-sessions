@@ -1,13 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { RootLayout } from '@/routes/RootLayout';
-import { Home } from '@/routes/Home';
+import { HomePage } from '@/routes/index';
 import { NotFound } from '@/routes/NotFound';
 
 import { NewSessionPage } from '@/routes/sessions/new';
 import { SessionDetail } from '@/routes/sessions/$sessionId';
 import { SessionFinishedPage } from '@/routes/sessions/$sessionId/finished';
 import { SessionLayout } from '@/routes/sessions/$sessionId/_layout';
+import { SubjectsPage } from '@/routes/subjects';
 
 
 
@@ -17,7 +18,7 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <HomePage /> },
 
       {
         path: 'sessions',
@@ -33,6 +34,14 @@ export const router = createBrowserRouter([
             ] },
         ],
       },
+
+      { 
+        path: 'subjects',
+        children: [
+          { index: true, element: <SubjectsPage /> },
+        ]
+      },
+
       { path: '*', element: <NotFound /> },
     ],
   },

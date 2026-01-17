@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 
-import { startSession } from "@/features/sessions/api/sessions"
+import { startSession } from "@/features/sessions/api"
 import type { StartSessionPayload, CroquisSession } from "@/features/sessions/types"
 import styles from "./styles.module.css"
 

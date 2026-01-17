@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./styles.module.css";
 
-import type { FileWithPreview } from "@/features/sessions/types";
+import type { FileWithPreview } from "@/features/drawings/types";
 
 type Props = {
   files: FileWithPreview[];
