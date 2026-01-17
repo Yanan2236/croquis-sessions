@@ -1,0 +1,11 @@
+.main {
+  width: 100%;
+  padding: 16px 0;
+}
+
+.container {
+  width: 100%;
+  max-width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: 0 16px;
+}
