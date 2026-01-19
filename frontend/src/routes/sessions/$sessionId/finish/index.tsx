@@ -35,13 +35,49 @@ export const SessionFinishPage = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-  return (
-    <>
-    <div>Finish</div>
-    <p>{session.subject.name}</p>
-    <p>{session.intention}</p>
-    <p>{formatMinutesFloor(session.duration_seconds)}</p>
-    <SessionFinishForm sessionId={sessionIdNum} />
-    </>
-  )
+return (
+  <section className={styles.page} aria-label="セッションを終了して記録する">
+    <header className={styles.header}>
+      <p className={styles.kicker}>セッション終了</p>
+      <h1 className={styles.title}>振り返り</h1>
+    </header>
+
+    <div className={styles.grid}>
+      <section className={styles.summaryCard} aria-label="セッション概要">
+        <h2 className={styles.cardTitle}>今回のセッション</h2>
+
+        <dl className={styles.summaryList}>
+          <div className={styles.summaryRow}>
+            <dt className={styles.summaryLabel}>モチーフ</dt>
+            <dd className={styles.summaryValue}>{session.subject.name}</dd>
+          </div>
+
+          <div className={styles.summaryRow}>
+            <dt className={styles.summaryLabel}>課題</dt>
+            <dd className={styles.summaryValue}>
+              {session.intention ? session.intention : "—"}
+            </dd>
+          </div>
+
+          <div className={styles.summaryRow}>
+            <dt className={styles.summaryLabel}>時間</dt>
+            <dd className={styles.summaryValue}>
+              {formatMinutesFloor(session.duration_seconds)} 分
+            </dd>
+          </div>
+        </dl>
+
+        <p className={styles.summaryHint}>
+          ※ 画像は任意。振り返りだけでも保存できます。
+        </p>
+      </section>
+
+      <section className={styles.formCard} aria-label="振り返り入力">
+        <h2 className={styles.cardTitle}>振り返りを残す</h2>
+        <SessionFinishForm sessionId={sessionIdNum} />
+      </section>
+    </div>
+  </section>
+);
+
 };

@@ -58,32 +58,55 @@ export const SessionFinishForm = ({ sessionId }: Props) => {
     });
   };
 
-  return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={reflectionValue}
-        onChange={(e) => setReflectionValue(e.target.value)}
-        placeholder="reflection"
-      />
-      <input
-        type="text"
-        value={nextActionValue}
-        onChange={(e) => setNextActionValue(e.target.value)}
-        placeholder="next action"
-      />
-      <input
-        type="text"
-        value={noteValue}
-        onChange={(e) => setNoteValue(e.target.value)}
-        placeholder="note"
-      />
+return (
+  <form className={styles.form} onSubmit={handleSubmit} aria-label="セッション振り返りフォーム">
+    <div className={styles.fields}>
+      <label className={styles.field}>
+        <span className={styles.label}>振り返り</span>
+        <input
+          className={styles.input}
+          type="text"
+          value={reflectionValue}
+          onChange={(e) => setReflectionValue(e.target.value)}
+          placeholder="例：線が硬かった。肩の力を抜く"
+        />
+      </label>
 
+      <label className={styles.field}>
+        <span className={styles.label}>次にやること</span>
+        <input
+          className={styles.input}
+          type="text"
+          value={nextActionValue}
+          onChange={(e) => setNextActionValue(e.target.value)}
+          placeholder="例：30秒ポーズで輪郭だけ練習"
+        />
+      </label>
+
+      <label className={styles.field}>
+        <span className={styles.label}>メモ</span>
+        <input
+          className={styles.input}
+          type="text"
+          value={noteValue}
+          onChange={(e) => setNoteValue(e.target.value)}
+          placeholder="任意（気づいたこと、次回のテーマなど）"
+        />
+      </label>
+    </div>
+
+    <div className={styles.dropzoneBlock}>
+      <p className={styles.blockTitle}>画像</p>
       <Dropzone files={files} setFiles={setFiles} maxFiles={5} />
+    </div>
 
-      <button type="submit" disabled={isPending}>
-        {isPending ? "送信中" : "終了"}
+    <div className={styles.actions}>
+      <button type="submit" className={styles.submit} disabled={isPending}>
+        {isPending ? "送信中…" : "保存する"}
       </button>
-    </form>
-  );
+      <p className={styles.actionHint}>保存後に「おつかれさまでした」画面へ移動します</p>
+    </div>
+  </form>
+);
+
 };
