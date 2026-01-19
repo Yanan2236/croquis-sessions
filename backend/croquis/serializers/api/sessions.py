@@ -123,3 +123,17 @@ class SessionDetailSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
         
+class SessionSummarySerializer(serializers.ModelSerializer):
+    subject = SubjectSerializer(read_only=True)
+    
+    class Meta:
+        model = CroquisSession
+        fields = [
+            "id",
+            "started_at",
+            "ended_at",
+            "subject",
+            "intention",
+        ]
+        read_only_fields = fields
+        

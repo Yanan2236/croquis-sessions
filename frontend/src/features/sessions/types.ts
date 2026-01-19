@@ -28,15 +28,16 @@ export type CroquisSession = {
   updated_at: string;
 };
 
+// 完了したセッションの詳細情報
 export type CroquisSessionDetails = {
   id: number;
   started_at: string;
-  ended_at: string | null;
+  ended_at: string;
   intention: string | null;
   is_public: boolean;
   created_at: string;
   updated_at: string;
-  duration_seconds: number | null;
+  duration_seconds: number;
   reflection: string | null;
   next_action: string | null;
   note: string | null;
@@ -52,5 +53,16 @@ export type FinishAllVariables = {
   sessionId: number;
   payload: FinishSessionPayload;
   files: File[];
+};
+
+export type ActiveSessionResponse = {
+  id: number;
+  started_at: string;
+  ended_at: string | null;
+  subject: {
+    id: number;
+    name: string;
+  };
+  intention: string | null;
 };
 
