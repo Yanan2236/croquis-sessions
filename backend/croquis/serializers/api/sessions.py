@@ -46,30 +46,42 @@ class SessionFinishSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
-        if instance.ended_at is not None:
-            raise Conflict("Session has already been finished.")
-        
-        ended_at = timezone.now()
-        started_at = instance.started_at
-        duration_seconds = 0
-        if started_at is not None:
+        with transaction.atomic():
+            # select_for_update でロックをかけて再取得
+            session = (
+                CroquisSession.objects
+                .select_for_update()
+                .select_related("subject")
+                .get(pk=instance.pk, user=instance.user)
+            )
+
+            if session.finalized_at is not None:
+                raise Conflict("Session has already been finalized.")
+
+            if session.ended_at is None:
+                raise Conflict("Session has not been ended yet.")
+
+            started_at = session.started_at
+            ended_at = session.ended_at
             duration_seconds = int((ended_at - started_at).total_seconds())
             duration_seconds = max(0, duration_seconds)
-            
-        with transaction.atomic():
-            instance.ended_at = ended_at
-            for key, value in validated_data.items():
-                setattr(instance, key, value)
-            instance.save(update_fields=["ended_at", *validated_data.keys()])
-            
-            subject_update = {
-                "total_duration_seconds": F("total_duration_seconds") + duration_seconds,
-                "latest_session": instance,
-            }
-            
-            Subject.objects.filter(id=instance.subject_id, user=instance.user).update(**subject_update)
 
-        return instance
+            session.finalized_at = timezone.now()
+            for key, value in validated_data.items():
+                setattr(session, key, value)
+
+            update_fields = ["finalized_at", *list(validated_data.keys())]
+            session.save(update_fields=update_fields)
+
+            Subject.objects.filter(
+                id=session.subject_id,
+                user=session.user,
+            ).update(
+                total_duration_seconds=F("total_duration_seconds") + duration_seconds,
+                latest_session_id=session.pk,
+            )
+
+        return session
         
 
 class SessionSerializer(serializers.ModelSerializer):
@@ -110,6 +122,7 @@ class SessionDetailSerializer(serializers.ModelSerializer):
             "user",
             "started_at",
             "ended_at",
+            "finalized_at",
             "subject",
             "intention",
             "reflection",
