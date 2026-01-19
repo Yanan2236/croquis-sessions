@@ -6,7 +6,7 @@ import { fetchSessionDetails } from "@/features/sessions/api";
 
 import styles from "./styles.module.css";
 
-export const SessionFinishedPage = () => {
+export const SessionDonePage = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
 
   const sessionIdNum = useMemo(() => {

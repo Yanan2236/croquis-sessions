@@ -6,7 +6,8 @@ import { NotFound } from '@/routes/NotFound';
 
 import { NewSessionPage } from '@/routes/sessions/new';
 import { SessionDetail } from '@/routes/sessions/$sessionId';
-import { SessionFinishedPage } from '@/routes/sessions/$sessionId/finished';
+import { SessionFinishPage } from '@/routes/sessions/$sessionId/finish';
+import { SessionDonePage } from '@/routes/sessions/$sessionId/done';
 import { SessionLayout } from '@/routes/sessions/$sessionId/_layout';
 import { SubjectsPage } from '@/routes/subjects';
 
@@ -30,7 +31,8 @@ export const router = createBrowserRouter([
             element: <SessionLayout />,
             children: [
               { index: true, element: <SessionDetail /> },
-              { path: 'finished', element: <SessionFinishedPage />}
+              { path: 'finish', element: <SessionFinishPage /> },
+              { path: 'done', element: <SessionDonePage />}
             ] },
         ],
       },
