@@ -16,8 +16,6 @@ export const SessionStartForm = () => {
   const [subjectValue, setSubjectValue] = useState("");
   const [intentionValue, setIntentionValue] = useState("");
 
-  const [searchSubjectValue, setSearchSubjectValue] = useState("");
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["subjects"],
     queryFn: fetchSubjectsOverview,

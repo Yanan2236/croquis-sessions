@@ -47,6 +47,7 @@ class CroquisSession(models.Model):
 
     started_at = models.DateTimeField(default=timezone.now)
     ended_at = models.DateTimeField(blank=True, null=True)
+    finalized_at = models.DateTimeField(blank=True, null=True)
 
     subject = models.ForeignKey(
         "Subject",
@@ -79,7 +80,6 @@ class CroquisSession(models.Model):
         null=True,
         help_text="補足メモ（任意）",
     )
-
 
     is_public = models.BooleanField(default=False)
 

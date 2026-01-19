@@ -35,7 +35,7 @@ export const SessionFinishForm = ({ sessionId }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["subjects"]})
-      navigate(`/sessions/${sessionId}/finished`, { replace: true });
+      navigate(`/sessions/${sessionId}/done`, { replace: true });
     },
     onError: (error: AxiosError) => {
       console.error(error);
