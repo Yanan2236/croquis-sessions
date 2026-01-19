@@ -1,0 +1,241 @@
+.page {
+  padding: 28px 24px 56px;
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+}
+
+.header {
+  display: grid;
+  gap: 14px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.summaryItem {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.015);
+  padding: 14px 14px 12px;
+}
+
+.summaryLabel {
+  margin: 0 0 6px;
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+}
+
+.summaryValue {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.notesCard {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.015);
+  padding: 16px 16px 18px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.notesList {
+  margin: 12px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.notesRow {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.notesLabel {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.notesValue {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.main {
+  display: grid;
+}
+
+.galleryCard {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.015);
+  padding: 16px 16px 18px;
+}
+
+.galleryHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.galleryHint {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.65;
+  text-align: right;
+}
+
+.grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 96px;
+  object-fit: cover;
+}
+
+.empty {
+  padding: 18px 14px 10px;
+  border-radius: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.16);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.emptyTitle {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+.footer {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.actions {
+  width: min(520px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.primary,
+.secondary {
+  height: 44px;
+  border-radius: 12px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.primary {
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+}
+
+.primary:hover {
+  background: rgba(0, 0, 0, 0.10);
+}
+
+.secondary {
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.75);
+  color: inherit;
+}
+
+.secondary:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.footerNote {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+@media (max-width: 860px) {
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .notesRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .img {
+    height: 110px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 18px 14px 36px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
