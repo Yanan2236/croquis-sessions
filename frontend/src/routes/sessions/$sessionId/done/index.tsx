@@ -33,103 +33,87 @@ export const SessionDonePage = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-return (
-  <section className={styles.page} aria-label="セッション完了">
-    <header className={styles.header}>
-      <p className={styles.kicker}>セッション完了</p>
-      <h1 className={styles.title}>おつかれさまでした！</h1>
+  return (
+    <section className={styles.page} aria-label="おつかれさまでした">
+      <header className={styles.header}>
+        <p className={styles.kicker}>セッション完了</p>
+        <h1 className={styles.title}>おつかれさまでした！</h1>
+        <p className={styles.subTitle}>次回の課題は保存されました。</p>
+      </header>
 
-      <div className={styles.summary} aria-label="セッション概要">
-        <div className={styles.summaryItem}>
-          <p className={styles.summaryLabel}>モチーフ</p>
-          <p className={styles.summaryValue}>{session.subject.name}</p>
-        </div>
-
-        <div className={styles.summaryItem}>
-          <p className={styles.summaryLabel}>時間</p>
-          <p className={styles.summaryValue}>
-            {Math.max(1, Math.floor(session.duration_seconds / 60))} 分
-          </p>
-        </div>
-
-        <div className={styles.summaryItem}>
-          <p className={styles.summaryLabel}>枚数</p>
-          <p className={styles.summaryValue}>{session.drawings.length} 枚</p>
-        </div>
-      </div>
-
-      {session.reflection || session.next_action || session.note ? (
-        <section className={styles.notesCard} aria-label="記録">
-          <h2 className={styles.cardTitle}>振り返り</h2>
-
-          <dl className={styles.notesList}>
-            {session.reflection && (
-              <div className={styles.notesRow}>
-                <dt className={styles.notesLabel}>振り返り</dt>
-                <dd className={styles.notesValue}>{session.reflection}</dd>
-              </div>
-            )}
-
-            {session.next_action && (
-              <div className={styles.notesRow}>
-                <dt className={styles.notesLabel}>次にやること</dt>
-                <dd className={styles.notesValue}>{session.next_action}</dd>
-              </div>
-            )}
-
-            {session.note && (
-              <div className={styles.notesRow}>
-                <dt className={styles.notesLabel}>メモ</dt>
-                <dd className={styles.notesValue}>{session.note}</dd>
-              </div>
-            )}
-          </dl>
-        </section>
-      ) : null}
-    </header>
-
-    <main className={styles.main}>
-      <section className={styles.galleryCard} aria-label="クロッキー">
-        <div className={styles.galleryHeader}>
-          <h2 className={styles.cardTitle}>クロッキー</h2>
-          <p className={styles.galleryHint}>
-            {session.drawings.length > 0 ? "" : "画像はありません"}
-          </p>
-        </div>
-
-        {session.drawings.length > 0 ? (
-          <ul className={styles.grid}>
-            {session.drawings.map((d) => (
-              <li key={d.id} className={styles.item}>
-                <img
-                  className={styles.img}
-                  src={d.image_url}
-                  alt={`drawing-${d.id}`}
-                  draggable={false}
-                  loading="lazy"
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className={styles.empty}>
-            <p className={styles.emptyTitle}></p>
+      <main className={styles.main}>
+        <section className={styles.heroCard} aria-label="次回の課題">
+          <div className={styles.heroHead}>
+            <h2 className={styles.heroTitle}>次回の課題</h2>
+            <span className={styles.badge} aria-label="確定">確定</span>
           </div>
-        )}
-      </section>
-    </main>
 
-    <footer className={styles.footer}>
-      <div className={styles.actions}>
-        <button className={styles.primary} type="button">
-          一覧へ戻る
-        </button>
-        <button className={styles.secondary} type="button">
-          もう一回描く
-        </button>
-      </div>
-    </footer>
-  </section>
-);
+          <p className={styles.heroValue}>
+            {session.next_action ? session.next_action : "—"}
+          </p>
 
+          <div className={styles.metaRow} aria-label="セッション情報">
+            <span className={styles.metaItem}>
+              <span className={styles.metaKey}>モチーフ：</span>
+              <span className={styles.metaVal}>{session.subject.name}</span>
+            </span>
+            <span className={styles.metaItem}>
+              <span className={styles.metaKey}>時間：</span>
+              <span className={styles.metaVal}>
+                {Math.max(1, Math.floor(session.duration_seconds / 60))} 分
+              </span>
+            </span>
+            <span className={styles.metaItem}>
+              <span className={styles.metaKey}>枚数：</span>
+              <span className={styles.metaVal}>{session.drawings.length} 枚</span>
+            </span>
+          </div>
+        </section>
+
+        {session.reflection ? (
+          <section className={styles.card} aria-label="振り返り">
+            <div className={styles.cardHead}>
+              <h2 className={styles.cardTitle}>振り返り</h2>
+              <span className={styles.optionalBadge} aria-label="任意">任意</span>
+            </div>
+            <p className={styles.text}>{session.reflection}</p>
+          </section>
+        ) : null}
+
+        <details className={styles.details} aria-label="画像一覧">
+          <summary className={styles.summary}>
+            <span className={styles.summaryTitle}>クロッキー画像</span>
+            <span className={styles.summaryCount}>{session.drawings.length} 枚</span>
+          </summary>
+
+          {session.drawings.length > 0 ? (
+            <ul className={styles.grid}>
+              {session.drawings.map((d) => (
+                <li key={d.id} className={styles.item}>
+                  <img
+                    className={styles.img}
+                    src={d.image_url}
+                    alt={`drawing-${d.id}`}
+                    draggable={false}
+                    loading="lazy"
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.muted}>画像はありません</p>
+          )}
+        </details>
+
+        <section className={styles.actionsCard} aria-label="次の操作">
+          <button className={styles.primary} type="button">
+            もう一回描く
+          </button>
+          <button className={styles.secondary} type="button">
+            一覧へ戻る
+          </button>
+        </section>
+      </main>
+    </section>
+  );
 };

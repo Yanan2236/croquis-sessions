@@ -1,85 +1,65 @@
-.page {
-  padding: 28px 24px 56px;
-  max-width: 1040px;
-  margin: 0 auto;
+/* カード全体 */
+.focusCard {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.divider {
+  margin: 10px 0;
 }
 
-.header {
-  margin-bottom: 18px;
-}
-
-.kicker {
-  margin: 0 0 6px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  opacity: 0.65;
-}
-
-.title {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.25;
-  letter-spacing: 0.01em;
-}
-
-.grid {
+/* 今回の課題 */
+.currentBlock {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 18px;
-  align-items: start;
+  gap: 6px;
 }
 
-/* shared card */
-.summaryCard,
-.formCard {
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.10);
-  background: rgba(0, 0, 0, 0.015);
-  padding: 16px 16px 18px;
-}
-
-.cardTitle {
-  margin: 0 0 12px;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-}
-
-.summaryList {
-  margin: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.summaryRow {
-  display: grid;
-  grid-template-columns: 88px 1fr;
-  gap: 10px;
-  align-items: start;
-}
-
-.summaryLabel {
+.currentLabel {
   margin: 0;
   font-size: 12px;
-  opacity: 0.7;
-  letter-spacing: 0.04em;
+  opacity: 0.75;
 }
 
-.summaryValue {
+/* モチーフ/時間 */
+.currentMetaRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  opacity: 0.78;
+}
+
+.currentMetaItem {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.currentMetaKey {
+  opacity: 0.75;
+}
+
+.currentMetaVal {
+  font-weight: 800;
+  opacity: 0.95;
+}
+
+.currentMetaSep {
+  opacity: 0.4;
+}
+
+/* 課題本文 */
+.currentValue {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
+  white-space: pre-wrap;
   word-break: break-word;
-  overflow-wrap: anywhere;
 }
 
-.summaryHint {
-  margin: 12px 0 0;
-  font-size: 12px;
-  opacity: 0.65;
-}
-
-@media (max-width: 860px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 12px 0 12px;
 }

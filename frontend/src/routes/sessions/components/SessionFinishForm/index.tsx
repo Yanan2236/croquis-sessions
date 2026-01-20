@@ -12,9 +12,10 @@ import styles from "./styles.module.css";
 
 type Props = {
   sessionId: number;
+  currentIntention: string | null;
 };
 
-export const SessionFinishForm = ({ sessionId }: Props) => {
+export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -58,55 +59,47 @@ export const SessionFinishForm = ({ sessionId }: Props) => {
     });
   };
 
-return (
-  <form className={styles.form} onSubmit={handleSubmit} aria-label="セッション振り返りフォーム">
-    <div className={styles.fields}>
-      <label className={styles.field}>
-        <span className={styles.label}>振り返り</span>
-        <input
-          className={styles.input}
-          type="text"
-          value={reflectionValue}
-          onChange={(e) => setReflectionValue(e.target.value)}
-          placeholder="例：線が硬かった。肩の力を抜く"
-        />
-      </label>
+  return (
+    <form className={styles.form} onSubmit={handleSubmit} aria-label="セッション完了フォーム">
+      <section className={styles.nextAction} aria-label="次回の課題">
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>次回の課題</h2>
+          <span className={styles.requiredBadge} aria-label="必須">必須</span>
+        </div>
 
-      <label className={styles.field}>
-        <span className={styles.label}>次にやること</span>
-        <input
-          className={styles.input}
-          type="text"
+        <textarea
+          className={styles.primaryTextarea}
           value={nextActionValue}
           onChange={(e) => setNextActionValue(e.target.value)}
-          placeholder="例：30秒ポーズで輪郭だけ練習"
+          placeholder="例：最初の10秒で胸郭の向きを取ってから線を引く"
+          rows={3}
         />
-      </label>
+      </section>
 
-      <label className={styles.field}>
-        <span className={styles.label}>メモ</span>
-        <input
-          className={styles.input}
-          type="text"
-          value={noteValue}
-          onChange={(e) => setNoteValue(e.target.value)}
-          placeholder="任意（気づいたこと、次回のテーマなど）"
-        />
-      </label>
-    </div>
+      <details className={styles.details} aria-label="振り返り">
+        <summary className={styles.summary}>
+          <span className={styles.summaryTitle}>振り返り</span>
+          <span className={styles.optionalBadge} aria-label="任意">任意</span>
+        </summary>
 
-    <div className={styles.dropzoneBlock}>
-      <p className={styles.blockTitle}>画像</p>
+        <div className={styles.detailsBody}>
+          <textarea
+            className={styles.secondaryTextarea}
+            value={reflectionValue}
+            onChange={(e) => setReflectionValue(e.target.value)}
+            placeholder="例：できなかった。原因：輪郭から追って迷った。"
+            rows={4}
+          />
+        </div>
+      </details>
+
       <Dropzone files={files} setFiles={setFiles} maxFiles={5} />
-    </div>
 
-    <div className={styles.actions}>
-      <button type="submit" className={styles.submit} disabled={isPending}>
-        {isPending ? "送信中…" : "保存する"}
-      </button>
-      <p className={styles.actionHint}>保存後に「おつかれさまでした」画面へ移動します</p>
-    </div>
-  </form>
-);
-
+      <div className={styles.footer} aria-label="保存">
+        <button type="submit" className={styles.submit} disabled={isPending}>
+          {isPending ? "保存中…" : "保存して完了"}
+        </button>
+      </div>
+    </form>
+  );
 };

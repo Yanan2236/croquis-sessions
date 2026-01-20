@@ -1,91 +1,143 @@
 .form {
   display: grid;
-  gap: 16px;
+  gap: 14px;
+  padding-bottom: 0;
 }
 
-.fields {
+/* 次回の課題 */
+.nextAction {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
-.field {
-  display: grid;
-  gap: 6px;
-}
-
-.label {
-  font-size: 12px;
-  opacity: 0.75;
-  letter-spacing: 0.04em;
-}
-
-.input {
-  height: 40px;
-  padding: 0 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  background: rgba(255, 255, 255, 0.9);
-  color: inherit;
-  font-size: 14px;
-}
-
-.input::placeholder {
-  opacity: 0.55;
-}
-
-.input:focus {
-  outline: none;
-}
-
-.input:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.35);
-  outline-offset: 2px;
-}
-
-.dropzoneBlock {
-  display: grid;
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   gap: 8px;
 }
 
-.blockTitle {
+.sectionTitle {
   margin: 0;
-  font-size: 12px;
-  opacity: 0.75;
-  letter-spacing: 0.04em;
+  font-size: 15px;
+  font-weight: 900;
 }
 
-.actions {
-  display: grid;
-  gap: 8px;
-  padding-top: 6px;
+.optionalBadge {
+  margin-left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.requiredBadge {
+  composes: optionalBadge;
+  border-color: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.primaryTextarea {
+  width: 100%;
+  resize: vertical;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.primaryTextarea:focus {
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+/* 振り返り */
+.details {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.01);
+  overflow: hidden;
+}
+
+.summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: flex-start;
+  gap: 8px; 
+}
+
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summaryTitle {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.summaryDesc {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.detailsBody {
+  padding: 0 12px 12px;
+}
+
+.secondaryTextarea {
+  width: 100%;
+  resize: vertical;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.secondaryTextarea:focus {
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+/* footer */
+.footer {
+  position: static;
+  bottom: auto;
+  z-index: auto;
+  margin-top: 6px;
+  padding: 0;
+  background: transparent;
 }
 
 .submit {
-  height: 44px;
+  width: 100%;
+  appearance: none;
+  border: none;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  background: rgba(0, 0, 0, 0.08);
-  color: inherit;
+  padding: 12px 14px;
   font-size: 14px;
-  letter-spacing: 0.02em;
+  font-weight: 900;
+  background: #111;
+  color: #fff;
   cursor: pointer;
-}
-
-.submit:hover {
-  background: rgba(0, 0, 0, 0.10);
-}
-
-.submit:active {
-  transform: translateY(1px);
 }
 
 .submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.actionHint {
-  margin: 0;
-  font-size: 12px;
-  opacity: 0.65;
 }

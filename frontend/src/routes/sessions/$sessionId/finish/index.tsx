@@ -35,49 +35,38 @@ export const SessionFinishPage = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-return (
-  <section className={styles.page} aria-label="セッションを終了して記録する">
-    <header className={styles.header}>
-      <p className={styles.kicker}>セッション終了</p>
-      <h1 className={styles.title}>振り返り</h1>
-    </header>
+  return (
+    <section className={styles.page} aria-label="セッション完了の記録">
+      <header className={styles.header}>
+        <p className={styles.kicker}>セッション完了</p>
+        <h1 className={styles.title}>次回の課題を確定する</h1>
+      </header>
 
-    <div className={styles.grid}>
-      <section className={styles.summaryCard} aria-label="セッション概要">
-        <h2 className={styles.cardTitle}>今回のセッション</h2>
+      <section className={styles.focusCard} aria-label="課題の確定">
+        {/* 今回の課題（コンパクト） */}
+        <div className={styles.currentBlock}>
+          <p className={styles.currentLabel}>今回の課題</p>
 
-        <dl className={styles.summaryList}>
-          <div className={styles.summaryRow}>
-            <dt className={styles.summaryLabel}>モチーフ</dt>
-            <dd className={styles.summaryValue}>{session.subject.name}</dd>
+          <div className={styles.currentMetaRow} aria-label="モチーフと時間">
+            <span className={styles.currentMetaItem}>
+              <span className={styles.currentMetaKey}>モチーフ：</span>
+              <span className={styles.currentMetaVal}>{session.subject.name}</span>
+            </span>
+            <span className={styles.currentMetaSep} aria-hidden="true">　</span>
+            <span className={styles.currentMetaItem}>
+              <span className={styles.currentMetaKey}>時間：</span>
+              <span className={styles.currentMetaVal}>{formatMinutesFloor(session.duration_seconds)}</span>
+            </span>
           </div>
 
-          <div className={styles.summaryRow}>
-            <dt className={styles.summaryLabel}>課題</dt>
-            <dd className={styles.summaryValue}>
-              {session.intention ? session.intention : "—"}
-            </dd>
-          </div>
+          <p className={styles.currentValue}>{session.intention ?? "—"}</p>
+        </div>
 
-          <div className={styles.summaryRow}>
-            <dt className={styles.summaryLabel}>時間</dt>
-            <dd className={styles.summaryValue}>
-              {formatMinutesFloor(session.duration_seconds)} 分
-            </dd>
-          </div>
-        </dl>
+        <div className={styles.divider} aria-hidden="true" />
 
-        <p className={styles.summaryHint}>
-          ※ 画像は任意。振り返りだけでも保存できます。
-        </p>
+        <SessionFinishForm sessionId={sessionIdNum} currentIntention={session.intention} />
       </section>
-
-      <section className={styles.formCard} aria-label="振り返り入力">
-        <h2 className={styles.cardTitle}>振り返りを残す</h2>
-        <SessionFinishForm sessionId={sessionIdNum} />
-      </section>
-    </div>
-  </section>
-);
+    </section>
+  );
 
 };
