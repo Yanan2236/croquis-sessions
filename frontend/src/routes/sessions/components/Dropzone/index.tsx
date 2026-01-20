@@ -101,9 +101,9 @@ export const Dropzone: React.FC<Props> = ({
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} aria-label="画像追加">
       <div
-        className={`${styles.dropzone} ${isDragging ? styles.dragging : ""}`}
+        className={`${styles.zone} ${isDragging ? styles.dragging : ""}`}
         role="button"
         tabIndex={0}
         onClick={openPicker}
@@ -115,37 +115,46 @@ export const Dropzone: React.FC<Props> = ({
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
       >
-        {/* 上部テキスト */}
         <div className={styles.header}>
-          <div className={styles.title}>
-            {files.length > 0 ? "追加で画像を入れられるよ" : "画像をドラッグ&ドロップ"}
-          </div>
-          <div className={styles.subtitle}>
-            {files.length > 0 ? "クリックでも追加できます" : "またはクリックして選択"}
-          </div>
-          {typeof maxFiles === "number" && (
-            <div className={styles.hint}>最大 {maxFiles} 枚</div>
-          )}
+          <p className={styles.headerTitle}>
+            画像を追加{typeof maxFiles === "number" ? `（最大${maxFiles}枚）` : ""}
+          </p>
+          <span className={styles.optionalBadge} aria-label="任意">任意</span>
         </div>
 
-        {/* ゾーン内プレビュー */}
+        {files.length === 0 && (
+          <div className={styles.center} aria-hidden="true">
+            <div className={styles.plus}>＋</div>
+            <p className={styles.centerHint}>ドラッグ＆ドロップ</p>
+            <p className={styles.centerSub}>クリックして選択もできます</p>
+          </div>
+        )}
+
         {files.length > 0 && (
-          <ul className={styles.previewGrid} onClick={(e) => e.stopPropagation()}>
+          <ul className={styles.grid} onClick={(e) => e.stopPropagation()} aria-label="追加された画像一覧">
             {files.map((x) => {
               const key = fileKey(x.file);
               return (
-                <li key={key} className={styles.previewItem}>
-                  <img className={styles.previewImg} src={x.previewUrl} alt={x.file.name} draggable={false} />
-                  <button
-                    type="button"
-                    className={styles.remove}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRemove(key);
-                    }}
-                  >
-                    削除
-                  </button>
+                <li key={key} className={styles.item}>
+                  <div className={styles.media}>
+                    <img className={styles.img} src={x.previewUrl} alt={x.file.name} draggable={false} />
+                  </div>
+
+                  <div className={styles.meta}>
+                    <p className={styles.name} title={x.file.name}>
+                      {x.file.name}
+                    </p>
+                    <button
+                      type="button"
+                      className={styles.remove}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRemove(key);
+                      }}
+                    >
+                      削除
+                    </button>
+                  </div>
                 </li>
               );
             })}
@@ -154,7 +163,7 @@ export const Dropzone: React.FC<Props> = ({
 
         <input
           ref={inputRef}
-          className={styles.hiddenInput}
+          className={styles.input}
           type="file"
           accept={accept}
           multiple={multiple}

@@ -1,0 +1,175 @@
+.page {
+  padding: 28px 24px 56px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+
+.header {
+  padding: 8px 0 6px;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titleBlock {
+  min-width: 0;
+}
+
+.kicker {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.subject {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+
+
+.finishButton {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: rgba(0, 0, 0, 0.04);
+  color: inherit;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.finishButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.finishButton:active {
+  transform: translateY(1px);
+}
+
+.finishButton:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 2px;
+}
+
+
+.timerArea {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.timerDigits {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.digit {
+  font-size: 84px;
+  line-height: 1;
+}
+
+.colon {
+  font-size: 60px;
+  line-height: 1;
+  opacity: 0.28;
+  transform: translateY(-2px);
+}
+
+.timerMeta {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.timerLabel {
+  letter-spacing: 0.08em;
+}
+
+.dot {
+  opacity: 0.65;
+}
+
+.startedAt {
+  font-variant-numeric: tabular-nums;
+}
+
+
+.progressTrack {
+  height: 2px;
+  width: 220px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 32%;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+}
+
+
+.main {
+  margin-top: 34px;
+}
+
+.intentionCard {
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.015);
+  padding: 16px 16px 18px;
+}
+
+.sectionTitle {
+  margin: 0 0 10px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+.intentionValue {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  max-width: 56ch;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 18px 14px 40px;
+  }
+
+  .digit {
+    font-size: 68px;
+  }
+
+  .colon {
+    font-size: 50px;
+  }
+
+  .progressTrack {
+    width: 180px;
+  }
+}
+

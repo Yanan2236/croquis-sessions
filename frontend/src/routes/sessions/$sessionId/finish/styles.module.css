@@ -1,0 +1,65 @@
+/* カード全体 */
+.focusCard {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.divider {
+  margin: 10px 0;
+}
+
+/* 今回の課題 */
+.currentBlock {
+  display: grid;
+  gap: 6px;
+}
+
+.currentLabel {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* モチーフ/時間 */
+.currentMetaRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  opacity: 0.78;
+}
+
+.currentMetaItem {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.currentMetaKey {
+  opacity: 0.75;
+}
+
+.currentMetaVal {
+  font-weight: 800;
+  opacity: 0.95;
+}
+
+.currentMetaSep {
+  opacity: 0.4;
+}
+
+/* 課題本文 */
+.currentValue {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 12px 0 12px;
+}
