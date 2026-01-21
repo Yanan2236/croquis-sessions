@@ -32,7 +32,7 @@ class SessionViewSet(ModelViewSet):
             return SessionStartSerializer
         if self.action in ("update", "partial_update"):
             return SessionFinishSerializer
-        if self.action == "retrieve":
+        if self.action in ("list", "retrieve"):
             return SessionDetailSerializer
         if self.action == "active":
             return SessionDetailSerializer

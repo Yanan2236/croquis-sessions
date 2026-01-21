@@ -53,3 +53,8 @@ export const endSession = async (sessionId: number) => {
   const response = await api.patch<CroquisSession>(`/api/croquis/sessions/${sessionId}/end/`);
   return response.data;
 }
+
+export const listSessions = async () => {
+  const response = await api.get<CroquisSessionDetails[]>('/api/croquis/sessions/');
+  return response.data;
+}
