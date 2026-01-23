@@ -1,51 +1,114 @@
-import { useQuery } from "@tanstack/react-query"
-import { useNavigate } from "react-router-dom"
-import { Link, Outlet } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useState } from "react"
 
-import { listSessions } from "@/features/sessions/api"
 import { formatDate, formatRelativeDate } from "@/features/shared/utils/datetime"
 import { routes } from "@/lib/routes"
 import styles from "./styles.module.css"
+import { useSubjectsOverviewQuery } from "@/features/subjects/queries/useSubjectsOverviewQuery"
+import { useSessionsQuery } from "@/features/sessions/queries/useSessionsQuery"
 
 export const Sessions = () => {
   const navigate = useNavigate();
-  const { data, error, isPending, isFetching, isLoading, isError, refetch } = useQuery({
-    queryKey: ["sessions"],
-    queryFn: () => listSessions(),
+  const [searchParams, setSearchParams] = useSearchParams();
+  const subjectId = searchParams.get("subject") ? Number(searchParams.get("subject")) : undefined;
+  const ordering = searchParams.get("ordering") ?? "-finished_at";
+
+  const sessionsQuery = useSessionsQuery({
+    subject: subjectId,
+    ordering: ordering === "finished_at" ? "finished_at" : "-finished_at",
   });
 
-  const sessions = data;
+  const subjectsQuery = useSubjectsOverviewQuery();
 
+  const sessions = sessionsQuery.data;
+  const subjects = subjectsQuery.data;
+
+  const onChangeSubject = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const v = e.target.value;
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      
+      if (v === "") next.delete("subject");
+      else next.set("subject", v);
+
+      return next;
+    });
+  };
+
+  const onToggleSortOrder = () => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      const currentOrdering = next.get("ordering") ?? "-finished_at";
+      next.set("ordering", currentOrdering === "finished_at" ? "-finished_at" : "finished_at");
+      return next;
+    });
+  };
+
+/* 
+  export type SubjectOverview = {
+  id: number;
+  name: string;
+  total_duration_seconds: number;
+  latest_session: {
+    id: number;
+    ended_at: string;
+    next_action: string | null;
+  };
+};
+ */
 
 return (
   <div className={styles.page}>
     <header className={styles.header}>
-      <div className={styles.headerLeft}>
+      <div className={styles.headerRow}>
         <h1 className={styles.title}>Sessions</h1>
-        <p className={styles.subtitle}>
-          {(sessions?.length ?? 0)}件{isFetching ? "（更新中…）" : ""}
-        </p>
+
+        <div className={styles.controls}>
+          <div className={styles.selectWrap}>
+            <select
+              className={styles.select}
+              value={subjectId ?? ""}
+              onChange={onChangeSubject}
+              aria-label="Subject filter"
+            >
+              <option value="">すべて</option>
+              {subjects?.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.name}
+                </option>
+              ))}
+            </select>
+            <span className={styles.selectChevron} aria-hidden="true">▾</span>
+          </div>
+
+          <button type="button" onClick={onToggleSortOrder}>
+            {ordering === "finished_at" ? "古い順" : "新しい順"}
+          </button>
+        </div>
       </div>
 
-      <div className={styles.headerRight}>
-        <button className={styles.ghostButton} onClick={() => refetch()}>
-          更新
-        </button>
+      <div className={styles.metaRow}>
+        <p className={styles.subtitle}>{sessions?.length ?? 0}件</p>
+        <p className={styles.metaRight}>
+          {sessionsQuery.isFetching ? "更新中…" : ""}
+        </p>
       </div>
     </header>
 
-    {isLoading ? (
+
+    {sessionsQuery.isLoading ? (
       <div className={styles.stateBox}>
         <div className={styles.spinner} aria-hidden />
         <p className={styles.stateText}>読み込み中…</p>
       </div>
-    ) : isError ? (
+    ) : sessionsQuery.isError ? (
       <div className={styles.stateBox}>
         <p className={styles.stateTitle}>取得に失敗しました</p>
         <p className={styles.stateText}>
-          {error instanceof Error ? error.message : "Unknown error"}
+          {sessionsQuery.error instanceof Error ? sessionsQuery.error.message : "Unknown error"}
         </p>
-        <button className={styles.button} onClick={() => refetch()}>
+        <button className={styles.button} onClick={() => sessionsQuery.refetch()}>
           再試行
         </button>
       </div>
