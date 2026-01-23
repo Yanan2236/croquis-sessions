@@ -1,14 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { fetchSubjectsOverview  } from "@/features/subjects/api";
+import { useSubjectsOverviewQuery } from "@/features/subjects/queries/useSubjectsOverviewQuery";
 import { SubjectCard } from "@/routes/subjects/components/SubjectCard";
 import styles from "./styles.module.css";
 
 export const SubjectsPage = () => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["subjects"],
-    queryFn: fetchSubjectsOverview,
-  });
+  const { data, isLoading, isError, error } = useSubjectsOverviewQuery();
 
   if (isLoading) return <div>Loading ...</div>;
   if (isError) return <div>Error: {(error as Error).message}</div>;
