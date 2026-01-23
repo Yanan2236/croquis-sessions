@@ -68,5 +68,5 @@ export type ActiveSessionResponse = {
 
 export type ListSessionsParams = {
   subject?: number;
-  ordering?: "finished_at" | "-finished_at";
+  ordering?: "finalized_at" | "-finalized_at";
 };

@@ -4,7 +4,7 @@ import type { ListSessionsParams } from "@/features/sessions/types";
 
 export const useSessionsQuery = (params: ListSessionsParams) => {
   return useQuery({
-    queryKey: ["sessions", params.subject ?? "all", params.ordering ?? "-finished_at"],
+    queryKey: ["sessions", params.subject ?? "all", params.ordering ?? "-finalized_at"],
     queryFn: () => listSessions(params),
   });
 };

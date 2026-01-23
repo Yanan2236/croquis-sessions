@@ -12,11 +12,11 @@ export const Sessions = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const subjectId = searchParams.get("subject") ? Number(searchParams.get("subject")) : undefined;
-  const ordering = searchParams.get("ordering") ?? "-finished_at";
+  const ordering = searchParams.get("ordering") ?? "-finalized_at";
 
   const sessionsQuery = useSessionsQuery({
     subject: subjectId,
-    ordering: ordering === "finished_at" ? "finished_at" : "-finished_at",
+    ordering: ordering === "finalized_at" ? "finalized_at" : "-finalized_at",
   });
 
   const subjectsQuery = useSubjectsOverviewQuery();
@@ -39,8 +39,8 @@ export const Sessions = () => {
   const onToggleSortOrder = () => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
-      const currentOrdering = next.get("ordering") ?? "-finished_at";
-      next.set("ordering", currentOrdering === "finished_at" ? "-finished_at" : "finished_at");
+      const currentOrdering = next.get("ordering") ?? "-finalized_at";
+      next.set("ordering", currentOrdering === "finalized_at" ? "-finalized_at" : "finalized_at");
       return next;
     });
   };
@@ -83,7 +83,7 @@ return (
           </div>
 
           <button type="button" onClick={onToggleSortOrder}>
-            {ordering === "finished_at" ? "古い順" : "新しい順"}
+            {ordering === "finalized_at" ? "古い順" : "新しい順"}
           </button>
         </div>
       </div>
