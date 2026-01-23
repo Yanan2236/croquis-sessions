@@ -52,7 +52,7 @@ export const SessionFinishPage = () => {
               <span className={styles.currentMetaKey}>モチーフ：</span>
               <span className={styles.currentMetaVal}>{session.subject.name}</span>
             </span>
-            <span className={styles.currentMetaSep} aria-hidden="true">　</span>
+            <span className={styles.currentMetaSep} aria-hidden="true"> </span>
             <span className={styles.currentMetaItem}>
               <span className={styles.currentMetaKey}>時間：</span>
               <span className={styles.currentMetaVal}>{formatMinutesFloor(session.duration_seconds)}</span>

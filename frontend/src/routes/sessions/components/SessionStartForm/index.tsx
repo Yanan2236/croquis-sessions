@@ -5,6 +5,7 @@ import { AxiosError } from "axios"
 
 import { startSession } from "@/features/sessions/api"
 import { fetchSubjectsOverview } from "@/features/subjects/api"
+import { routes } from "@/lib/routes"
 import type { StartSessionPayload, CroquisSession } from "@/features/sessions/types"
 import styles from "./styles.module.css"
 import { SubjectPickerPanel } from "@/routes/sessions/components/SessionStartForm/SubjectPickerPanel";
@@ -28,7 +29,7 @@ export const SessionStartForm = () => {
   >({
     mutationFn: startSession,
     onSuccess: (data) => {
-      navigate(`/sessions/${data.id}`, { replace: true });
+      navigate(routes.sessionRun(data.id), { replace: true });
     },
     onError: (error) => {
       console.error("status", error.response?.status);

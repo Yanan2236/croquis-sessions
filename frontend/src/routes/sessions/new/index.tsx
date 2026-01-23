@@ -5,6 +5,7 @@ import type { AxiosError, AxiosResponse } from "axios";
 
 import { SessionStartForm } from "@/routes/sessions/components/SessionStartForm"
 import { fetchActiveSession } from "@/features/sessions/api";
+import { routes } from "@/lib/routes";
 import type { ActiveSessionResponse } from "@/features/sessions/types";
 import styles from "./styles.module.css"
 
@@ -12,7 +13,6 @@ import styles from "./styles.module.css"
 
 export const NewSessionPage = () => {
   const navigate = useNavigate();
-
 
 
   const { mutate, isError, error } = useMutation<
@@ -25,7 +25,7 @@ export const NewSessionPage = () => {
       if (data.status === 204) {
         return;
       }
-      navigate(`/sessions/${data.data.id}`, { replace: true });
+      navigate(routes.sessionRun(data.data.id), { replace: true });
     },
   onError: (err) => {
     if (!err.response) return;          // network
