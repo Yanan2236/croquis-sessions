@@ -6,6 +6,7 @@ import type {
   FinishSessionVariables,
   FinishAllVariables,
   ActiveSessionResponse,
+  ListSessionsParams,
 } from "@/features/sessions/types";
 import type { Drawing } from "@/features/drawings/types";
 
@@ -54,7 +55,7 @@ export const endSession = async (sessionId: number) => {
   return response.data;
 }
 
-export const listSessions = async () => {
-  const response = await api.get<CroquisSessionDetails[]>('/api/croquis/sessions/');
+export const listSessions = async (params?: ListSessionsParams) => {
+  const response = await api.get<CroquisSessionDetails[]>('/api/croquis/sessions/', { params });
   return response.data;
 }

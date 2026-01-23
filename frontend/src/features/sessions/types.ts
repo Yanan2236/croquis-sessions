@@ -66,3 +66,7 @@ export type ActiveSessionResponse = {
   intention: string | null;
 };
 
+export type ListSessionsParams = {
+  subject?: number;
+  ordering?: "finalized_at" | "-finalized_at";
+};

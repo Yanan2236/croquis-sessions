@@ -5,6 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from croquis.models import Subject, CroquisSession
 from croquis.serializers.api.subjects import SubjectSerializer, SubjectOverviewSerializer
@@ -13,6 +15,11 @@ from croquis.serializers.api.subjects import SubjectSerializer, SubjectOverviewS
 class SubjectViewSet(ModelViewSet):
     http_method_names = ["get", "head", "options"]
     permission_classes = [IsAuthenticated]
+    
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = []
+    ordering_fields = ["total_duration_seconds"]
+    ordering = ["-total_duration_seconds"]
 
     def get_queryset(self):
         qs = Subject.objects.filter(user=self.request.user)

@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from django.utils import timezone
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from croquis.models import CroquisSession
 from croquis.serializers.api.sessions import (
@@ -21,8 +23,11 @@ class SessionViewSet(ModelViewSet):
     
     permission_classes = [IsAuthenticated]
     
-    '/api/croquis/sessions/${sessionId}/'
-    '/api/croquis/sessions/active/?ended_at__isnull=true'
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["subject"]
+    ordering_fields = ["finalized_at"]
+    ordering = ["-finalized_at"]
+
     
     def get_queryset(self):
         return CroquisSession.objects.select_related("subject").filter(user=self.request.user)
