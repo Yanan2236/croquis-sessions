@@ -5,12 +5,14 @@ import { HomePage } from '@/routes/index';
 import { NotFound } from '@/routes/NotFound';
 
 import { NewSessionPage } from '@/routes/sessions/new';
-import { SessionDetail } from '@/routes/sessions/$sessionId';
-import { SessionFinishPage } from '@/routes/sessions/$sessionId/finish';
-import { SessionDonePage } from '@/routes/sessions/$sessionId/done';
-import { SessionLayout } from '@/routes/sessions/$sessionId/_layout';
+import { SessionDetail } from '@/routes/sessions/run/$sessionId';
+import { SessionFinishPage } from '@/routes/sessions/run/$sessionId/finish';
+import { SessionDonePage } from '@/routes/sessions/run/$sessionId/done';
+import { SessionLayout } from '@/routes/sessions/run/$sessionId/_layout';
 import { SubjectsPage } from '@/routes/subjects';
-
+import { SessionOverlayDetail } from '@/routes/sessions/view/$sessionId';
+import { SessionsLayout } from '@/routes/sessions/_layout';
+import { Sessions } from './routes/sessions';
 
 
 export const router = createBrowserRouter([
@@ -22,20 +24,30 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
 
       {
-        path: 'sessions',
+        path: "sessions",
         children: [
-          //{ index: true, element: <Sessions />},
-          { path: 'new', element: <NewSessionPage /> },
-          { 
-            path: ':sessionId',
+          {
+            element: <SessionsLayout />,
+            children: [
+              { index: true, element: null },
+              { path: "view/:sessionId", element: <SessionOverlayDetail /> },
+            ]
+          },
+
+          { path: "new", element: <NewSessionPage /> },
+
+          {
+            path: "run/:sessionId",
             element: <SessionLayout />,
             children: [
               { index: true, element: <SessionDetail /> },
-              { path: 'finish', element: <SessionFinishPage /> },
-              { path: 'done', element: <SessionDonePage />}
-            ] },
+              { path: "finish", element: <SessionFinishPage /> },
+              { path: "done", element: <SessionDonePage /> },
+            ],
+          },
         ],
       },
+
 
       { 
         path: 'subjects',

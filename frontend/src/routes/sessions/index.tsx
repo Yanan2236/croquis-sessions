@@ -4,6 +4,7 @@ import { Link, Outlet } from "react-router-dom"
 
 import { listSessions } from "@/features/sessions/api"
 import { formatDate, formatRelativeDate } from "@/features/shared/utils/datetime"
+import { routes } from "@/lib/routes"
 import styles from "./styles.module.css"
 
 export const Sessions = () => {
@@ -68,7 +69,7 @@ return (
 
           return (
             <li key={s.id} className={styles.tile}>
-              <Link to={`/sessions/${s.id}`}>
+              <Link to={routes.sessionView(s.id)}>
               <button className={styles.tileButton} type="button">
                 <div className={styles.thumb}>
                   {thumbUrl ? (
@@ -100,10 +101,6 @@ return (
         })}
       </ul>  
     )}
-    
-    <div className={styles.overlayLayer}>
-      <Outlet />
-    </div>
   </div>
 
 );

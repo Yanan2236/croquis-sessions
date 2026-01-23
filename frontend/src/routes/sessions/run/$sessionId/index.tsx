@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { fetchSessionDetails, endSession } from "@/features/sessions/api";
+import { routes } from "@/lib/routes";
 import styles from "./styles.module.css";
 
 export const SessionDetail = () => {
@@ -31,7 +32,7 @@ export const SessionDetail = () => {
   const { mutate } = useMutation({
     mutationFn: endSession,
     onSuccess: () => {
-      navigate(`/sessions/${sessionIdNum}/finish`, { replace: true });
+      navigate(routes.sessionRunFinish(sessionIdNum!), { replace: true });
     },
     onError: (err) => {
       if (!axios.isAxiosError(err)) return;

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
 import { finishAll } from "@/features/sessions/api";
+import { routes } from "@/lib/routes";
 import type { FinishSessionPayload } from "@/features/sessions/types";
 import type { FileWithPreview } from "@/features/drawings/types";
 
@@ -36,7 +37,7 @@ export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["subjects"]})
-      navigate(`/sessions/${sessionId}/done`, { replace: true });
+      navigate(routes.sessionRunDone(sessionId), { replace: true });
     },
     onError: (error: AxiosError) => {
       console.error(error);

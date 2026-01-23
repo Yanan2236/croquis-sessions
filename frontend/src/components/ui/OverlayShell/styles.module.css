@@ -1,0 +1,29 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.panel {
+  position: relative;
+
+  width: min(900px, 96vw);
+  height: min(640px, 92vh);
+
+  background: transparent;
+  padding: 0;
+
+  display: grid;
+  min-width: 0; 
+  min-height: 0;
+}
+
