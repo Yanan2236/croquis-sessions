@@ -150,3 +150,25 @@ class SessionSummarySerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
         
+        
+class IncompleteSessionSerializer(serializers.ModelSerializer):
+    subject_name = serializers.CharField(source='subject.name', read_only=True)
+    state = serializers.SerializerMethodField()
+    
+    # SerializerMethodField は get_<field名>(obj) を自動呼び出しして値を返す
+    def get_state(self, obj):
+        if obj.ended_at is None:
+            return "running"
+        return "needs_finalize"
+
+    class Meta:
+            model = CroquisSession
+            fields = [
+                "id",
+                "state",
+                "subject_name",
+                "started_at",
+                "ended_at",
+                "finalized_at",
+            ]
+            read_only_fields = fields
