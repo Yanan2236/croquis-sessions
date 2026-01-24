@@ -55,15 +55,13 @@ export type FinishAllVariables = {
   files: File[];
 };
 
-export type ActiveSessionResponse = {
+export type IncompleteSessionResponse = {
   id: number;
+  state: "running" | "needs_finalize";
+  subject_name: string;
   started_at: string;
   ended_at: string | null;
-  subject: {
-    id: number;
-    name: string;
-  };
-  intention: string | null;
+  finalized_at: string | null;
 };
 
 export type ListSessionsParams = {

@@ -5,7 +5,7 @@ import type {
   StartSessionPayload,
   FinishSessionVariables,
   FinishAllVariables,
-  ActiveSessionResponse,
+  IncompleteSessionResponse,
   ListSessionsParams,
 } from "@/features/sessions/types";
 import type { Drawing } from "@/features/drawings/types";
@@ -45,9 +45,10 @@ export const finishAll = async ({ sessionId, payload, files }: FinishAllVariable
   await Promise.all(files.map((file) => uploadDrawing(sessionId, file)));
 }
 
-export const fetchActiveSession = async () => {
-  return await api.get<ActiveSessionResponse>('/api/croquis/sessions/active/');
-  // 200 or 204 or 409
+export const fetchIncompleteSession = async () => {
+  const response = await api.get<IncompleteSessionResponse>('/api/croquis/sessions/incomplete/');
+  if (response.status === 204) return null; // nullに正規化
+  return response.data; // 200の場合はデータを返す
 }
 
 export const endSession = async (sessionId: number) => {
