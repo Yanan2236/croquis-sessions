@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
           {
             path: "run/:sessionId",
             element: <SessionLayout />,
+            handle: { hideIncompleteBanner: true },
             children: [
               { index: true, element: <SessionDetail /> },
               { path: "finish", element: <SessionFinishPage /> },

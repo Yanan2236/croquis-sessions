@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from django.db.models import F
 
 from croquis.models import CroquisSession
 from croquis.serializers.api.sessions import (
@@ -16,6 +17,7 @@ from croquis.serializers.api.sessions import (
     SessionFinishSerializer,
     SessionDetailSerializer,
     SessionSummarySerializer,
+    IncompleteSessionSerializer,
 )
 
 class SessionViewSet(ModelViewSet):
@@ -39,8 +41,8 @@ class SessionViewSet(ModelViewSet):
             return SessionFinishSerializer
         if self.action in ("list", "retrieve"):
             return SessionDetailSerializer
-        if self.action == "active":
-            return SessionDetailSerializer
+        if self.action == "incomplete":
+            return IncompleteSessionSerializer
         if self.action  == "end":
             return SessionSummarySerializer
         return SessionSerializer
@@ -69,19 +71,20 @@ class SessionViewSet(ModelViewSet):
     
     
     @action(detail=False, methods=["get"])
-    def active(self, request):
-        qs = self.get_queryset().filter(ended_at__isnull=True).order_by("-started_at")[:2]
-        n = len(qs)
-        if n == 0:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        if n == 1:
-            serializer = self.get_serializer(qs[0])
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        if n == 2:
-            return Response(
-                {"detail": "Multiple active sessions found."},
-                status=status.HTTP_409_CONFLICT,
-            )
+    def incomplete(self, request):
+        qs = (
+            self.get_queryset()
+            .filter(finalized_at__isnull=True, started_at__isnull=False)
+            .order_by(F("ended_at").asc(nulls_last=True), "-started_at")
+        )
+ 
+        obj = qs.first()
+        if not obj:
+            return Response(status=204)
+
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data)
+            
             
     @action(detail=True, methods=["patch"])
     def end(self, request, pk=None):

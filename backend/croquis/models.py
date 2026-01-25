@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Q
     
 
 
@@ -70,8 +71,8 @@ class CroquisSession(models.Model):
     )
 
     next_action = models.TextField(
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         help_text="次回セッションで意識すること",
     )
 
@@ -88,6 +89,13 @@ class CroquisSession(models.Model):
     
     class Meta:
         ordering = ['-started_at', 'created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user"],
+                condition=Q(finalized_at__isnull=True),
+                name="unique_user_incomplete_session",
+            )
+        ]
 
     def __str__(self):
         return f"CroquisSession {self.id} - {self.user} - {self.subject}"

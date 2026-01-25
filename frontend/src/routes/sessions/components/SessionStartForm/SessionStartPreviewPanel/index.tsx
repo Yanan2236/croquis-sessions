@@ -7,6 +7,7 @@ type Props = {
   isPending: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
+  canStart: boolean;
 };
 
 export const SessionStartPreviewPanel = ({
@@ -16,6 +17,7 @@ export const SessionStartPreviewPanel = ({
   isPending,
   onSubmit,
   onCancel,
+  canStart,
 }: Props) => {
   return (
     <section className={styles.right} aria-label="Session preview">
@@ -61,13 +63,26 @@ export const SessionStartPreviewPanel = ({
       </div>
 
       <form className={styles.actions} onSubmit={onSubmit}>
-        <button
-          type="submit"
-          className={styles.primaryButton}
-          disabled={isPending || !subjectValue}
-        >
-          {isPending ? "送信中" : "開始"}
-        </button>
+        {canStart ? (
+          <button
+            type="submit"
+            className={styles.primaryButton}
+            disabled={isPending || !subjectValue}
+          >
+            {isPending ? "送信中" : "開始"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={`${styles.primaryButton} ${styles.disabledLike}`}
+            onClick={() => {
+              // 例：トースト表示 / バナーへスクロール / ダイアログ
+              alert("未完了のセッションがあるため開始できません。上のバナーから再開してください。");
+            }}
+          >
+            未完了のセッションがあるため開始できません
+          </button>
+        )}
 
         <button
           type="button"
