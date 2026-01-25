@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { startSession } from "@/features/sessions/api"
 import { fetchSubjectsOverview } from "@/features/subjects/api"
 import { routes } from "@/lib/routes"
-import type { StartSessionPayload, CroquisSession } from "@/features/sessions/types"
+import type { StartSessionPayload, CroquisSession, IncompleteSessionResponse } from "@/features/sessions/types"
 import styles from "./styles.module.css"
 import { SubjectPickerPanel } from "@/routes/sessions/components/SessionStartForm/SubjectPickerPanel";
 import { SessionStartPreviewPanel } from "@/routes/sessions/components/SessionStartForm/SessionStartPreviewPanel";
@@ -18,6 +18,9 @@ export const SessionStartForm = () => {
 
   const [subjectValue, setSubjectValue] = useState("");
   const [intentionValue, setIntentionValue] = useState("");
+
+  const hasIncompleteSession = queryClient.getQueryData<IncompleteSessionResponse | null>(["incomplete-session"])
+  const canStart = !hasIncompleteSession
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["subjects"],
@@ -76,6 +79,7 @@ export const SessionStartForm = () => {
           isPending={isPending}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/sessions")}
+          canStart={canStart}
         />
       </div>
     </div>
