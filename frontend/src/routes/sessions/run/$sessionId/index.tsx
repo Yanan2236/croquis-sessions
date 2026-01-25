@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { fetchSessionDetails, endSession } from "@/features/sessions/api";
 import { routes } from "@/lib/routes";
@@ -10,6 +11,7 @@ import styles from "./styles.module.css";
 
 export const SessionDetail = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient()
   const { sessionId } = useParams<{ sessionId: string }>();
 
   const sessionIdNum = useMemo(() => {
@@ -32,6 +34,7 @@ export const SessionDetail = () => {
   const { mutate } = useMutation({
     mutationFn: endSession,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["incomplete-session"] });
       navigate(routes.sessionRunFinish(sessionIdNum!), { replace: true });
     },
     onError: (err) => {

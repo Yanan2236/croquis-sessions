@@ -4,7 +4,12 @@ import { fetchIncompleteSession } from "@/features/sessions/api";
 
 export const useIncompleteSessionQuery = () => {
   return useQuery({
-    queryKey: ["sessions", "incomplete"],
+    queryKey: ["incomplete-session"],
     queryFn: fetchIncompleteSession,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
   });
 }

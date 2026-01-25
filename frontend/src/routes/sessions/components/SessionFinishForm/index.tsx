@@ -36,7 +36,8 @@ export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
     mutationFn: finishAll,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
-      queryClient.invalidateQueries({ queryKey: ["subjects"]})
+      queryClient.invalidateQueries({ queryKey: ["subjects"]});
+      queryClient.setQueryData(["incomplete-session"], null); // 未完成セッションキャッシュを手動クリア
       navigate(routes.sessionRunDone(sessionId), { replace: true });
     },
     onError: (error: AxiosError) => {

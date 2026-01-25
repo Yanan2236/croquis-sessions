@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
+import { useQueryClient } from "@tanstack/react-query"
 
 import { startSession } from "@/features/sessions/api"
 import { fetchSubjectsOverview } from "@/features/subjects/api"
@@ -13,6 +14,7 @@ import { SessionStartPreviewPanel } from "@/routes/sessions/components/SessionSt
 
 export const SessionStartForm = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [subjectValue, setSubjectValue] = useState("");
   const [intentionValue, setIntentionValue] = useState("");
@@ -29,6 +31,7 @@ export const SessionStartForm = () => {
   >({
     mutationFn: startSession,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["incomplete-session"] }); // 未完成セッションキャッシュを更新
       navigate(routes.sessionRun(data.id), { replace: true });
     },
     onError: (error) => {
