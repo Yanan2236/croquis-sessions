@@ -4,7 +4,7 @@ export type SubjectOverview = {
   total_duration_seconds: number;
   latest_session: {
     id: number;
-    ended_at: string;
+    finalized_at: string;
     next_action: string | null;
   };
 };
