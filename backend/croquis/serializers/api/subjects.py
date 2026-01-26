@@ -15,7 +15,7 @@ class LatestSessionMiniSerializer(serializers.ModelSerializer):
         model = CroquisSession
         fields = [
             "id",
-            "ended_at",
+            "finalized_at",
             "next_action",
         ]
         read_only_fields = fields
@@ -32,5 +32,21 @@ class SubjectOverviewSerializer(serializers.ModelSerializer):
             "latest_session",
         ]
         read_only_fields = fields
-
         
+class SubjectWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = [
+            "id",
+            "name",
+        ]
+        read_only_fields = ["id"]
+        
+    def validate_name(self, value: str) -> str:
+        value = value.strip()
+        value = value.replace("\u3000", " ")
+        value = " ".join(value.split())
+        
+        if not value:
+            raise serializers.ValidationError("Subject名は必須です")
+        return value

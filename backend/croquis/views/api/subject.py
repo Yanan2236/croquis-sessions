@@ -7,13 +7,18 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from rest_framework.status import HTTP_201_CREATED
 
 from croquis.models import Subject, CroquisSession
-from croquis.serializers.api.subjects import SubjectSerializer, SubjectOverviewSerializer
+from croquis.serializers.api.subjects import (
+    SubjectSerializer, 
+    SubjectOverviewSerializer, 
+    SubjectWriteSerializer,
+)
 
 
 class SubjectViewSet(ModelViewSet):
-    http_method_names = ["get", "head", "options"]
+    http_method_names = ["get", "post", "patch", "head", "options"]
     permission_classes = [IsAuthenticated]
     
     filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -28,6 +33,8 @@ class SubjectViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == "overview":
             return SubjectOverviewSerializer
+        if self.action in ("create", "update", "partial_update"):
+            return SubjectWriteSerializer
         return SubjectSerializer
 
     @action(detail=False, methods=["get"])
@@ -35,5 +42,28 @@ class SubjectViewSet(ModelViewSet):
         qs = self.filter_queryset(self.get_queryset()).select_related("latest_session")
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
         
+    def create(self, request, *args, **kwargs):
+        in_serializer = self.get_serializer(data=request.data)
+        in_serializer.is_valid(raise_exception=True)
+        self.perform_create(in_serializer)
+        subject = in_serializer.instance
         
+        out_serializer = SubjectOverviewSerializer(subject, context=self.get_serializer_context())
+        return Response(out_serializer.data, status=HTTP_201_CREATED)
+        
+    def partial_update(self, request, *args, **kwargs):
+        subject = self.get_object()
+        in_serializer = self.get_serializer(subject, data=request.data, partial=True)
+        in_serializer.is_valid(raise_exception=True)
+        self.perform_update(in_serializer)
+        subject = in_serializer.instance
+        
+        out_serializer = SubjectOverviewSerializer(subject, context=self.get_serializer_context())
+        return Response(out_serializer.data)
+
+# Queryの更新
+# name頭のバリデーション
