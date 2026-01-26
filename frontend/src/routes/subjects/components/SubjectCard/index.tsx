@@ -24,10 +24,19 @@ export const SubjectCard = ({ subject }: Props) => {
 
   const renameMutation = useMutation({
     mutationFn: (newName: string) => renameSubject(subject.id, newName),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["subjects", "overview"] });
+    onSuccess: (updatedSubject) => {
+      queryClient.setQueryData<SubjectOverview[]>(
+        ["subjects", "overview"],
+        (old) => {
+          if (!old) return old;
+          return old.map((s) =>
+            s.id === updatedSubject.id ? { ...s, ...updatedSubject } : s
+          );
+        }      
+      ); 
+
       setIsRenaming(false);
-      setName(subject.name);
+      setName(updatedSubject.name);
     },
     onError: (error: Error) => {
       console.error("Failed to rename subject:", error);
