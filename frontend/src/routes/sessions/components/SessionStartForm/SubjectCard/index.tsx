@@ -16,8 +16,8 @@ export const SubjectCard = ({ subject }: Props) => {
         <h3 className={styles.title}>{subject.name}</h3>
 
         {latest ? (
-          <time className={styles.latest} dateTime={latest.ended_at}>
-            {formatRelativeDate(latest.ended_at)}
+          <time className={styles.latest} dateTime={latest.finalized_at}>
+            {formatRelativeDate(latest.finalized_at)}
           </time>
         ) : (
           <span className={styles.latestMuted}>—</span>

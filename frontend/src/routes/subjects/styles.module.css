@@ -25,6 +25,79 @@
   min-width: 0;
 }
 
+/* --- New Subject Card --- */
+
+.newSubjectItem {
+  min-width: 0;
+}
+
+.newSubjectCard {
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 14px;
+}
+
+.newSubjectHeader {
+  margin-bottom: 10px;
+}
+
+.newSubjectTitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.newSubjectForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.newSubjectInput {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background: #fff;
+
+  font-size: 14px;
+}
+
+.newSubjectInput:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+.newSubjectButton {
+  height: 36px;
+  padding: 0 12px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background: #fff;
+
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.newSubjectButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.newSubjectHint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
 @media (max-width: 860px) {
   .subjectList {
     grid-template-columns: 1fr;

@@ -3,12 +3,25 @@
   border-radius: 12px;
   background: #fff;
   padding: 14px;
+
+  min-height: 156px;
 }
 
 .header {
   margin-bottom: 10px;
 }
 
+/* ★ここが肝：ヘッダーの高さを固定して、編集時にカードが伸びない */
+.headerRow {
+  height: 34px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+/* 表示タイトル */
 .title {
   margin: 0;
   font-size: 16px;
@@ -21,6 +34,83 @@
   white-space: nowrap;
 }
 
+/* 編集アイコン（控えめ） */
+.editButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.editButton:hover {
+  opacity: 0.9;
+}
+
+/* 編集input：高さをヘッダーに収める */
+.nameInput {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nameInput:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+/* 保存/キャンセル：右側で折り返さない */
+.actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.saveButton,
+.cancelButton {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 10px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.saveButton {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+}
+
+.cancelButton {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* stats */
 .rows {
   display: grid;
   gap: 8px;
@@ -48,10 +138,14 @@
   white-space: nowrap;
 }
 
-.empty {
-  margin: 0;
-  font-size: 13px;
-  opacity: 0.7;
+.placeholder {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.35;
 }
 
-
+.renameError {
+  margin: 10px 0 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
