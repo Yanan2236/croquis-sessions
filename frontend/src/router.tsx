@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { RootLayout } from '@/routes/RootLayout';
-import { HomePage } from '@/routes/index';
 import { NotFound } from '@/routes/NotFound';
 
 import { NewSessionPage } from '@/routes/sessions/new';
@@ -12,52 +11,62 @@ import { SessionLayout } from '@/routes/sessions/run/$sessionId/_layout';
 import { SubjectsPage } from '@/routes/subjects';
 import { SessionOverlayDetail } from '@/routes/sessions/view/$sessionId';
 import { SessionsLayout } from '@/routes/sessions/_layout';
-import { Sessions } from './routes/sessions';
+import { PublicLayout } from '@/routes/PublicLayout';
+import { LoginPage } from '@/routes/login';
+import { AuthGuard } from '@/components/auth/AuthGuard';
+import { PublicGuard } from '@/components/auth/PublicGuard';
+import { Sessions } from '@/routes/sessions';
 
 
 export const router = createBrowserRouter([
+  // Public
   {
-    path: '/',
-    element: <RootLayout />,
-    errorElement: <NotFound />,
+    path: "/login",
+    element: <PublicGuard />,
     children: [
-      { index: true, element: <HomePage /> },
+      { 
+        element: <PublicLayout />,
+        errorElement: <NotFound />,
+        children: [{ index: true, element: <LoginPage /> }],
+      },
+    ],
+  },
 
+  // Private（認証必須）
+  {
+    element: <AuthGuard />,
+    children: [
       {
-        path: "sessions",
+        path: "/",
+        element: <RootLayout />,
+        errorElement: <NotFound />,
         children: [
-          {
-            element: <SessionsLayout />,
-            children: [
-              { index: true, element: null },
-              { path: "view/:sessionId", element: <SessionOverlayDetail /> },
-            ]
-          },
+          { path: "sessions", children: [
+            {
+              element: <SessionsLayout />,
+              children: [
+                { index: true, element: <Sessions /> },
+                { path: "view/:sessionId", element: <SessionOverlayDetail /> },
+              ],
+            },
+            { path: "new", element: <NewSessionPage /> },
+            {
+              path: "run/:sessionId",
+              element: <SessionLayout />,
+              handle: { hideIncompleteBanner: true },
+              children: [
+                { index: true, element: <SessionDetail /> },
+                { path: "finish", element: <SessionFinishPage /> },
+                { path: "done", element: <SessionDonePage /> },
+              ],
+            },
+          ]},
 
-          { path: "new", element: <NewSessionPage /> },
+          { path: "subjects", element: <SubjectsPage /> },
 
-          {
-            path: "run/:sessionId",
-            element: <SessionLayout />,
-            handle: { hideIncompleteBanner: true },
-            children: [
-              { index: true, element: <SessionDetail /> },
-              { path: "finish", element: <SessionFinishPage /> },
-              { path: "done", element: <SessionDonePage /> },
-            ],
-          },
+          { path: "*", element: <NotFound /> },
         ],
       },
-
-
-      { 
-        path: 'subjects',
-        children: [
-          { index: true, element: <SubjectsPage /> },
-        ]
-      },
-
-      { path: '*', element: <NotFound /> },
     ],
   },
 ]);
