@@ -4,25 +4,24 @@ import { Sessions } from "@/routes/sessions";
 import { OverlayShell } from "@/components/ui/OverlayShell";
 
 export const SessionsLayout = () => {
-  const outlet = useOutlet();
   const navigate = useNavigate();
-  const isOverlay = !!useMatch("sessions/view/:sessionId");
+  const isOverlay = !!useMatch("/sessions/view/:sessionId");
 
   const onClose = () => {
-    navigate("/sessions");
+    navigate(-1);
+  };
+
+  if (!isOverlay) {
+    return <Outlet />;
   }
-  
+
   return (
     <>
-
-
-      {isOverlay && (
-        <OverlayShell onClose={onClose}>
-          <Outlet context={{ onClose }} />
-        </OverlayShell>
-      )}
       <Sessions />
-    </>
 
-  )
+      <OverlayShell onClose={onClose}>
+        <Outlet context={{ onClose }} />
+      </OverlayShell>
+    </>
+  );
 };
