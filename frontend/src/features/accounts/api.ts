@@ -1,9 +1,9 @@
 import { api } from "@/lib/api";
 
-import type { User } from "./types";
+import type { Me } from "./types";
 
 export const login = async (email: string, password: string) => {
-  const response = await api.post<User>('/api/accounts/login/', { email, password });
+  const response = await api.post<Me>('/api/accounts/login/', { email, password });
   return response.data;
 }
 
@@ -12,7 +12,7 @@ export const logout = async () => {
   return response.data;
 }
 
-export const featchMe = async () => {
-  const response = await api.get<User>('/api/accounts/me/');
+export const fetchMe = async () => {
+  const response = await api.get<Me>('/api/accounts/me/');
   return response.data;
 }

@@ -16,6 +16,10 @@ export const useLoginMutation = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       await queryClient.invalidateQueries({ queryKey: ["incomplete-session"] });
+      console.log(queryClient.getQueriesData({ queryKey: ["me"] })); // デバッグ用 必ず消すこと
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
     }
   });
 }
