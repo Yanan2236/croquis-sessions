@@ -16,3 +16,7 @@ export const fetchMe = async () => {
   const response = await api.get<Me>('/api/accounts/me/');
   return response.data;
 }
+
+export const signup = async (username: string, email: string, password: string, password_confirm: string): Promise<void> => {
+  return await api.post('/api/accounts/signup/', { username, email, password, password_confirm });
+}

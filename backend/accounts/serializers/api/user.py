@@ -12,6 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
         
         
 class SignupSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(trim_whitespace=False, required=False)
+    password = serializers.CharField(write_only=True, trim_whitespace=False)
+    password_confirm = serializers.CharField(write_only=True, trim_whitespace=False)
+
+    
     def validate_password(self, value):
         try:
             validate_password(value)
@@ -37,5 +42,5 @@ class SignupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ["email", "password", "password_confirm"]
+        fields = ["email", "username", "password", "password_confirm"]
         
