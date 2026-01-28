@@ -1,6 +1,6 @@
 from rest_framework import generics
 from django.contrib.auth import get_user_model
-from accounts.serializers.api.user import UserSerializer
+from accounts.serializers.api.user import UserSerializer, SignupSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -10,12 +10,29 @@ from django.contrib.auth import authenticate, login, logout
 
 User = get_user_model()
 
-class UserView(generics.RetrieveAPIView):
+class MeView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
     
     def get_object(self):
         return self.request.user
+
+    
+class SignupView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = SignupSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        raw_password = serializer.validated_data["password"]
+        user = serializer.save()
+        
+        # 新規登録後、自動ログイン
+        authenticated_user = authenticate(request, email=user.email, password=raw_password)
+        login(request, authenticated_user)
+        return Response(status=status.HTTP_201_CREATED)
+    
     
 class LoginView(APIView):
     permission_classes = [AllowAny]

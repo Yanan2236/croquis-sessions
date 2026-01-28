@@ -13,7 +13,7 @@ export const useLogoutAndRedirectMutation = () => {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["me"] });
       queryClient.removeQueries({ queryKey: ["incomplete-session"] });
-      navigate("/login", { replace: true });
+      navigate("/auth/login", { replace: true });
     }
   })
 }

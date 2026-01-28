@@ -21,7 +21,8 @@ from croquis.serializers.api.sessions import (
 )
 
 class SessionViewSet(ModelViewSet):
-    http_method_names = ["get", "post", "patch"]
+    lookup_value_regex = r"\d+" # PKを数字のみに制限
+    http_method_names = ["get", "post", "patch", "head", "options"]
     
     permission_classes = [IsAuthenticated]
     

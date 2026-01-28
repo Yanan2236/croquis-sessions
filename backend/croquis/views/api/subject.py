@@ -18,6 +18,7 @@ from croquis.serializers.api.subjects import (
 
 
 class SubjectViewSet(ModelViewSet):
+    lookup_value_regex = r"\d+"
     http_method_names = ["get", "post", "patch", "head", "options"]
     permission_classes = [IsAuthenticated]
     
@@ -64,6 +65,3 @@ class SubjectViewSet(ModelViewSet):
         
         out_serializer = SubjectOverviewSerializer(subject, context=self.get_serializer_context())
         return Response(out_serializer.data)
-
-# Queryの更新
-# name頭のバリデーション

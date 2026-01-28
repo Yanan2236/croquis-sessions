@@ -12,6 +12,7 @@ from croquis.serializers.api.drawings import DrawingSerializer, DrawingCreateSer
 from croquis.exceptions import Conflict
 
 class DrawingViewSet(ModelViewSet):
+    lookup_value_regex = r"\d+"
     http_method_names = ["get", "post", "head", "options"]
     
     permission_classes = [IsAuthenticated]
