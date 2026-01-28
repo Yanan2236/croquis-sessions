@@ -11,23 +11,27 @@ import { SessionLayout } from '@/routes/sessions/run/$sessionId/_layout';
 import { SubjectsPage } from '@/routes/subjects';
 import { SessionOverlayDetail } from '@/routes/sessions/view/$sessionId';
 import { SessionsLayout } from '@/routes/sessions/_layout';
-import { PublicLayout } from '@/routes/PublicLayout';
-import { LoginPage } from '@/routes/login';
+import { PublicLayout } from '@/routes/auth/PublicLayout';
+import { LoginPage } from '@/routes/auth/login';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { PublicGuard } from '@/components/auth/PublicGuard';
 import { Sessions } from '@/routes/sessions';
+import { SignupPage } from '@/routes/auth/signup';
 
 
 export const router = createBrowserRouter([
   // Public
   {
-    path: "/login",
+    path: "/auth",
     element: <PublicGuard />,
+    errorElement: <NotFound />,
     children: [
       { 
         element: <PublicLayout />,
-        errorElement: <NotFound />,
-        children: [{ index: true, element: <LoginPage /> }],
+        children: [
+          { path: "login", element: <LoginPage /> },
+          { path: "signup", element: <SignupPage /> },
+        ],
       },
     ],
   },
