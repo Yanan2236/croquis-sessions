@@ -1,0 +1,27 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-lg);
+  border: var(--border-width-thin) solid;
+
+  line-height: 1;
+}
+
+/* 必須 */
+.required {
+  color: var(--color-text-primary);
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border-default);
+}
+
+/* 任意 */
+.optional {
+  color: var(--color-text-muted);
+  background: var(--color-bg-base);
+  border-color: var(--color-border-default);
+}

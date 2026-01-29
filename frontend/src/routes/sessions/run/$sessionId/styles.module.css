@@ -1,175 +1,181 @@
 .page {
-  padding: 28px 24px 56px;
-  max-width: 960px;
+  min-height: 100%;
+  background: var(--color-bg-app);
+  color: var(--color-text-primary);
+}
+
+/* Layout: reading width */
+.header,
+.main {
+  width: min(900px, 100%);
   margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
 }
 
-
+/* Header: backgroundless */
 .header {
-  padding: 8px 0 6px;
+  background: transparent;
+  border: 0;
 }
 
-.headerTop {
+/* Header Row */
+.headerRow {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-lg);
 }
 
-.titleBlock {
+.left {
   min-width: 0;
+  display: grid;
+  gap: var(--space-sm);
 }
 
-.kicker {
-  margin: 0 0 6px;
+/* State */
+.stateRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+
   font-size: 12px;
-  letter-spacing: 0.08em;
-  opacity: 0.65;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
 }
 
+.stateDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-state-running);
+}
+
+/* Subject */
 .subject {
   margin: 0;
   font-size: 28px;
-  line-height: 1.25;
-  letter-spacing: 0.01em;
-  word-break: break-word;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
-
-.finishButton {
-  flex: 0 0 auto;
-  height: 34px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  background: rgba(0, 0, 0, 0.04);
-  color: inherit;
-  font-size: 13px;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-}
-
-.finishButton:hover {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.finishButton:active {
-  transform: translateY(1px);
-}
-
-.finishButton:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.35);
-  outline-offset: 2px;
-}
-
-
-.timerArea {
-  margin-top: 18px;
+/* Timer */
+.timer {
+  margin-top: var(--space-md);
   display: grid;
-  gap: 10px;
+  gap: var(--space-sm);
 }
 
 .timerDigits {
   display: inline-flex;
   align-items: baseline;
-  gap: 10px;
+  gap: var(--space-sm);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
 }
 
 .digit {
-  font-size: 84px;
-  line-height: 1;
+  font-size: 72px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .colon {
-  font-size: 60px;
-  line-height: 1;
-  opacity: 0.28;
-  transform: translateY(-2px);
+  font-size: 64px;
+  color: var(--color-text-muted);
+  opacity: 0.6;
 }
 
-.timerMeta {
-  margin: 0;
-  font-size: 12px;
-  opacity: 0.7;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
+/* Main */
+.main {
+  padding-top: 0;
+  display: grid;
+  gap: var(--space-md);
 }
 
-.timerLabel {
-  letter-spacing: 0.08em;
-}
-
-.dot {
-  opacity: 0.65;
-}
-
-.startedAt {
-  font-variant-numeric: tabular-nums;
-}
-
-
-.progressTrack {
-  height: 2px;
-  width: 220px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
+/* Card: Intention */
+.card {
+  background: color-mix(
+    in srgb,
+    var(--color-bg-base) 60%,
+    var(--color-bg-app)
+  );
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.progressFill {
-  height: 100%;
-  width: 32%;
-  background: rgba(0, 0, 0, 0.22);
-  border-radius: 999px;
-}
-
-
-.main {
-  margin-top: 34px;
-}
-
-.intentionCard {
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.10);
-  background: rgba(0, 0, 0, 0.015);
-  padding: 16px 16px 18px;
-}
-
 .sectionTitle {
-  margin: 0 0 10px;
-  font-size: 13px;
-  letter-spacing: 0.02em;
-  opacity: 0.85;
+  margin: 0;
+  padding: var(--space-md) var(--space-md) 0;
+
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-text-secondary);
 }
 
 .intentionValue {
   margin: 0;
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+
   font-size: 14px;
-  line-height: 1.9;
-  max-width: 56ch;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--color-text-primary);
+
+  background: transparent;
 }
 
-@media (max-width: 640px) {
-  .page {
-    padding: 18px 14px 40px;
-  }
-
-  .digit {
-    font-size: 68px;
-  }
-
-  .colon {
-    font-size: 50px;
-  }
-
-  .progressTrack {
-    width: 180px;
-  }
+.intentionValue[data-empty="true"] {
+  color: var(--color-text-muted);
 }
 
+/* Actions */
+.actions {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+/* Primary button (imported) */
+.primaryButton {
+  width: 100%;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    filter 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    outline-color 120ms ease;
+
+  border: 0;
+  background: var(--color-bg-accent-strong);
+  color: var(--color-text-inverse);
+}
+
+.primaryButton:hover {
+  filter: brightness(1.14) saturate(1.06);
+}
+
+.primaryButton:active {
+  filter: brightness(0.86) saturate(0.98);
+}
+
+.primaryButton:focus-visible {
+  outline: 3px solid
+    color-mix(in srgb, var(--color-border-focus) 40%, transparent);
+  outline-offset: 2px;
+}
+
+.primaryButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}

@@ -8,6 +8,8 @@ import "@/lib/api"; // initialize API client
 
 import "./index.css";
 
+import "./styles/theme.css"; // グローバルなデザイン・トークン
+
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

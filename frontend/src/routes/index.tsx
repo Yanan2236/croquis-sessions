@@ -1,22 +1,35 @@
-import { useEffect, useState } from "react";
-
-import { fetchSubjectsOverview  } from "@/features/subjects/api";
-import type { SubjectOverview } from "@/features/subjects/types";
+import { useNavigate } from "react-router-dom";
+import styles from "./styles.module.css";
 
 export const HomePage = () => {
-  const [subjects, setSubjects] = useState<Array<SubjectOverview>>([])
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadSubjects = async () => {
-      const data = await fetchSubjectsOverview();
-      setSubjects(data);
-    }
-    loadSubjects();
-  }, []);
+  // ダミー
+  const goal = "キャラの説得力を上げる";
+
+  const onStart = () => {
+    navigate("/sessions/new");
+  };
 
   return (
-    <div>
-      <h2>Home</h2>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Home</h1>
+          <p className={styles.subtitle}>
+            クロッキーは、イラスト上達のための手段
+          </p>
+        </header>
+
+        <section className={styles.goalSection}>
+          <div className={styles.goalLabel}>目標</div>
+          <div className={styles.goalText}>{goal}</div>
+        </section>
+
+        <button className={styles.primaryButton} type="button" onClick={onStart}>
+          セッションを始める
+        </button>
+      </div>
     </div>
-  )
+  );
 }
