@@ -17,6 +17,7 @@ import { AuthGuard } from '@/components/auth/AuthGuard';
 import { PublicGuard } from '@/components/auth/PublicGuard';
 import { Sessions } from '@/routes/sessions';
 import { SignupPage } from '@/routes/auth/signup';
+import { HomePage } from '@/routes';
 
 
 export const router = createBrowserRouter([
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <NotFound />,
         children: [
+          { index: true, element: <HomePage />},
           { path: "sessions", children: [
             {
               element: <SessionsLayout />,

@@ -54,62 +54,54 @@ export const SessionDetail = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-  return (
-    <section className={styles.page} aria-label="セッション実施中">
-      <header className={styles.header}>
-        <div className={styles.headerTop}>
-          <div className={styles.titleBlock}>
-            <p className={styles.kicker}>セッション実施中</p>
-            <h1 className={styles.subject}>{session.subject.name}</h1>
+return (
+  <section className={styles.page} aria-label="セッション実施中">
+    <header className={styles.header}>
+      <div className={styles.headerRow}>
+        <div className={styles.left}>
+          <div className={styles.stateRow} aria-label="状態">
+            <span className={styles.stateDot} aria-hidden="true" />
+            <span className={styles.stateText}>セッション実施中</span>
           </div>
 
-          <button
-            type="button"
-            className={styles.finishButton}
-            onClick={() => mutate(sessionIdNum)}
-          >
-            終了
-          </button>
+          <h1 className={styles.subject}>{session.subject.name}</h1>
         </div>
+      </div>
 
-        <div className={styles.timerArea} aria-label="経過時間">
-          <div className={styles.timerDigits} aria-live="polite">
-            <span className={styles.digit}>00</span>
-            <span className={styles.colon} aria-hidden="true">
-              :
-            </span>
-            <span className={styles.digit}>00</span>
-          </div>
-
-          <p className={styles.timerMeta}>
-            <span className={styles.timerLabel}>経過時間</span>
-            <span className={styles.dot} aria-hidden="true">
-              ・
-            </span>
-            <span className={styles.startedAt}>
-              開始:{" "}
-              <time dateTime={session.started_at}>
-                {new Date(session.started_at).toLocaleString()}
-              </time>
-            </span>
-          </p>
-          
-          <div className={styles.progressTrack} aria-hidden="true">
-            <div className={styles.progressFill} />
-          </div>
+      <div className={styles.timer} aria-label="経過時間">
+        <div className={styles.timerDigits} aria-live="polite">
+          <span className={styles.digit}>00</span>
+          <span className={styles.colon} aria-hidden="true">
+            :
+          </span>
+          <span className={styles.digit}>00</span>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <main className={styles.main}>
-        <section className={styles.intentionCard} aria-label="今回の課題">
-          <h2 className={styles.sectionTitle}>今回の課題</h2>
-          <p className={styles.intentionValue}>
-            {session.intention ? session.intention : "—"}
-          </p>
-        </section>
-      </main>
-    </section>
-  );
+    <main className={styles.main}>
+      <section className={styles.card} aria-label="今回の課題">
+        <h2 className={styles.sectionTitle}>今回の課題</h2>
+        <p
+          className={styles.intentionValue}
+          data-empty={!session.intention ? "true" : "false"}
+        >
+          {session.intention ? session.intention : "—"}
+        </p>
+      </section>
 
+      {/* 下部固定：見ない画面でも「終われる」だけは保証する */}
+      <div className={styles.actionBar} aria-label="操作">
+        <button
+          type="button"
+          className={styles.primaryButton}
+          onClick={() => mutate(sessionIdNum)}
+        >
+          終了
+        </button>
+      </div>
+    </main>
+  </section>
+);
 
 };

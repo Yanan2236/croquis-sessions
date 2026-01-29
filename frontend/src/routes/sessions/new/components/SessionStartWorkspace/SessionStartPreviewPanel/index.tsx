@@ -1,3 +1,4 @@
+import { RequirementBadge } from "@/components/ui/RequirementBadge";
 import styles from "./styles.module.css";
 
 type Props = {
@@ -19,32 +20,40 @@ export const SessionStartPreviewPanel = ({
   onCancel,
   canStart,
 }: Props) => {
+
   return (
-    <section className={styles.right} aria-label="Session preview">
-      <div className={styles.panelHeader}>
-        <h2 className={styles.panelTitle}>本日の練習メニュー</h2>
+    <section className={styles.right} aria-label="今回の練習メニュー">
+      <header className={styles.panelHeader}>
+        <h2 className={styles.panelTitle}>2. 今回の練習メニュー</h2>
         <p className={styles.panelHint}>
-          モチーフを選んで、こだわりポイントを確認・編集してください。
+          左でモチーフを選ぶと、内容が反映されます。
         </p>
-      </div>
+      </header>
 
       <div className={styles.preview}>
+        {/* Subject */}
         <div className={styles.field}>
           <div className={styles.fieldHeader}>
             <span className={styles.fieldLabel}>モチーフ</span>
-            <span className={styles.fieldBadge}>必須</span>
+            <RequirementBadge requirement="required" />
           </div>
-          <div className={styles.fieldValue} aria-live="polite">
-            {subjectValue ? subjectValue : "未選択"}
+
+          <div
+            className={styles.fieldValue}
+            aria-live="polite"
+            data-empty={!subjectValue}
+          >
+            {subjectValue || "未選択"}
           </div>
         </div>
 
+        {/* Intention */}
         <div className={styles.field}>
           <div className={styles.fieldHeader}>
             <label className={styles.fieldLabel} htmlFor="intention">
-              こだわりポイント
+              今回の課題
             </label>
-            <span className={styles.fieldNote}>自動入力</span>
+            <RequirementBadge requirement="optional" />
           </div>
 
           <textarea
@@ -53,11 +62,11 @@ export const SessionStartPreviewPanel = ({
             value={intentionValue}
             onChange={(e) => setIntentionValue(e.target.value)}
             placeholder="例：輪郭を丁寧に / 比率を崩さない / パース意識"
-            rows={5}
             className={styles.textarea}
+            readOnly={!subjectValue}
           />
+
           <p className={styles.helpText}>
-            ※前回の内容が入ります。必要なら直してください。
           </p>
         </div>
       </div>
@@ -76,8 +85,9 @@ export const SessionStartPreviewPanel = ({
             type="button"
             className={`${styles.primaryButton} ${styles.disabledLike}`}
             onClick={() => {
-              // 例：トースト表示 / バナーへスクロール / ダイアログ
-              alert("未完了のセッションがあるため開始できません。上のバナーから再開してください。");
+              alert(
+                "未完了のセッションがあるため開始できません。上のバナーから再開してください。"
+              );
             }}
           >
             未完了のセッションがあるため開始できません
@@ -95,4 +105,5 @@ export const SessionStartPreviewPanel = ({
       </form>
     </section>
   );
+
 };

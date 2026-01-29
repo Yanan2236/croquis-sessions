@@ -1,6 +1,6 @@
 
 
-import { SessionStartForm } from "@/routes/sessions/components/SessionStartForm"
+import { SessionStartForm } from "@/routes/sessions/new/components/SessionStartWorkspace"
 import styles from "./styles.module.css"
 
 export const NewSessionPage = () => {

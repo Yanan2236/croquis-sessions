@@ -9,8 +9,8 @@ import { fetchSubjectsOverview } from "@/features/subjects/api"
 import { routes } from "@/lib/routes"
 import type { StartSessionPayload, CroquisSession, IncompleteSessionResponse } from "@/features/sessions/types"
 import styles from "./styles.module.css"
-import { SubjectPickerPanel } from "@/routes/sessions/components/SessionStartForm/SubjectPickerPanel";
-import { SessionStartPreviewPanel } from "@/routes/sessions/components/SessionStartForm/SessionStartPreviewPanel";
+import { SubjectPickerPanel } from "@/routes/sessions/new/components/SessionStartWorkspace/SubjectPickerPanel";
+import { SessionStartPreviewPanel } from "@/routes/sessions/new/components/SessionStartWorkspace/SessionStartPreviewPanel";
 
 export const SessionStartForm = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export const SessionStartForm = () => {
       console.error("headers", error.response?.headers);
     },
   });
-
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -61,28 +61,29 @@ export const SessionStartForm = () => {
   const subjects = data ?? [];
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>新規セッション作成</h1>
-
-      <div className={styles.layout}>
+    <section className={styles.workspace}>
+      <div className={styles.left}>
         <SubjectPickerPanel
           subjects={subjects}
           subjectValue={subjectValue}
           setSubjectValue={setSubjectValue}
           setIntentionValue={setIntentionValue}
         />
+      </div>
 
+      <div className={styles.divider} />
+
+      <div className={styles.right}>
         <SessionStartPreviewPanel
           subjectValue={subjectValue}
           intentionValue={intentionValue}
           setIntentionValue={setIntentionValue}
           isPending={isPending}
           onSubmit={handleSubmit}
-          onCancel={() => navigate("/sessions")}
+          onCancel={() => navigate("/", { replace: true })}
           canStart={canStart}
         />
       </div>
-    </div>
+    </section>
   );
-
 };
