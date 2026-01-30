@@ -2,8 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Q
+from enum import Enum
     
-
+class DeleteResult(Enum):
+    SOFT = "soft"
+    HARD = "hard"
 
 class SubjectQuerySet(models.QuerySet):
     def alive(self):
@@ -54,9 +57,11 @@ class Subject(models.Model):
         self.deleted_at = timezone.now()
         self.is_active = False
         self.save(update_fields=["deleted_at", "is_active"])
+        return DeleteResult.SOFT
         
     def hard_delete(self):
         super().delete()
+        return DeleteResult.HARD
         
     def restore(self):
         self.deleted_at = None
