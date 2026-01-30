@@ -5,7 +5,21 @@ from django.db.models import Q
     
 
 
+class SubjectQuerySet(models.QuerySet):
+    def alive(self):
+        return self.filter(deleted_at__isnull=True)
+    
+    def dead(self):
+        return self.filter(deleted_at__isnull=False)
+    
+class SubjectManager(models.Manager):
+    def get_queryset(self):
+        return SubjectQuerySet(self.model, using=self._db).alive()
+
 class Subject(models.Model):
+    objects = SubjectManager()      # デフォルトは生存だけ取得
+    all_objects = models.Manager()  # 全取得用
+    
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -26,14 +40,39 @@ class Subject(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    is_active = models.BooleanField(default=True)
+    
+    def delete_by_policy(self):
+        if self.sessions.exists():
+            self.soft_delete()
+        else:
+            self.hard_delete()
+        
+    def soft_delete(self):
+        self.deleted_at = timezone.now()
+        self.is_active = False
+        self.save(update_fields=["deleted_at", "is_active"])
+        
+    def hard_delete(self):
+        super().delete()
+        
+    def restore(self):
+        self.deleted_at = None
+        self.is_active = False
+        self.save(update_fields=["deleted_at", "is_active"])
+    
+    
     def __str__(self):
         return self.name
     
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'name'],
-                name='unique_subject_per_user'
+                fields=["user", "name"],
+                condition=Q(deleted_at__isnull=True),
+                name="unique_alive_subject_per_user",
             )
         ]
 
@@ -53,7 +92,7 @@ class CroquisSession(models.Model):
     subject = models.ForeignKey(
         "Subject",
         on_delete=models.PROTECT,
-        related_name="croquis_sessions",
+        related_name="sessions",
         help_text="セッションの主題",
     )
 
