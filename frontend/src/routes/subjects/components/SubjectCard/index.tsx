@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styles from "./styles.module.css";
 import { formatHoursFloor } from "@/features/shared/utils/duration";
 import { formatRelativeDate } from "@/features/shared/utils/datetime";
-import { renameSubject } from "@/features/subjects/api";
 import type { SubjectOverview } from "@/features/subjects/types";
+import { useRenameSubjectMutation } from "@/features/subjects/mutation/useRenameSubjectMutation";
+import { useDeleteSubjectMutation } from "@/features/subjects/mutation/useDeleteSubjectMutation";
 
 type Props = {
   subject: SubjectOverview;
@@ -14,49 +14,50 @@ type Props = {
 export const SubjectCard = ({ subject }: Props) => {
   const latest = subject.latest_session ?? null;
 
-  const queryClient = useQueryClient();
-
   const [isRenaming, setIsRenaming] = useState(false);
-  const [name, setName] = useState(subject.name);
+  const [draft, setDraft] = useState("");
 
-  const trimmed = name.trim();
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const trimmed = draft.trim();
   const canSave = trimmed.length > 0 && trimmed !== subject.name;
 
-  const renameMutation = useMutation({
-    mutationFn: (newName: string) => renameSubject(subject.id, newName),
-    onSuccess: (updatedSubject) => {
-      queryClient.setQueryData<SubjectOverview[]>(
-        ["subjects", "overview"],
-        (old) => {
-          if (!old) return old;
-          return old.map((s) =>
-            s.id === updatedSubject.id ? { ...s, ...updatedSubject } : s
-          );
-        }      
-      ); 
-
+  const renameMutation = useRenameSubjectMutation({
+    onSuccess: () => {
       setIsRenaming(false);
-      setName(updatedSubject.name);
-    },
-    onError: (error: Error) => {
-      console.error("Failed to rename subject:", error);
+      setDraft("");
     },
   });
 
+  const deleteMutation = useDeleteSubjectMutation();
+
+  const confirmDelete = () => {
+    if (deleteMutation.isPending) return;
+
+    deleteMutation.mutate(
+      { subjectId: subject.id },
+      {
+        onSettled: () => {
+          setIsDeleteOpen(false);
+        },
+      }
+    );
+  };
+
   const startRename = () => {
     setIsRenaming(true);
-    setName(subject.name);
+    setDraft(subject.name);
   };
 
   const cancelRename = () => {
     setIsRenaming(false);
-    setName(subject.name);
-    renameMutation.reset()
+    setDraft("");
+    renameMutation.reset();
   };
 
   const saveRename = () => {
     if (!canSave || renameMutation.isPending) return;
-    renameMutation.mutate(trimmed);
+    renameMutation.mutate({ subjectId: subject.id, newName: trimmed });
   };
 
   return (
@@ -77,13 +78,24 @@ export const SubjectCard = ({ subject }: Props) => {
             >
               ✎
             </button>
+
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => setIsDeleteOpen(true)}
+              aria-label="削除"
+              title="削除"
+              disabled={deleteMutation.isPending}
+            >
+              🗑
+            </button>
           </div>
         ) : (
           <div className={styles.headerRow}>
             <input
               className={styles.nameInput}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") saveRename();
@@ -143,7 +155,52 @@ export const SubjectCard = ({ subject }: Props) => {
       {renameMutation.isError && (
         <p className={styles.renameError}>更新に失敗しました</p>
       )}
+
+      {isDeleteOpen && (
+        <div
+          className={styles.deleteOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label="削除確認"
+          onClick={() => {
+            if (!deleteMutation.isPending) setIsDeleteOpen(false);
+          }}
+        >
+          <div
+            className={styles.deleteDialog}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className={styles.deleteTitle}>削除しますか？</p>
+            <p className={styles.deleteMessage}>
+              「{subject.name}」を削除します。元に戻せません。
+            </p>
+
+            <div className={styles.deleteActions}>
+              <button
+                type="button"
+                className={styles.deleteCancelButton}
+                onClick={() => setIsDeleteOpen(false)}
+                disabled={deleteMutation.isPending}
+              >
+                キャンセル
+              </button>
+
+              <button
+                type="button"
+                className={styles.deleteConfirmButton}
+                onClick={confirmDelete}
+                disabled={deleteMutation.isPending}
+              >
+                {deleteMutation.isPending ? "削除中..." : "削除する"}
+              </button>
+            </div>
+
+            {deleteMutation.isError && (
+              <p className={styles.deleteError}>削除に失敗しました</p>
+            )}
+          </div>
+        </div>
+      )}
     </article>
   );
-
 };
