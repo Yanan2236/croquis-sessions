@@ -18,6 +18,7 @@ from croquis.serializers.api.sessions import (
     SessionDetailSerializer,
     SessionSummarySerializer,
     IncompleteSessionSerializer,
+    SessionListSerializer,
 )
 
 class SessionViewSet(ModelViewSet):
@@ -33,14 +34,26 @@ class SessionViewSet(ModelViewSet):
 
     
     def get_queryset(self):
-        return CroquisSession.objects.select_related("subject").filter(user=self.request.user)
+        qs =  (
+            CroquisSession.objects
+            .select_related("subject")
+            .prefetch_related("drawings")
+            .filter(user=self.request.user)
+        )
+        
+        if self.action == "list":
+            qs = qs.filter(finalized_at__isnull=False)
+            
+        return qs
     
     def get_serializer_class(self):
         if self.action == "create":
             return SessionStartSerializer
         if self.action in ("update", "partial_update"):
             return SessionFinishSerializer
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
+            return SessionListSerializer
+        if self.action == "retrieve":
             return SessionDetailSerializer
         if self.action == "incomplete":
             return IncompleteSessionSerializer
@@ -51,6 +64,11 @@ class SessionViewSet(ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         return context
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
     
     def create(self, request, *args, **kwargs):
         in_serializer = self.get_serializer(data=request.data)

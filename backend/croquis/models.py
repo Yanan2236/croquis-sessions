@@ -131,6 +131,13 @@ class CroquisSession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    @property
+    def duration_seconds(self):
+        if not self.started_at or not self.ended_at:
+            return None
+        duration_seconds = int((self.ended_at - self.started_at).total_seconds())
+        return max(0, duration_seconds)
+    
     class Meta:
         ordering = ['-started_at', 'created_at']
         constraints = [
@@ -143,8 +150,10 @@ class CroquisSession(models.Model):
 
     def __str__(self):
         return f"CroquisSession {self.id} - {self.user} - {self.subject}"
-
     
+    def get_representative_drawing(self):
+        return self.drawings.first()
+        
     
 class Drawing(models.Model):
     session = models.ForeignKey(

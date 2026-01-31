@@ -6,7 +6,7 @@ from django.db.models import F
 from croquis.models import CroquisSession, Subject
 from croquis.exceptions import Conflict
 from .subjects import SubjectSerializer
-from .drawings import DrawingSerializer
+from .drawings import DrawingSerializer, DrawingThumbnailSerializer
 
 class SessionStartSerializer(serializers.ModelSerializer):
     subject_name = serializers.CharField(write_only=True)
@@ -103,17 +103,24 @@ class SessionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "user", "started_at", "ended_at", "created_at", "updated_at"]
         
+class SessionListSerializer(serializers.ModelSerializer):
+    thumb_image = DrawingThumbnailSerializer(source="get_representative_drawing", read_only=True)
+    subject_name = serializers.CharField(source="subject.name", read_only=True)
+    
+    class Meta:
+        model = CroquisSession
+        fields = [
+            "id",
+            "thumb_image",
+            "subject_name",
+            "finalized_at",
+            "duration_seconds",
+        ]
+
+
 class SessionDetailSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(read_only=True)
     drawings = DrawingSerializer(many=True, read_only=True)
-    
-    duration_seconds = serializers.SerializerMethodField()
-    
-    def get_duration_seconds(self, obj):
-        if not obj.started_at or not obj.ended_at:
-            return None
-        duration_seconds = int((obj.ended_at - obj.started_at).total_seconds())
-        return max(0, duration_seconds)
     
     class Meta:
         model = CroquisSession
