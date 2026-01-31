@@ -49,9 +49,9 @@ class Subject(models.Model):
     
     def delete_by_policy(self):
         if self.sessions.exists():
-            self.soft_delete()
+            return self.soft_delete()
         else:
-            self.hard_delete()
+            return self.hard_delete()
         
     def soft_delete(self):
         self.deleted_at = timezone.now()
