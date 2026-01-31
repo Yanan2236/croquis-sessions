@@ -11,8 +11,7 @@ export const useLogoutAndRedirectMutation = () => {
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["me"] });
-      queryClient.removeQueries({ queryKey: ["incomplete-session"] });
+      queryClient.clear();
       navigate("/auth/login", { replace: true });
     }
   })

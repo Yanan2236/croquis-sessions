@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.status import HTTP_201_CREATED
+from rest_framework import status
 
 from croquis.models import Subject, CroquisSession
 from croquis.serializers.api.subjects import (
@@ -19,7 +20,7 @@ from croquis.serializers.api.subjects import (
 
 class SubjectViewSet(ModelViewSet):
     lookup_value_regex = r"\d+"
-    http_method_names = ["get", "post", "patch", "head", "options"]
+    http_method_names = ["get", "post", "patch", "delete", "head", "options"]
     permission_classes = [IsAuthenticated]
     
     filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -65,3 +66,11 @@ class SubjectViewSet(ModelViewSet):
         
         out_serializer = SubjectOverviewSerializer(subject, context=self.get_serializer_context())
         return Response(out_serializer.data)
+    
+    def perform_destroy(self, instance):
+        return instance.delete_by_policy()
+    
+    def destroy(self, request, *args, **kwargs):
+        subject = self.get_object()
+        result = self.perform_destroy(subject)
+        return Response(status=status.HTTP_200_OK, data={"delete_type": result.value})

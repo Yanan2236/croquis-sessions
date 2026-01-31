@@ -11,17 +11,15 @@
   margin-bottom: 10px;
 }
 
-/* ★ここが肝：ヘッダーの高さを固定して、編集時にカードが伸びない */
 .headerRow {
   height: 34px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: 10px;
   align-items: center;
   min-width: 0;
 }
 
-/* 表示タイトル */
 .title {
   margin: 0;
   font-size: 16px;
@@ -34,7 +32,6 @@
   white-space: nowrap;
 }
 
-/* 編集アイコン（控えめ） */
 .editButton {
   width: 28px;
   height: 28px;
@@ -54,7 +51,30 @@
   opacity: 0.9;
 }
 
-/* 編集input：高さをヘッダーに収める */
+.deleteButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  opacity: 0.55;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  opacity: 0.9;
+}
+
+.deleteButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .nameInput {
   width: 100%;
   min-width: 0;
@@ -74,7 +94,6 @@
   border-color: rgba(0, 0, 0, 0.28);
 }
 
-/* 保存/キャンセル：右側で折り返さない */
 .actions {
   display: flex;
   gap: 8px;
@@ -110,7 +129,6 @@
   cursor: not-allowed;
 }
 
-/* stats */
 .rows {
   display: grid;
   gap: 8px;
@@ -145,6 +163,81 @@
 }
 
 .renameError {
+  margin: 10px 0 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.deleteOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.deleteDialog {
+  width: min(420px, 100%);
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 14px;
+}
+
+.deleteTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.deleteMessage {
+  margin: 8px 0 0;
+  font-size: 12px;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.deleteActions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.deleteCancelButton,
+.deleteConfirmButton {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.deleteCancelButton {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.deleteConfirmButton {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+}
+
+.deleteCancelButton:hover,
+.deleteConfirmButton:hover {
+  opacity: 0.9;
+}
+
+.deleteCancelButton:disabled,
+.deleteConfirmButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.deleteError {
   margin: 10px 0 0;
   font-size: 12px;
   opacity: 0.8;
