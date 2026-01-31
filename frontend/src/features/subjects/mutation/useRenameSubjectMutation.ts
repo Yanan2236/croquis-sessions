@@ -4,7 +4,6 @@ import type { UseMutationOptions } from "@tanstack/react-query";
 
 import { renameSubject } from "@/features/subjects/api";
 import type { SubjectOverview } from "@/features/subjects/types";
-import { useMeQuery } from "@/features/accounts/queries/useMeQuery";
 
 type RenameSubjectPayload = {
   subjectId: number;
@@ -15,7 +14,6 @@ export const useRenameSubjectMutation = (
   options?: UseMutationOptions<SubjectOverview, Error, RenameSubjectPayload, unknown>
 ) => {
   const queryClient = useQueryClient();
-  const me = useMeQuery().data
 
   const { onSuccess, ...rest } = options ?? {};
 
@@ -27,7 +25,7 @@ export const useRenameSubjectMutation = (
       let didPatch = false;
 
       queryClient.setQueryData<SubjectOverview[]>(
-        ["subjects", "overview", me?.id],
+        ["subjects", "overview"],
         (old) => {
           if (!old) return old;
 
@@ -40,7 +38,7 @@ export const useRenameSubjectMutation = (
       );
 
       if (!didPatch) {
-        await queryClient.invalidateQueries({ queryKey: ["subjects", "overview", me?.id] });
+        await queryClient.invalidateQueries({ queryKey: ["subjects", "overview"] });
       }
 
       await onSuccess?.(data, variables, context, mutation);
