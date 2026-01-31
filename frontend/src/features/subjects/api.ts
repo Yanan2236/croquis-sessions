@@ -15,3 +15,8 @@ export const renameSubject = async (subjectId: number, newName: string) => {
   const response = await api.patch<SubjectOverview>(`/api/croquis/subjects/${subjectId}/`, { name: newName });
   return response.data;
 }
+
+export const deleteSubject = async (subjectId: number) => {
+  const response = await api.delete<{ delete_type: string }>(`/api/croquis/subjects/${subjectId}/`);
+  return response.data;
+}
