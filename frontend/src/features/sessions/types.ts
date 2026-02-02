@@ -68,3 +68,28 @@ export type ListSessionsParams = {
   subject?: number;
   ordering?: "finalized_at" | "-finalized_at";
 };
+
+export type SessionsListResponse = {
+  id: number;
+  thumb_image: string | null;
+  subject: {
+    id: number;
+    name: string;
+  };
+  subject_name: string;
+  finalized_at: string;
+  duration_seconds: number | null;
+}
+
+export type GroupBucket = {
+  subjectId: number;
+  subjectName: string;
+  items: SessionsListResponse[];
+  latestTime: number;
+}
+
+export type SubjectSessionsGroup = {
+  subject: string;
+  items: SessionsListResponse[];
+  latest: SessionsListResponse;
+};

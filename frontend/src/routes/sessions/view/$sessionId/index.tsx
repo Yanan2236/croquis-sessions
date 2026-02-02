@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query"
 import { useOutletContext } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { useMemo } from "react"
 
 import { fetchSessionDetails } from "@/features/sessions/api"
 import { formatHoursMinutesFloor } from "@/features/shared/utils/duration"

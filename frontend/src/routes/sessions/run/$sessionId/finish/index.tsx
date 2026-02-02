@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchSessionDetails } from '@/features/sessions/api';
-import { SessionFinishForm } from '@/routes/sessions/components/SessionFinishForm';
+import { SessionFinishForm } from '@/routes/sessions/run/$sessionId/finish/components/SessionFinishForm';
 import { formatMinutesFloor } from '@/features/shared/utils/duration';
 import styles from './styles.module.css';
 

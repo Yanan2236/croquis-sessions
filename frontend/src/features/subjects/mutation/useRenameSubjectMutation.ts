@@ -3,8 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { UseMutationOptions } from "@tanstack/react-query";
 
 import { renameSubject } from "@/features/subjects/api";
-import type { SubjectOverview } from "@/features/subjects/types";
-import { useMeQuery } from "@/features/accounts/queries/useMeQuery";
+import type { SubjectOverview, SubjectOption } from "@/features/subjects/types";
 
 type RenameSubjectPayload = {
   subjectId: number;
@@ -15,35 +14,28 @@ export const useRenameSubjectMutation = (
   options?: UseMutationOptions<SubjectOverview, Error, RenameSubjectPayload, unknown>
 ) => {
   const queryClient = useQueryClient();
-  const me = useMeQuery().data
 
   const { onSuccess, ...rest } = options ?? {};
 
   return useMutation<SubjectOverview, Error, RenameSubjectPayload, unknown>({
     ...rest,
+
     mutationFn: (payload) => renameSubject(payload.subjectId, payload.newName),
 
-    onSuccess: async (data, variables, context, mutation) => {
-      let didPatch = false;
+    onSuccess: async (data, variables, _context, _mutation) => {
+      const { subjectId } = variables;
 
       queryClient.setQueryData<SubjectOverview[]>(
-        ["subjects", "overview", me?.id],
-        (old) => {
-          if (!old) return old;
-
-          return old.map((s) => {
-            if (s.id !== data.id) return s;
-            didPatch = true;
-            return { ...s, ...data };
-          });
-        }
+        ["subjects", "overview"],
+        (old) => (old ? old.map((s) => (s.id === subjectId ? { ...s, ...data } : s)) : old)
       );
 
-      if (!didPatch) {
-        await queryClient.invalidateQueries({ queryKey: ["subjects", "overview", me?.id] });
-      }
+      queryClient.setQueryData<SubjectOption[]>(
+        ["subjects", "options"],
+        (old) => (old ? old.map((s) => (s.id === subjectId ? { ...s, name: data.name } : s)) : old)
+      );
 
-      await onSuccess?.(data, variables, context, mutation);
+      await onSuccess?.(data, variables, _context, _mutation);
     },
   });
 };

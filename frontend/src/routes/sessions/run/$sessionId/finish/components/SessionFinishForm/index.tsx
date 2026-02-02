@@ -8,7 +8,7 @@ import { routes } from "@/lib/routes";
 import type { FinishSessionPayload } from "@/features/sessions/types";
 import type { FileWithPreview } from "@/features/drawings/types";
 
-import { Dropzone } from "@/routes/sessions/components/Dropzone";
+import { Dropzone } from "@/routes/sessions/run/$sessionId/finish/components/Dropzone";
 import styles from "./styles.module.css";
 
 type Props = {
@@ -16,13 +16,13 @@ type Props = {
   currentIntention: string | null;
 };
 
-export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
+export const SessionFinishForm = ({ sessionId, /*currentIntention */}: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [reflectionValue, setReflectionValue] = useState("");
   const [nextActionValue, setNextActionValue] = useState("");
-  const [noteValue, setNoteValue] = useState("");
+//  const [noteValue, setNoteValue] = useState("");
   const [files, setFiles] = useState<FileWithPreview[]>([]);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["subjects"]});
       queryClient.setQueryData(["incomplete-session"], null); // 未完成セッションキャッシュを手動クリア
+      queryClient.invalidateQueries({queryKey: ["sessions", "list"]});
       navigate(routes.sessionRunDone(sessionId), { replace: true });
     },
     onError: (error: AxiosError) => {
@@ -51,7 +52,7 @@ export const SessionFinishForm = ({ sessionId, currentIntention }: Props) => {
     const payload: FinishSessionPayload = {
       reflection: reflectionValue.trim() ? reflectionValue.trim() : null,
       next_action: nextActionValue.trim() ? nextActionValue.trim() : null,
-      note: noteValue.trim() ? noteValue.trim() : null,
+//      note: noteValue.trim() ? noteValue.trim() : null,
     };
 
     mutate({
