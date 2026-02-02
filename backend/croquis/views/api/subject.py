@@ -15,6 +15,7 @@ from croquis.serializers.api.subjects import (
     SubjectSerializer, 
     SubjectOverviewSerializer, 
     SubjectWriteSerializer,
+    SubjectOptionsSerializer,
 )
 
 
@@ -35,9 +36,17 @@ class SubjectViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == "overview":
             return SubjectOverviewSerializer
+        if self.action == "options":
+            return SubjectOptionsSerializer
         if self.action in ("create", "update", "partial_update"):
             return SubjectWriteSerializer
         return SubjectSerializer
+    
+    @action(detail=False, methods=["get"])
+    def options(self, request):
+        qs = self.get_queryset()
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=["get"])
     def overview(self, request):

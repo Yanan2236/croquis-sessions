@@ -104,18 +104,27 @@ class SessionSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "user", "started_at", "ended_at", "created_at", "updated_at"]
         
 class SessionListSerializer(serializers.ModelSerializer):
-    thumb_image = DrawingThumbnailSerializer(source="get_representative_drawing", read_only=True)
-    subject_name = serializers.CharField(source="subject.name", read_only=True)
+    thumb_image = serializers.SerializerMethodField()
+    subject = SubjectSerializer(read_only=True)
     
     class Meta:
         model = CroquisSession
         fields = [
             "id",
             "thumb_image",
-            "subject_name",
+            "subject",
             "finalized_at",
             "duration_seconds",
         ]
+        
+    def get_thumb_image(self, obj):
+        drawing = obj.get_representative_drawing()
+        if not drawing or not drawing.image_file:
+            return None
+
+        url = drawing.image_file.url
+        request = self.context.get("request")
+        return request.build_absolute_uri(url) if request else url
 
 
 class SessionDetailSerializer(serializers.ModelSerializer):

@@ -50,3 +50,12 @@ class SubjectWriteSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Subject名は必須です")
         return value
+
+class SubjectOptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = [
+            "id",
+            "name",
+        ]
+        read_only_fields = fields
