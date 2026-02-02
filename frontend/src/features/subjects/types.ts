@@ -8,3 +8,8 @@ export type SubjectOverview = {
     next_action: string | null;
   };
 };
+
+export type SubjectOption = {
+  id: number;
+  name: string;
+};

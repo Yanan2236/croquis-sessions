@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { UseMutationOptions } from "@tanstack/react-query";
 
 import { renameSubject } from "@/features/subjects/api";
-import type { SubjectOverview } from "@/features/subjects/types";
+import type { SubjectOverview, SubjectOption } from "@/features/subjects/types";
 
 type RenameSubjectPayload = {
   subjectId: number;
@@ -19,29 +19,23 @@ export const useRenameSubjectMutation = (
 
   return useMutation<SubjectOverview, Error, RenameSubjectPayload, unknown>({
     ...rest,
+
     mutationFn: (payload) => renameSubject(payload.subjectId, payload.newName),
 
-    onSuccess: async (data, variables, context, mutation) => {
-      let didPatch = false;
+    onSuccess: async (data, variables, _context, _mutation) => {
+      const { subjectId } = variables;
 
       queryClient.setQueryData<SubjectOverview[]>(
         ["subjects", "overview"],
-        (old) => {
-          if (!old) return old;
-
-          return old.map((s) => {
-            if (s.id !== data.id) return s;
-            didPatch = true;
-            return { ...s, ...data };
-          });
-        }
+        (old) => (old ? old.map((s) => (s.id === subjectId ? { ...s, ...data } : s)) : old)
       );
 
-      if (!didPatch) {
-        await queryClient.invalidateQueries({ queryKey: ["subjects", "overview"] });
-      }
+      queryClient.setQueryData<SubjectOption[]>(
+        ["subjects", "options"],
+        (old) => (old ? old.map((s) => (s.id === subjectId ? { ...s, name: data.name } : s)) : old)
+      );
 
-      await onSuccess?.(data, variables, context, mutation);
+      await onSuccess?.(data, variables, _context, _mutation);
     },
   });
 };

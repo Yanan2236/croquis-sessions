@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import type { SubjectOverview } from "@/features/subjects/types";
+import type { SubjectOverview, SubjectOption } from "@/features/subjects/types";
 
 export const fetchSubjectsOverview = async () => {
   const response = await api.get<SubjectOverview[]>('/api/croquis/subjects/overview/');
@@ -18,5 +18,10 @@ export const renameSubject = async (subjectId: number, newName: string) => {
 
 export const deleteSubject = async (subjectId: number) => {
   const response = await api.delete<{ delete_type: string }>(`/api/croquis/subjects/${subjectId}/`);
+  return response.data;
+}
+
+export const fetchSubjectOptions = async () => {
+  const response = await api.get<SubjectOption[]>('/api/croquis/subjects/options/');
   return response.data;
 }

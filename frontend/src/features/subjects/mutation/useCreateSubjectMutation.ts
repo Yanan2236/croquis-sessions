@@ -11,6 +11,7 @@ export const useCreateSubjectMutation = () => {
     mutationFn: (name: string) => createSubject(name),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["subjects", "overview"] });
+      queryClient.invalidateQueries({ queryKey: ["subjects", "options"] });
     },
     onError: (error: Error) => {
       console.error("Failed to create subject:", error);
