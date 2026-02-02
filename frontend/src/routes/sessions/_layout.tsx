@@ -1,4 +1,4 @@
-import { useOutlet, useNavigate, Outlet, useMatch } from "react-router-dom";
+import { useNavigate, Outlet, useMatch } from "react-router-dom";
 
 import { Sessions } from "@/routes/sessions";
 import { OverlayShell } from "@/components/ui/OverlayShell";

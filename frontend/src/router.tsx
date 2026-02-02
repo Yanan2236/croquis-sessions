@@ -18,6 +18,7 @@ import { PublicGuard } from '@/components/auth/PublicGuard';
 import { Sessions } from '@/routes/sessions';
 import { SignupPage } from '@/routes/auth/signup';
 import { HomePage } from '@/routes';
+import { SubjectSessionsPage } from '@/routes/sessions/$subjectId';
 
 
 export const router = createBrowserRouter([
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
               element: <SessionsLayout />,
               children: [
                 { index: true, element: <Sessions /> },
+                { path: ":subjectId", element: <SubjectSessionsPage /> },
                 { path: "view/:sessionId", element: <SessionOverlayDetail /> },
               ],
             },
