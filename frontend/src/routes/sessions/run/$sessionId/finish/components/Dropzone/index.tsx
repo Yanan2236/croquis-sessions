@@ -115,12 +115,6 @@ export const Dropzone: React.FC<Props> = ({
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
       >
-        <div className={styles.header}>
-          <p className={styles.headerTitle}>
-            画像を追加{typeof maxFiles === "number" ? `（最大${maxFiles}枚）` : ""}
-          </p>
-          <span className={styles.optionalBadge} aria-label="任意">任意</span>
-        </div>
 
         {files.length === 0 && (
           <div className={styles.center} aria-hidden="true">

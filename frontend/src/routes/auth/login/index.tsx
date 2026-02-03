@@ -45,7 +45,7 @@ export const LoginPage = () => {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="例: maki@example.com"
+              placeholder="例: lineloop@example.com"
             />
           </div>
 

@@ -1,37 +1,46 @@
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from "react-router-dom";
 
-import { useLogoutAndRedirectMutation } from '@/features/accounts/mutations/useLogoutAndRedirectMutation';
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
+import { useLogoutAndRedirectMutation } from "@/features/accounts/mutations/useLogoutAndRedirectMutation";
 
 export const Header = () => {
   const logoutMutation = useLogoutAndRedirectMutation();
 
-  const handleLogout = () => {
-    logoutMutation.mutate(); 
-  }
+  const navClass = ({ isActive }: { isActive: boolean }) =>
+    `${styles.navLink} ${isActive ? styles.active : ""}`;
 
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <div className={styles.logo}>
-          <Link to="/" className={styles.logoLink}>
-            <h1 className={styles.logoText}>Logo</h1>
-          </Link>
-        </div>
+        <Link to="/" className={styles.logoLink}>
+          <span className={styles.logoText}>LineLoop</span>
+        </Link>
 
-        <nav className={styles.nav}>
-          <Link to="/subjects" className={styles.navLink}>Subjects</Link>
-          <Link to="/sessions" className={styles.navLink}>Sessions</Link>
-          <Link to="/sessions/new" className={styles.navLink}>New Session</Link>
+        <nav className={styles.nav} aria-label="Primary">
+          <NavLink to="/subjects" className={navClass} end>
+            モチーフ
+          </NavLink>
+
+          <NavLink to="/sessions" className={navClass} end>
+            クロッキー記録
+          </NavLink>
+
+          <NavLink to="/sessions/new" className={navClass}>
+            新規クロッキー
+          </NavLink>
+
+          <div className={styles.divider} aria-hidden />
+
           <button
-            onClick={handleLogout}
+            type="button"
+            onClick={() => logoutMutation.mutate()}
             className={styles.logoutButton}
             disabled={logoutMutation.isPending}
           >
-            {logoutMutation.isPending ? "Logging out..." : "Logout"}
+            {logoutMutation.isPending ? "ログアウト中…" : "ログアウト"}
           </button>
         </nav>
       </div>
     </header>
   );
-}
+};

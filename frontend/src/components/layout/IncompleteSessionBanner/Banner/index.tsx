@@ -37,7 +37,7 @@ export const Banner = ({ session }: Props) => {
   const v = views[session.state];
 
   return (
-    <div className={styles.root} role="status" aria-live="polite">
+    <div className={styles.root} role="status" aria-live="polite" data-state={session.state}>
       <div className={styles.left}>
         <div className={styles.title}>{v.title}</div>
         <div className={styles.meta}>{session.subject_name}</div>

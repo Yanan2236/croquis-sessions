@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 
 import { fetchSessionDetails, endSession } from "@/features/sessions/api";
 import { routes } from "@/lib/routes";
@@ -11,8 +12,10 @@ import styles from "./styles.module.css";
 
 export const SessionDetail = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { sessionId } = useParams<{ sessionId: string }>();
+
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   const sessionIdNum = useMemo(() => {
     if (!sessionId) return null;
@@ -31,6 +34,13 @@ export const SessionDetail = () => {
     enabled: sessionIdNum !== null,
   });
 
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setNowMs(Date.now());
+    }, 10000);
+    return () => window.clearInterval(id);
+  }, []);
+
   const { mutate } = useMutation({
     mutationFn: endSession,
     onSuccess: () => {
@@ -44,7 +54,7 @@ export const SessionDetail = () => {
         return;
       }
       console.error(err);
-    }
+    },
   });
 
   if (!sessionId) return <div>Session ID is missing</div>;
@@ -54,54 +64,54 @@ export const SessionDetail = () => {
   if (isError) return <div>Error: {(error as Error).message}</div>;
   if (!session) return <div>Session not found</div>;
 
-return (
-  <section className={styles.page} aria-label="セッション実施中">
-    <header className={styles.header}>
-      <div className={styles.headerRow}>
-        <div className={styles.left}>
-          <div className={styles.stateRow} aria-label="状態">
-            <span className={styles.stateDot} aria-hidden="true" />
-            <span className={styles.stateText}>セッション実施中</span>
+  const startedAt = new Date(session.started_at).getTime();
+  const elapsedMinutes = Math.max(1, Math.floor((nowMs - startedAt) / 60000));
+
+  return (
+    <section className={styles.page} aria-label="セッション実施中">
+      <div className={styles.sheet}>
+        <header className={styles.header}>
+          <div className={styles.headerRow}>
+            <div className={styles.left}>
+              <div className={styles.stateRow} aria-label="状態">
+                <span className={styles.stateDot} aria-hidden="true" />
+                <span className={styles.stateText}>セッション実施中</span>
+              </div>
+
+              <h1 className={styles.subject}>{session.subject.name}</h1>
+            </div>
+
+            <div className={styles.right}>
+              <div className={styles.timerChip} aria-label="経過時間">
+                <span className={styles.timerNum}>{elapsedMinutes}</span>
+                <span className={styles.timerUnit}>分</span>
+              </div>
+
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={() => mutate(sessionIdNum)}
+              >
+                終了
+              </button>
+            </div>
           </div>
+        </header>
 
-          <h1 className={styles.subject}>{session.subject.name}</h1>
-        </div>
+        <main className={styles.main}>
+          <section className={styles.card} aria-label="今回の課題">
+            <div className={styles.field}>
+              <div className={styles.fieldHeader}>
+                <span className={styles.fieldLabel}>今回の課題</span>
+              </div>
+
+              <div className={styles.readonlyBox} data-empty={!session.intention}>
+                {session.intention || "—"}
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
-
-      <div className={styles.timer} aria-label="経過時間">
-        <div className={styles.timerDigits} aria-live="polite">
-          <span className={styles.digit}>00</span>
-          <span className={styles.colon} aria-hidden="true">
-            :
-          </span>
-          <span className={styles.digit}>00</span>
-        </div>
-      </div>
-    </header>
-
-    <main className={styles.main}>
-      <section className={styles.card} aria-label="今回の課題">
-        <h2 className={styles.sectionTitle}>今回の課題</h2>
-        <p
-          className={styles.intentionValue}
-          data-empty={!session.intention ? "true" : "false"}
-        >
-          {session.intention ? session.intention : "—"}
-        </p>
-      </section>
-
-      {/* 下部固定：見ない画面でも「終われる」だけは保証する */}
-      <div className={styles.actionBar} aria-label="操作">
-        <button
-          type="button"
-          className={styles.primaryButton}
-          onClick={() => mutate(sessionIdNum)}
-        >
-          終了
-        </button>
-      </div>
-    </main>
-  </section>
-);
-
+    </section>
+  );
 };
