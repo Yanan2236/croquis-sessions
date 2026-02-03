@@ -141,12 +141,7 @@ class SessionDetailSerializer(serializers.ModelSerializer):
             "finalized_at",
             "subject",
             "intention",
-            "reflection",
             "next_action",
-            "note",
-            "is_public",
-            "created_at",
-            "updated_at",
             "drawings",
             "duration_seconds",
         ]
