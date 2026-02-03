@@ -90,7 +90,7 @@ export const SignupPage = () => {
               autoComplete="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="例: croquis_user"
+              placeholder="例: lineloop_user"
             />
           </div>
 
@@ -105,7 +105,7 @@ export const SignupPage = () => {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="例: croquis@example.com"
+              placeholder="例: lineloop@example.com"
             />
           </div>
 
