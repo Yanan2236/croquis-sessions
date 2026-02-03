@@ -51,7 +51,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -106,3 +106,66 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.floatingControls {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 60;
+
+  padding: 2px;
+}
+
+.viewGroup {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 999px;
+
+  background: color-mix(in srgb, var(--color-bg-base, #fff) 70%, var(--color-bg-app, #f3efe8));
+  border: var(--border-width-thin, 1px) solid var(--color-border-default, #d8d1c7);
+
+  gap: 2px;
+}
+
+.viewBtn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary, #5f584f);
+
+  height: 30px;
+  min-width: 34px;
+  padding: 0 10px;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+  transition: background-color 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+
+.viewBtn:hover {
+  background: color-mix(in srgb, var(--color-bg-subtle, #faf7f2) 75%, transparent);
+}
+
+.viewBtn:active {
+  background: var(--color-bg-muted, #eee9e1);
+}
+
+.viewBtn[aria-pressed="true"] {
+  background: var(--color-bg-base, #ffffff);
+  color: var(--color-text-primary, #2b2622);
+
+  box-shadow:
+    0 1px 0 color-mix(in srgb, #000 10%, transparent),
+    0 6px 16px color-mix(in srgb, #000 10%, transparent);
+}
+
+.viewBtn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-border-focus, #6b4f3f) 25%, transparent);
+  outline-offset: 2px;
+}
+

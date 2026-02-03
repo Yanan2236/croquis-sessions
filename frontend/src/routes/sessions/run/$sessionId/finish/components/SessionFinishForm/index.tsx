@@ -10,19 +10,20 @@ import type { FileWithPreview } from "@/features/drawings/types";
 
 import { Dropzone } from "@/routes/sessions/run/$sessionId/finish/components/Dropzone";
 import styles from "./styles.module.css";
+import { RequirementBadge } from "@/components/ui/RequirementBadge";
 
 type Props = {
   sessionId: number;
+  subjectName: string;
   currentIntention: string | null;
 };
 
-export const SessionFinishForm = ({ sessionId, /*currentIntention */}: Props) => {
+
+export const SessionFinishForm = ({ sessionId, subjectName, currentIntention }: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [reflectionValue, setReflectionValue] = useState("");
   const [nextActionValue, setNextActionValue] = useState("");
-//  const [noteValue, setNoteValue] = useState("");
   const [files, setFiles] = useState<FileWithPreview[]>([]);
 
   useEffect(() => {
@@ -50,9 +51,7 @@ export const SessionFinishForm = ({ sessionId, /*currentIntention */}: Props) =>
     e.preventDefault();
 
     const payload: FinishSessionPayload = {
-      reflection: reflectionValue.trim() ? reflectionValue.trim() : null,
       next_action: nextActionValue.trim() ? nextActionValue.trim() : null,
-//      note: noteValue.trim() ? noteValue.trim() : null,
     };
 
     mutate({
@@ -63,45 +62,98 @@ export const SessionFinishForm = ({ sessionId, /*currentIntention */}: Props) =>
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} aria-label="セッション完了フォーム">
-      <section className={styles.nextAction} aria-label="次回の課題">
-        <div className={styles.sectionHead}>
-          <h2 className={styles.sectionTitle}>次回の課題</h2>
-          <span className={styles.requiredBadge} aria-label="必須">必須</span>
-        </div>
+    <form className={styles.page} onSubmit={handleSubmit} aria-label="セッション完了フォーム">
+      <div className={styles.sheet}>
+        <header className={styles.header} aria-label="セッション完了">
+          <div className={styles.headerRow}>
+            <div className={styles.leftHeader}>
+              <p className={styles.kicker}>セッション完了</p>
+              <h1 className={styles.title}>{subjectName}</h1>
+            </div>
+          </div>
 
-        <textarea
-          className={styles.primaryTextarea}
-          value={nextActionValue}
-          onChange={(e) => setNextActionValue(e.target.value)}
-          placeholder="例：最初の10秒で胸郭の向きを取ってから線を引く"
-          rows={3}
-        />
-      </section>
+          <p className={styles.hint}>
+            左で今回を確認し、右で次回の課題を書いて保存します。
+          </p>
+        </header>
 
-      <details className={styles.details} aria-label="振り返り">
-        <summary className={styles.summary}>
-          <span className={styles.summaryTitle}>振り返り</span>
-          <span className={styles.optionalBadge} aria-label="任意">任意</span>
-        </summary>
+        <section className={styles.main} aria-label="完了内容">
+          <div className={styles.topGrid} aria-label="今回の課題と次回の課題">
+            <section className={styles.panel} aria-label="今回の課題">
+              <header className={styles.panelHeader}>
+                <h2 className={styles.panelTitle}>1. 今回の課題</h2>
+              </header>
 
-        <div className={styles.detailsBody}>
-          <textarea
-            className={styles.secondaryTextarea}
-            value={reflectionValue}
-            onChange={(e) => setReflectionValue(e.target.value)}
-            placeholder="例：できなかった。原因：輪郭から追って迷った。"
-            rows={4}
-          />
-        </div>
-      </details>
+              <div className={styles.card}>
+                <div className={styles.field}>
+                  <div className={styles.fieldHeader}>
+                    <span className={styles.fieldLabel}>今回の課題</span>
+                  </div>
 
-      <Dropzone files={files} setFiles={setFiles} maxFiles={5} />
+                  <div className={styles.readonlyBox} data-empty={!currentIntention}>
+                    {currentIntention || "—"}
+                  </div>
+                </div>
+              </div>
+            </section>
 
-      <div className={styles.footer} aria-label="保存">
-        <button type="submit" className={styles.submit} disabled={isPending}>
-          {isPending ? "保存中…" : "保存して完了"}
-        </button>
+            <div className={styles.bridge} aria-hidden="true">
+              <span className={styles.bridgeTriangle} />
+            </div>
+
+            <section className={styles.panel} aria-label="次回の課題">
+              <header className={styles.panelHeader}>
+                <div className={styles.panelTitleRow}>
+                  <h2 className={styles.panelTitle}>2. 次回の課題</h2>
+                </div>
+              </header>
+
+              <div className={styles.card}>
+                <div className={styles.field}>
+                  <div className={styles.fieldHeader}>
+                    <label className={styles.fieldLabel} htmlFor="nextAction">
+                      次回の課題
+                    </label>
+                    <RequirementBadge requirement="required" />
+                  </div>
+
+                  <textarea
+                    id="nextAction"
+                    className={styles.textarea}
+                    value={nextActionValue}
+                    onChange={(e) => setNextActionValue(e.target.value)}
+                    placeholder="例：最初の10秒で胸郭の向きを取ってから線を引く"
+                    rows={5}
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section className={styles.dropSection} aria-label="画像">
+            <header className={styles.panelHeader}>
+              <div className={styles.panelTitleRow}>
+                <h2 className={styles.panelTitle}>3. 画像</h2>
+                <RequirementBadge requirement="optional" />              
+              </div>
+            </header>
+
+
+            <div className={styles.dropBody}>
+              <Dropzone files={files} setFiles={setFiles} maxFiles={5} />
+            </div>
+          </section>
+
+          <div className={styles.actions} aria-label="操作">
+            <button
+              type="submit"
+              className={styles.primaryButton}
+              disabled={isPending || !nextActionValue.trim()}
+            >
+              {isPending ? "保存中…" : "保存して完了"}
+            </button>
+          </div>
+        </section>
       </div>
     </form>
   );

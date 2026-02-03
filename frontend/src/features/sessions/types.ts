@@ -33,14 +33,10 @@ export type CroquisSessionDetails = {
   id: number;
   started_at: string;
   ended_at: string;
+  finalized_at: string | null;
   intention: string | null;
-  is_public: boolean;
-  created_at: string;
-  updated_at: string;
   duration_seconds: number;
-  reflection: string | null;
   next_action: string | null;
-  note: string | null;
   drawings: Drawing[];
   subject: {
     id: number; 

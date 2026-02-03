@@ -37,15 +37,11 @@ export const SubjectsPage = () => {
 
   return (
     <section className={styles.subjectsPage}>
-      <header className={styles.pageHeader}>
-        <h2 className={styles.pageTitle}>Subjects</h2>
-      </header>
-
       <ul className={styles.subjectList}>
         <li className={`${styles.subjectItem} ${styles.newSubjectItem}`}>
           <article className={styles.newSubjectCard}>
             <header className={styles.newSubjectHeader}>
-              <h3 className={styles.newSubjectTitle}>新規Subject</h3>
+              <h3 className={styles.newSubjectTitle}>新規モチーフ作成</h3>
             </header>
 
             <div className={styles.newSubjectForm}>
@@ -70,7 +66,7 @@ export const SubjectsPage = () => {
             </div>
 
             <p className={styles.newSubjectHint}>
-              すぐにセッション開始画面で選べるようになります
+              新規クロッキー画面で選べるようになります
             </p>
           </article>
         </li>

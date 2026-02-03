@@ -31,7 +31,6 @@ export const SessionStartPreviewPanel = ({
       </header>
 
       <div className={styles.preview}>
-        {/* Subject */}
         <div className={styles.field}>
           <div className={styles.fieldHeader}>
             <span className={styles.fieldLabel}>モチーフ</span>
@@ -47,7 +46,6 @@ export const SessionStartPreviewPanel = ({
           </div>
         </div>
 
-        {/* Intention */}
         <div className={styles.field}>
           <div className={styles.fieldHeader}>
             <label className={styles.fieldLabel} htmlFor="intention">
