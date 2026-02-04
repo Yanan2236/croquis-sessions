@@ -14,6 +14,7 @@ export const useRunSessionMutation = (sessionId: number) => {
     mutationFn: () => endSession(sessionId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["incomplete-session"] });
+      queryClient.invalidateQueries({ queryKey: ["sessions", "state", sessionId] });
       navigate(routes.sessionRunFinish(sessionId!), { replace: true });
     },
   });

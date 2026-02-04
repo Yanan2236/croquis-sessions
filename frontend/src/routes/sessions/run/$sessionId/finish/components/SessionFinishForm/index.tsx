@@ -36,6 +36,7 @@ export const SessionFinishForm = ({ sessionId, subjectName, currentIntention }: 
   const { mutate, isPending } = useMutation({
     mutationFn: finishAll,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sessions", "state", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["session", sessionId] });
       queryClient.invalidateQueries({ queryKey: ["subjects"]});
       queryClient.setQueryData(["incomplete-session"], null); // 未完成セッションキャッシュを手動クリア
