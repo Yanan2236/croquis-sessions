@@ -1,20 +1,21 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { useQuery } from "@tanstack/react-query"
+
 import { useQueryClient } from "@tanstack/react-query"
 
-import { startSession } from "@/features/sessions/api"
 import { fetchSubjectsOverview } from "@/features/subjects/api"
-import { routes } from "@/lib/routes"
-import type { StartSessionPayload, CroquisSession, IncompleteSessionResponse } from "@/features/sessions/types"
+import type { StartSessionPayload, IncompleteSessionResponse } from "@/features/sessions/types"
 import styles from "./styles.module.css"
 import { SubjectPickerPanel } from "@/routes/sessions/new/components/SessionStartWorkspace/SubjectPickerPanel";
 import { SessionStartPreviewPanel } from "@/routes/sessions/new/components/SessionStartWorkspace/SessionStartPreviewPanel";
+import { useStartSessionMutation } from "@/features/sessions/mutations/useStartSessionMutation";
 
 export const SessionStartForm = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const startSessionMutation = useStartSessionMutation();
 
   const [subjectValue, setSubjectValue] = useState("");
   const [intentionValue, setIntentionValue] = useState("");
@@ -26,23 +27,6 @@ export const SessionStartForm = () => {
     queryKey: ["subjects"],
     queryFn: fetchSubjectsOverview,
   });
-
-  const { mutate, isPending } = useMutation<
-    CroquisSession,     // TData
-    AxiosError,         // TError
-    StartSessionPayload // TVariables
-  >({
-    mutationFn: startSession,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["incomplete-session"] }); // 未完成セッションキャッシュを更新
-      navigate(routes.sessionRun(data.id), { replace: true });
-    },
-    onError: (error) => {
-      console.error("status", error.response?.status);
-      console.error("data", error.response?.data);
-      console.error("headers", error.response?.headers);
-    },
-  });
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +36,14 @@ export const SessionStartForm = () => {
       intention: intentionValue,
     };
 
-    mutate(payload);
+    startSessionMutation.mutate(
+      payload,
+      {
+        onError: (error) => {
+          console.error("セッション開始エラー:", error);
+        }
+      }
+    );
   };
 
   if (isLoading) return <div>Loading ...</div>;
@@ -78,7 +69,7 @@ export const SessionStartForm = () => {
           subjectValue={subjectValue}
           intentionValue={intentionValue}
           setIntentionValue={setIntentionValue}
-          isPending={isPending}
+          isPending={startSessionMutation.isPending}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/", { replace: true })}
           canStart={canStart}

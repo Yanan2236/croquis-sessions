@@ -8,6 +8,7 @@ import type {
   IncompleteSessionResponse,
   ListSessionsParams,
   SessionsListResponse,
+  SessionState,
 } from "@/features/sessions/types";
 import type { Drawing } from "@/features/drawings/types";
 
@@ -59,5 +60,10 @@ export const endSession = async (sessionId: number) => {
 
 export const listSessions = async (params?: ListSessionsParams) => {
   const response = await api.get<SessionsListResponse[]>('/api/croquis/sessions/', { params });
+  return response.data;
+}
+
+export const fetchSessionState = async (sessionId: number) => {
+  const response = await api.get<SessionState>(`/api/croquis/sessions/${sessionId}/state/`);
   return response.data;
 }
