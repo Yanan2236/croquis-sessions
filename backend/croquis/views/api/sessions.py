@@ -19,6 +19,7 @@ from croquis.serializers.api.sessions import (
     SessionSummarySerializer,
     IncompleteSessionSerializer,
     SessionListSerializer,
+    SessionStateSerializer
 )
 
 class SessionViewSet(ModelViewSet):
@@ -59,6 +60,8 @@ class SessionViewSet(ModelViewSet):
             return IncompleteSessionSerializer
         if self.action  == "end":
             return SessionSummarySerializer
+        if self.action == "state":
+            return SessionStateSerializer
         return SessionSerializer
     
     def get_serializer_context(self):
@@ -125,5 +128,11 @@ class SessionViewSet(ModelViewSet):
             session.save(update_fields=["ended_at"]) # ended_atのみ更新
             # 入力がないのでserializerは使わない
             
-        serializer = self.get_serializer(session)
+        serializer = SessionSerializer(session)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def state(self, request, pk=None):
+        session = self.get_object()
+        serializer = self.get_serializer(session)
+        return Response(serializer.data)

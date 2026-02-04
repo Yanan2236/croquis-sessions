@@ -85,23 +85,21 @@ class SessionFinishSerializer(serializers.ModelSerializer):
         
 
 class SessionSerializer(serializers.ModelSerializer):
+    phase = serializers.CharField(read_only=True)
+
     class Meta:
         model = CroquisSession
         fields = [
             "id",
-            "user",
             "started_at",
             "ended_at",
+            "finalized_at",
             "subject",
             "intention",
-            "reflection",
             "next_action",
-            "note",
-            "is_public",
-            "created_at",
-            "updated_at",
+            "phase",
         ]
-        read_only_fields = ["id", "user", "started_at", "ended_at", "created_at", "updated_at"]
+        read_only_fields = fields
         
 class SessionListSerializer(serializers.ModelSerializer):
     thumb_image = serializers.SerializerMethodField()
@@ -116,7 +114,7 @@ class SessionListSerializer(serializers.ModelSerializer):
             "finalized_at",
             "duration_seconds",
         ]
-        
+        read_only_fields = fields
     def get_thumb_image(self, obj):
         drawing = obj.get_representative_drawing()
         if not drawing or not drawing.image_file:
@@ -130,12 +128,12 @@ class SessionListSerializer(serializers.ModelSerializer):
 class SessionDetailSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer(read_only=True)
     drawings = DrawingSerializer(many=True, read_only=True)
+    phase = serializers.CharField(read_only=True)
     
     class Meta:
         model = CroquisSession
         fields = [
             "id",
-            "user",
             "started_at",
             "ended_at",
             "finalized_at",
@@ -144,6 +142,7 @@ class SessionDetailSerializer(serializers.ModelSerializer):
             "next_action",
             "drawings",
             "duration_seconds",
+            "phase",
         ]
         read_only_fields = fields
         
@@ -183,3 +182,14 @@ class IncompleteSessionSerializer(serializers.ModelSerializer):
                 "finalized_at",
             ]
             read_only_fields = fields
+
+class SessionStateSerializer(serializers.ModelSerializer):
+    phase = serializers.CharField(read_only=True)
+    
+    class Meta:
+        model = CroquisSession
+        fields = [
+            "id",
+            "phase",
+        ]
+        read_only_fields = ["id", "phase"]

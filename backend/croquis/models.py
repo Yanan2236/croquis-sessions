@@ -138,6 +138,28 @@ class CroquisSession(models.Model):
         duration_seconds = int((self.ended_at - self.started_at).total_seconds())
         return max(0, duration_seconds)
     
+    @property
+    def is_running(self):
+        return self.started_at is not None and self.ended_at is None and self.finalized_at is None
+    
+    @property
+    def is_ended(self):
+        return self.started_at is not None and self.ended_at is not None and self.finalized_at is None
+    
+    @property
+    def is_finalized(self):
+        return self.started_at is not None and self.ended_at is not None and self.finalized_at is not None
+    
+    @property
+    def phase(self):
+        if self.is_finalized:
+            return "finalized"
+        if self.is_ended:
+            return "ended_unfinalized"
+        if self.is_running:
+            return "running"
+        return "not_started"
+    
     class Meta:
         ordering = ['-started_at', 'created_at']
         constraints = [
