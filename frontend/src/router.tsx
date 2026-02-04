@@ -4,7 +4,7 @@ import { RootLayout } from '@/routes/RootLayout';
 import { NotFound } from '@/routes/NotFound';
 
 import { NewSessionPage } from '@/routes/sessions/new';
-import { SessionDetail } from '@/routes/sessions/run/$sessionId';
+import { SessionRunPage } from '@/routes/sessions/run/$sessionId';
 import { SessionFinishPage } from '@/routes/sessions/run/$sessionId/finish';
 import { SessionDonePage } from '@/routes/sessions/run/$sessionId/done';
 import { SessionLayout } from '@/routes/sessions/run/$sessionId/_layout';
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
               element: <SessionLayout />,
               handle: { hideIncompleteBanner: true },
               children: [
-                { index: true, element: <SessionDetail /> },
+                { index: true, element: <SessionRunPage /> },
                 { path: "finish", element: <SessionFinishPage /> },
                 { path: "done", element: <SessionDonePage /> },
               ],

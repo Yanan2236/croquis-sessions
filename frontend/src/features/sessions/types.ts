@@ -19,13 +19,14 @@ export type FinishSessionVariables = {
 
 export type CroquisSession = {
   id: number;
+  user: number;
   started_at: string;
   ended_at: string | null;
+  finalized_at: string | null;
   subject: number;
   intention: string | null;
-  is_public: boolean;
-  created_at: string;
-  updated_at: string;
+  next_action: string | null;
+  phase: "running" | "ended_unfinalized" | "finalized";
 };
 
 // 完了したセッションの詳細情報
@@ -89,3 +90,8 @@ export type SubjectSessionsGroup = {
   items: SessionsListResponse[];
   latest: SessionsListResponse;
 };
+
+export type SessionState = {
+  id: number;
+  phase: "running" | "ended_unfinalized" | "finalized";
+}

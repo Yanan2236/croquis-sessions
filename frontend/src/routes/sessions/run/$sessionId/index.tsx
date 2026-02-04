@@ -1,18 +1,14 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
-import { fetchSessionDetails, endSession } from "@/features/sessions/api";
-import { routes } from "@/lib/routes";
+import { fetchSessionDetails } from "@/features/sessions/api";
 import styles from "./styles.module.css";
+import { useRunSessionMutation } from "@/features/sessions/mutations/useRunSessionMutation";
 
-export const SessionDetail = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+export const SessionRunPage = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
 
   const [nowMs, setNowMs] = useState(() => Date.now());
@@ -22,6 +18,8 @@ export const SessionDetail = () => {
     const n = Number(sessionId);
     return Number.isNaN(n) ? null : n;
   }, [sessionId]);
+
+  const runSessionMutation = useRunSessionMutation(sessionIdNum!);
 
   const {
     data: session,
@@ -41,21 +39,21 @@ export const SessionDetail = () => {
     return () => window.clearInterval(id);
   }, []);
 
-  const { mutate } = useMutation({
-    mutationFn: endSession,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["incomplete-session"] });
-      navigate(routes.sessionRunFinish(sessionIdNum!), { replace: true });
-    },
-    onError: (err) => {
-      if (!axios.isAxiosError(err)) return;
-      const status = err.response?.status;
-      if (status === 409) {
-        return;
-      }
-      console.error(err);
-    },
-  });
+  const handleSubmit = () => {
+    runSessionMutation.mutate(
+      undefined,
+      {
+        onError: (err) => {
+          if (!axios.isAxiosError(err)) return;
+          const status = err.response?.status;
+          if (status === 409) {
+            return;
+          }
+          console.error(err);
+        }
+      },
+    );
+  };
 
   if (!sessionId) return <div>Session ID is missing</div>;
   if (sessionIdNum === null) return <div>Session ID is invalid</div>;
@@ -90,7 +88,8 @@ export const SessionDetail = () => {
               <button
                 type="button"
                 className={styles.primaryButton}
-                onClick={() => mutate(sessionIdNum)}
+                onClick={() => handleSubmit()}
+                disabled={runSessionMutation.isPending}
               >
                 終了
               </button>
