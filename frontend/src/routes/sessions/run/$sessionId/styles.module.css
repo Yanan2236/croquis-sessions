@@ -21,7 +21,7 @@
   margin: 0 auto;
 }
 
-/* Header */
+/* Header: 余計な行を消して、タイトル+終了だけにする */
 .header {
   padding: var(--space-md);
   border-bottom: var(--border-width-thin) solid var(--color-border-default);
@@ -30,126 +30,27 @@
 
 .headerRow {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-}
-
-.left {
-  min-width: 0;
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  flex-shrink: 0;
-}
-
-/* State row */
-.stateRow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xs);
-}
-
-.stateDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--color-state-running);
-}
-
-.stateText {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-text-secondary);
 }
 
 /* Subject title */
 .subject {
   margin: 0;
+  min-width: 0;
+
   font-size: 18px;
-  font-weight: 750;
+  font-weight: 800;
   color: var(--color-text-primary);
   line-height: 1.2;
-  word-break: break-word;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Timer chip */
-.timerChip {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-
-  padding: 8px 10px;
-  border-radius: 999px;
-  background: var(--color-bg-subtle);
-  border: var(--border-width-thin) solid var(--color-border-default);
-}
-
-.timerNum {
-  font-size: 14px;
-  font-weight: 750;
-  color: var(--color-text-primary);
-  line-height: 1;
-}
-
-.timerUnit {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  line-height: 1;
-}
-
-/* Main */
-.main {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--space-md);
-  background: var(--color-bg-base);
-}
-
-/* Card */
-.card {
-  border: none;
-  border-radius: var(--radius-lg);
-  overflow: visible;
-  background: transparent;
-}
-
-.field {
-  padding: var(--space-md);
-}
-
-.fieldHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
-}
-
-.fieldLabel {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-text-secondary);
-}
-
-.readonlyBox {
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-subtle);
-  font-size: 14px;
-  color: var(--color-text-primary);
-  line-height: var(--line-height-normal);
-  white-space: pre-wrap;
-}
-
-.readonlyBox[data-empty="true"] {
-  color: var(--color-text-muted);
-}
-
+/* Primary button */
 .primaryButton {
   padding: 10px 14px;
   border-radius: var(--radius-lg);
@@ -159,13 +60,14 @@
   color: var(--color-text-inverse);
 
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: 0.01em;
 
   cursor: pointer;
   user-select: none;
 
-  transition: filter 120ms ease, outline-color 120ms ease;
+  transition: filter 120ms ease, outline-color 120ms ease, opacity 120ms ease;
+  flex-shrink: 0;
 }
 
 .primaryButton:hover {
@@ -180,4 +82,126 @@
   outline: 3px solid
     color-mix(in srgb, var(--color-border-focus) 40%, transparent);
   outline-offset: 2px;
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Main: 縦を詰める（gapとpaddingを削る） */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg-base);
+
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* 今回の課題：ラベル無し、薄い箱だけ */
+.intentionSection {
+  padding: 0 var(--space-sm);
+}
+
+.intentionBox {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  white-space: pre-wrap;
+}
+
+.intentionBox[data-empty="true"] {
+  color: var(--color-text-muted);
+}
+
+/* Image section */
+.imageSection {
+  padding: 0 var(--space-sm) var(--space-sm);
+}
+
+/* 画像ステージ：縦置き半画面でも“全体が見える”を優先 */
+.imageStage {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-base);
+  overflow: hidden;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 縦を食い尽くさない上限。必要ならここだけ微調整 */
+  height: min(56vh, 560px);
+}
+
+/* さらに狭い幅では少しだけ圧縮 */
+@media (max-width: 720px) {
+  .imageStage {
+    height: min(52vh, 520px);
+  }
+}
+
+/* 画像は常に全体が見える */
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Placeholder */
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+/* 残り時間：画像の近く、右上。同化系で主張しすぎない */
+.timerOverlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-bg-base) 92%, transparent);
+  border: var(--border-width-thin) solid
+    color-mix(in srgb, var(--color-border-default) 70%, transparent);
+
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.04);
+
+  pointer-events: none;
+}
+
+.timerValue {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timerUnit {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  line-height: 1;
 }
