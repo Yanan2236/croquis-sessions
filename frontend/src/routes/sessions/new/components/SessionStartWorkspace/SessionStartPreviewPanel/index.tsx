@@ -1,5 +1,8 @@
-import { RequirementBadge } from "@/components/ui/RequirementBadge";
 import styles from "./styles.module.css";
+import { SubjectField } from "./SubjectField";
+import { SessionStartActions } from "./SessionStartActions";
+import { LocalFolderPickerPanel } from "./LocalFolderPickerPanel";
+import type { IntervalSec, PickedFileEntry } from "@/features/sessions/run/runSessionStore";
 
 type Props = {
   subjectValue: string;
@@ -9,6 +12,14 @@ type Props = {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
   canStart: boolean;
+
+  supported: boolean;
+  isPicking: boolean;
+  dirName: string | null;
+  entries: PickedFileEntry[];
+  intervalSec: IntervalSec;
+  setIntervalSec: (v: IntervalSec) => void;
+  onPickFolder: () => void;
 };
 
 export const SessionStartPreviewPanel = ({
@@ -19,8 +30,14 @@ export const SessionStartPreviewPanel = ({
   onSubmit,
   onCancel,
   canStart,
+  supported,
+  isPicking,
+  dirName,
+  entries,
+  intervalSec,
+  setIntervalSec,
+  onPickFolder,
 }: Props) => {
-
   return (
     <section className={styles.right} aria-label="今回の練習メニュー">
       <header className={styles.panelHeader}>
@@ -31,77 +48,30 @@ export const SessionStartPreviewPanel = ({
       </header>
 
       <div className={styles.preview}>
-        <div className={styles.field}>
-          <div className={styles.fieldHeader}>
-            <span className={styles.fieldLabel}>モチーフ</span>
-            <RequirementBadge requirement="required" />
-          </div>
-
-          <div
-            className={styles.fieldValue}
-            aria-live="polite"
-            data-empty={!subjectValue}
-          >
-            {subjectValue || "未選択"}
-          </div>
-        </div>
-
-        <div className={styles.field}>
-          <div className={styles.fieldHeader}>
-            <label className={styles.fieldLabel} htmlFor="intention">
-              今回の課題
-            </label>
-            <RequirementBadge requirement="optional" />
-          </div>
-
-          <textarea
-            id="intention"
-            name="intention"
-            value={intentionValue}
-            onChange={(e) => setIntentionValue(e.target.value)}
-            placeholder="例：輪郭を丁寧に / 比率を崩さない / パース意識"
-            className={styles.textarea}
-            readOnly={!subjectValue}
-          />
-
-          <p className={styles.helpText}>
-          </p>
-        </div>
+        <SubjectField
+          subjectValue={subjectValue}
+          intentionValue={intentionValue}
+          setIntentionValue={setIntentionValue}
+        />
       </div>
 
-      <form className={styles.actions} onSubmit={onSubmit}>
-        {canStart ? (
-          <button
-            type="submit"
-            className={styles.primaryButton}
-            disabled={isPending || !subjectValue}
-          >
-            {isPending ? "送信中" : "開始"}
-          </button>
-        ) : (
-          <button
-            type="button"
-            className={`${styles.primaryButton} ${styles.disabledLike}`}
-            onClick={() => {
-              alert(
-                "未完了のセッションがあるため開始できません。上のバナーから再開してください。"
-              );
-            }}
-          >
-            未完了のセッションがあるため開始できません
-          </button>
-        )}
+      <LocalFolderPickerPanel 
+        supported={supported}
+        isPicking={isPicking}
+        dirName={dirName}
+        entries={entries}
+        intervalSec={intervalSec}
+        setIntervalSec={setIntervalSec}
+        onPickFolder={onPickFolder}
+      />
 
-        <button
-          type="button"
-          className={styles.secondaryButton}
-          onClick={onCancel}
-          disabled={isPending}
-        >
-          キャンセル
-        </button>
-      </form>
+      <SessionStartActions
+        subjectValue={subjectValue}
+        isPending={isPending}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        canStart={canStart}
+      />
     </section>
   );
-
 };
