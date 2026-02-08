@@ -1,5 +1,13 @@
 import type { Drawing } from "@/features/drawings/types";
 
+export type IntervalSec = 60 | 120;
+
+export type PickedFileEntry = {
+  name: string;
+  ext: string;
+  handle: FileSystemFileHandle;
+};
+
 export type StartSessionPayload = {
   subject_name: string;
   intention?: string | null;
