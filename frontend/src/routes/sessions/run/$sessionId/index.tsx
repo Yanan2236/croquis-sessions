@@ -130,57 +130,56 @@ export const SessionRunPage = () => {
   if (!session) return <div>Session not found</div>;
 
 
-return (
-  <section className={styles.page} aria-label="セッション実施中">
-    <div className={styles.sheet}>
-      <header className={styles.header}>
-        <div className={styles.headerRow}>
-          <h1 className={styles.subject}>{session.subject.name}</h1>
+  return (
+    <section className={styles.page} aria-label="セッション実施中">
+      <div className={styles.sheet}>
+        <header className={styles.header}>
+          <div className={styles.headerRow}>
+            <h1 className={styles.subject}>{session.subject.name}</h1>
 
-          <button
-            type="button"
-            className={styles.primaryButton}
-            onClick={handleSubmit}
-            disabled={runSessionMutation.isPending}
-          >
-            終了
-          </button>
-        </div>
-      </header>
-
-      <main className={styles.main}>
-        <section className={styles.intentionSection} aria-label="今回の課題">
-          <div className={styles.intentionBox} data-empty={!session.intention}>
-            {session.intention || "—"}
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={handleSubmit}
+              disabled={runSessionMutation.isPending}
+            >
+              終了
+            </button>
           </div>
-        </section>
+        </header>
 
-        <section className={styles.imageSection} aria-label="参照画像">
-          <div className={styles.imageStage}>
-            <div className={styles.timerOverlay} aria-label="残り時間">
-              <span className={styles.timerValue}>
-                {Math.max(
-                  0,
-                  Math.floor(
-                    ((intervalMs ?? 60000) -
-                      ((elapsedMs ?? 0) % (intervalMs ?? 60000))) /
-                      1000
-                  )
-                )}
-              </span>
-              <span className={styles.timerUnit}>秒</span>
+        <main className={styles.main}>
+          <section className={styles.intentionSection} aria-label="今回の課題">
+            <div className={styles.intentionBox} data-empty={!session.intention}>
+              {session.intention || "—"}
             </div>
+          </section>
 
-            {src ? (
-              <img src={src} alt="クロッキー参照画像" className={styles.image} />
-            ) : (
-              <div className={styles.imagePlaceholder}>画像がありません</div>
-            )}
-          </div>
-        </section>
-      </main>
-    </div>
-  </section>
-);
+          <section className={styles.imageSection} aria-label="参照画像">
+            <div className={styles.imageStage}>
+              <div className={styles.timerOverlay} aria-label="残り時間">
+                <span className={styles.timerValue}>
+                  {Math.max(
+                    0,
+                    Math.floor(
+                      ((intervalMs ?? 60000) -
+                        ((elapsedMs ?? 0) % (intervalMs ?? 60000))) /
+                        1000
+                    )
+                  )}
+                </span>
+                <span className={styles.timerUnit}>秒</span>
+              </div>
 
+              {src ? (
+                <img src={src} alt="クロッキー参照画像" className={styles.image} />
+              ) : (
+                <div className={styles.imagePlaceholder}>画像がありません</div>
+              )}
+            </div>
+          </section>
+        </main>
+      </div>
+    </section>
+  );
 };

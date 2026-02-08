@@ -21,7 +21,7 @@
   margin: 0 auto;
 }
 
-/* Header: 余計な行を消して、タイトル+終了だけにする */
+/* Header */
 .header {
   padding: var(--space-md);
   border-bottom: var(--border-width-thin) solid var(--color-border-default);
@@ -89,7 +89,7 @@
   cursor: not-allowed;
 }
 
-/* Main: 縦を詰める（gapとpaddingを削る） */
+/* Main */
 .main {
   flex: 1;
   overflow-y: auto;
@@ -101,7 +101,7 @@
   gap: var(--space-sm);
 }
 
-/* 今回の課題：ラベル無し、薄い箱だけ */
+/* Intention section */
 .intentionSection {
   padding: 0 var(--space-sm);
 }
@@ -126,7 +126,6 @@
   padding: 0 var(--space-sm) var(--space-sm);
 }
 
-/* 画像ステージ：縦置き半画面でも“全体が見える”を優先 */
 .imageStage {
   width: 100%;
   border-radius: var(--radius-lg);
@@ -139,18 +138,9 @@
   align-items: center;
   justify-content: center;
 
-  /* 縦を食い尽くさない上限。必要ならここだけ微調整 */
   height: min(56vh, 560px);
 }
 
-/* さらに狭い幅では少しだけ圧縮 */
-@media (max-width: 720px) {
-  .imageStage {
-    height: min(52vh, 520px);
-  }
-}
-
-/* 画像は常に全体が見える */
 .image {
   width: 100%;
   height: 100%;
@@ -170,7 +160,6 @@
   color: var(--color-text-muted);
 }
 
-/* 残り時間：画像の近く、右上。同化系で主張しすぎない */
 .timerOverlay {
   position: absolute;
   top: 10px;
