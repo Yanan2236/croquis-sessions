@@ -1,7 +1,7 @@
 .card {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 
   background: var(--color-bg-app);
 
@@ -14,8 +14,37 @@
 
 /* ---------- Header ---------- */
 .header {
-  display: grid;
-  gap: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background: var(--color-bg-subtle);
+
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  transition: background 140ms ease, filter 140ms ease;
+}
+
+.header:hover {
+  filter: brightness(0.98);
+  border-color: var(--color-accent-subtle);
+}
+
+.header:active {
+  filter: brightness(0.95);
+  border-color: var(--color-accent-subtle);
+}
+
+.header:focus-visible {
+  outline: var(--border-width-thick) solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 
 .titleRow {
@@ -23,11 +52,13 @@
   align-items: baseline;
   gap: var(--space-sm);
   min-width: 0;
+
+  flex: 1;
 }
 
 .subject {
   margin: 0;
-  font-size: 15px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text-primary);
@@ -38,44 +69,26 @@
 }
 
 .count {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-muted);
   white-space: nowrap;
-}
-
-.metaRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
+  flex: 0 0 auto;
 }
 
 .meta {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   white-space: nowrap;
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.more {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-accent-primary);
-  text-decoration: none;
-
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: var(--border-width-thin) solid var(--color-border-default);
-  background: var(--color-bg-subtle);
-}
-
-.more:hover {
-  background: var(--color-bg-accent-subtle);
-}
-
-.more:focus-visible {
-  outline: var(--border-width-thick) solid var(--color-border-focus);
-  outline-offset: 2px;
+.header:hover .meta::after {
+  opacity: 0.9;
 }
 
 /* ---------- Sessions Grid ---------- */
@@ -96,8 +109,20 @@
 
   border-radius: var(--radius-md);
   border: var(--border-width-thin) solid var(--color-border-default);
-  background: var(--color-bg-base);
   text-decoration: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: var(--color-bg-base);
+  padding: 0;
+  margin: 0;
+
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+
+  cursor: pointer;
 }
 
 .cell:hover {
