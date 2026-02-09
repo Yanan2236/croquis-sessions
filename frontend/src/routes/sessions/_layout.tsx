@@ -1,27 +1,21 @@
-import { useNavigate, Outlet, useMatch } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-import { Sessions } from "@/routes/sessions";
 import { OverlayShell } from "@/components/ui/OverlayShell";
+import { useSessionOverlayParam } from "@/features/sessions/navigation/useSessionOverlayParam";
+import { SessionDetailOverlay } from "@/features/sessions/overlays/SessionDetailOverlay";
 
 export const SessionsLayout = () => {
-  const navigate = useNavigate();
-  const isOverlay = !!useMatch("/sessions/view/:sessionId");
-
-  const onClose = () => {
-    navigate(-1);
-  };
-
-  if (!isOverlay) {
-    return <Outlet />;
-  }
+  const { viewSessionId, close } = useSessionOverlayParam();
 
   return (
     <>
-      <Sessions />
+      <Outlet />
 
-      <OverlayShell onClose={onClose}>
-        <Outlet context={{ onClose }} />
-      </OverlayShell>
+      {viewSessionId && (
+        <OverlayShell onClose={close}>
+          <SessionDetailOverlay sessionId={viewSessionId} onClose={close} />
+        </OverlayShell>
+      )}
     </>
   );
 };
