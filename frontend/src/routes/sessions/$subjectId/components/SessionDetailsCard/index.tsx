@@ -1,10 +1,9 @@
-import { useState } from "react";
-
-import { FrontFace } from "../FrontFace";
-import { BackFace } from "../BackFace";
+import { useSearchParams } from "react-router-dom";
 import styles from "./styles.module.css";
 
-type Face = "front" | "back";
+import { formatMinutesFloor } from "@/features/shared/utils/duration";
+import { formatRelativeDate } from "@/features/shared/utils/datetime";
+import { useSessionOverlayParam } from "@/features/sessions/navigation/useSessionOverlayParam";
 
 type Props = {
   session: {
@@ -16,16 +15,36 @@ type Props = {
 };
 
 export const SessionDetailsCard = ({ session }: Props) => {
-  const [face, setFace] = useState<Face>("front");
+  const { open } = useSessionOverlayParam();
+
+  const thumb = session.thumb_image ?? null;
+  // const durationSeconds = session.duration_seconds ?? 0;
+  const finalizedAt = session.finalized_at;
 
   return (
     <article className={styles.card} role="listitem">
-      {face === "front" ? (
-        <FrontFace setFace={setFace} session={session} />
-      ) : (
-        <BackFace setFace={setFace} sessionId={session.id} />
-      )}
+      <button
+        type="button"
+        className={styles.cardButton}
+        onClick={() => open(session.id)}
+        aria-label="セッション詳細を表示"
+      >
+        <div className={styles.inner} aria-hidden="true">
+          <div className={styles.frame}>
+            <span className={styles.dateBadge}>
+              {formatRelativeDate(finalizedAt)}
+            </span>
+
+            {thumb ? (
+              <img className={styles.thumb} src={thumb} alt="" loading="lazy" />
+            ) : (
+              <div className={styles.noImage} aria-label="画像なし">
+                No image
+              </div>
+            )}
+          </div>
+        </div>
+      </button>
     </article>
   );
 };
-

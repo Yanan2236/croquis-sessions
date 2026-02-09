@@ -9,7 +9,6 @@ import { SessionFinishPage } from '@/routes/sessions/run/$sessionId/finish';
 import { SessionDonePage } from '@/routes/sessions/run/$sessionId/done';
 import { SessionLayout } from '@/routes/sessions/run/$sessionId/_layout';
 import { SubjectsPage } from '@/routes/subjects';
-import { SessionOverlayDetail } from '@/routes/sessions/view/$sessionId';
 import { SessionsLayout } from '@/routes/sessions/_layout';
 import { PublicLayout } from '@/routes/auth/PublicLayout';
 import { LoginPage } from '@/routes/auth/login';
@@ -54,7 +53,6 @@ export const router = createBrowserRouter([
               children: [
                 { index: true, element: <Sessions /> },
                 { path: ":subjectId", element: <SubjectSessionsPage /> },
-                { path: "view/:sessionId", element: <SessionOverlayDetail /> },
               ],
             },
             { path: "new", element: <NewSessionPage /> },

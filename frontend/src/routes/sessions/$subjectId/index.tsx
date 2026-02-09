@@ -7,7 +7,7 @@ import { SessionDetailsCard } from "@/routes/sessions/$subjectId/components/Sess
 
 
 export const SubjectSessionsPage = () => {
-  const [columns, setColumns] = useState(2);
+  const [columns, setColumns] = useState(3);
   const { data } = useSessionsQuery();
 
   const { subjectId } = useParams();
