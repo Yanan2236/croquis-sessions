@@ -1,0 +1,134 @@
+.wrap {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.issueBar {
+  padding: 6px 44px 0 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.issueText {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.heroSection {
+  min-height: 0;
+}
+
+.heroFrame {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+
+  background: #ffffff;
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.heroEmpty {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  background: #ffffff;
+}
+
+.strip {
+  height: 92px;
+  overflow: hidden;
+
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.stripInner {
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 112px;
+  gap: 8px;
+
+  padding: 6px 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.thumbButton,
+.thumbButtonActive {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.thumbButton:focus-visible,
+.thumbButtonActive:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.thumbFrame {
+  height: 100%;
+  aspect-ratio: 4 / 3;
+
+  border-radius: 12px;
+  overflow: hidden;
+
+  border: 0;
+  background: #ffffff;
+}
+
+.thumbButtonActive .thumbFrame {
+  box-shadow: 0 0 0 2px var(--color-border-focus);
+}
+
+.thumbImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.muted {
+  margin: 0;
+  padding: 6px 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.state {
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+}
