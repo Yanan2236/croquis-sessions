@@ -1,6 +1,6 @@
 import type { Drawing } from "@/features/drawings/types";
 
-export type IntervalSec = 60 | 120;
+export type IntervalSec = 20 | 30 | 60 | 120 | 180 | 300;
 
 export type PickedFileEntry = {
   name: string;

@@ -66,7 +66,7 @@
   color: var(--color-text-muted);
 }
 
-/* Subject value */
+/* Field value (read / pick) */
 .fieldValue {
   padding: var(--space-md);
   border-radius: var(--radius-md);
@@ -204,4 +204,91 @@
   cursor: not-allowed;
   filter: none;
   box-shadow: none;
+}
+
+.folderPicker {
+  width: 100%;
+  text-align: left;
+
+  border: 0;
+  background: transparent;
+
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  line-height: inherit;
+
+  cursor: pointer;
+
+  display: block;
+  box-sizing: border-box;
+}
+
+.folderPicker:hover {
+  filter: brightness(0.98);
+}
+
+.folderPicker:active {
+  filter: brightness(0.94);
+}
+
+.folderPicker:focus-visible {
+  outline: 3px solid
+    color-mix(in srgb, var(--color-border-focus) 25%, transparent);
+  outline-offset: 2px;
+}
+
+.folderPicker:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.segmentValue {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+
+  overflow: hidden;
+
+  padding: 0;
+}
+
+.localSegBtn {
+  padding: var(--space-md);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+
+  font: inherit;
+  line-height: inherit;
+  font-weight: 800;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  cursor: pointer;
+  user-select: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 120ms ease,
+    filter 120ms ease,
+    outline-color 120ms ease;
+}
+
+.localSegBtn + .localSegBtn {
+  border-left: var(--border-width-thin) solid var(--color-border-default);
+}
+
+.localSegBtn:active {
+  background: var(--color-bg-muted);
+}
+
+.localSegActive {
+  background: color-mix(in srgb, var(--color-bg-accent-strong) 35%, transparent);
+  color: var(--color-text-primary);
 }
