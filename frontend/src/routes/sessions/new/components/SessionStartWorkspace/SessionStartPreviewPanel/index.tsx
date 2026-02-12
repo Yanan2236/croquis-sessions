@@ -53,17 +53,17 @@ export const SessionStartPreviewPanel = ({
           intentionValue={intentionValue}
           setIntentionValue={setIntentionValue}
         />
-      </div>
 
-      <LocalFolderPickerPanel 
-        supported={supported}
-        isPicking={isPicking}
-        dirName={dirName}
-        entries={entries}
-        intervalSec={intervalSec}
-        setIntervalSec={setIntervalSec}
-        onPickFolder={onPickFolder}
-      />
+        <LocalFolderPickerPanel 
+          supported={supported}
+          isPicking={isPicking}
+          dirName={dirName}
+          entries={entries}
+          intervalSec={intervalSec}
+          setIntervalSec={setIntervalSec}
+          onPickFolder={onPickFolder}
+        />
+      </div>
 
       <SessionStartActions
         subjectValue={subjectValue}
