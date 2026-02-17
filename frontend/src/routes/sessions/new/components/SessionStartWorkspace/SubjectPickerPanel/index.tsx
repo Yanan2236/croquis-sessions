@@ -27,7 +27,7 @@ export const SubjectPickerPanel = ({
           1. モチーフを選ぶ
         </h2>
         <p className={styles.panelHint}>
-          クリックして選択してください。
+          クリックで選択してください。
         </p>
       </header>
 
