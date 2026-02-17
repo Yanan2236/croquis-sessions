@@ -37,6 +37,16 @@ export const SubjectField = ({
             今回の課題
           </label>
           <RequirementBadge requirement="optional" />
+
+          <details className={styles.hint}>
+            <summary className={styles.hintSummary} aria-label="画像フォルダの説明を表示">
+              ?
+            </summary>
+            <div className={styles.hintBody} role="note">
+              前回クロッキーで設定した課題が自動入力されます。<br />
+              必要に応じて書き換えてください。
+            </div>
+          </details>
         </div>
 
         <textarea

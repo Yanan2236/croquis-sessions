@@ -45,7 +45,6 @@ export const SessionDonePage = () => {
             <div className={styles.leftHeader}>
               <p className={styles.kicker}>セッション完了</p>
               <h1 className={styles.title}>おつかれさまでした！</h1>
-              <p className={styles.subTitle}>次回の課題は保存されました。</p>
             </div>
           </div>
         </header>
@@ -87,10 +86,6 @@ export const SessionDonePage = () => {
                     <span className={styles.metaVal}>
                       {Math.max(1, Math.floor(session.duration_seconds / 60))} 分
                     </span>
-                  </li>
-                  <li className={styles.metaItem}>
-                    <span className={styles.metaKey}>枚数</span>
-                    <span className={styles.metaVal}>{session.drawings.length} 枚</span>
                   </li>
                 </ul>
               </div>

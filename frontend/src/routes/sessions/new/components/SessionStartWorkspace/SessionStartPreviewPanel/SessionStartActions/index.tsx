@@ -13,7 +13,7 @@ export const SessionStartActions = ({
   isPending,
   canStart,
   onSubmit,
-  onCancel,
+  // onCancel,
 }: Props) => {
   return (
     <form className={styles.actions} onSubmit={onSubmit}>
@@ -38,7 +38,7 @@ export const SessionStartActions = ({
           未完了のセッションがあるため開始できません
         </button>
       )}
-
+      {/*
       <button
         type="button"
         className={styles.secondaryButton}
@@ -47,6 +47,7 @@ export const SessionStartActions = ({
       >
         キャンセル
       </button>
+      */}
     </form>
   );
 };

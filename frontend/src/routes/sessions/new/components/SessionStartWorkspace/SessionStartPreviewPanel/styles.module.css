@@ -39,7 +39,7 @@
 
 /* Fields */
 .field {
-  padding: var(--space-md);
+  padding: var(--space-md) var(--space-md);
   background: transparent;
 }
 
@@ -68,7 +68,7 @@
 
 /* Field value (read / pick) */
 .fieldValue {
-  padding: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
   background: var(--color-bg-subtle);
 
@@ -116,7 +116,7 @@
 
 /* Actions */
 .actions {
-  padding: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
   display: grid;
   gap: var(--space-sm);
 }
@@ -284,11 +284,64 @@
   border-left: var(--border-width-thin) solid var(--color-border-default);
 }
 
-.localSegBtn:active {
-  background: var(--color-bg-muted);
-}
-
 .localSegActive {
   background: color-mix(in srgb, var(--color-bg-accent-strong) 35%, transparent);
   color: var(--color-text-primary);
+}
+
+.localSegBtn:focus-visible {
+  outline-offset: -2px;
+}
+
+
+/* hint */
+.hint {
+  margin-left: auto;
+  position: relative;
+}
+
+.hintSummary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hintSummary::-webkit-details-marker {
+  display: none;
+}
+
+.hintBody {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+
+  width: min(320px, 70vw);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+
+  border: var(--border-width-thin) solid var(--color-border-default);
+  background: var(--color-bg-base);
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
 }

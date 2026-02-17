@@ -25,6 +25,8 @@ export const LocalFolderPickerPanel = ({
   const folderTitle = dirName ?? "未選択";
   const fileCount = entries.length;
 
+  const intervalDisabled = entries.length === 0;
+
   return (
     <>
       {/* Folder */}
@@ -32,6 +34,16 @@ export const LocalFolderPickerPanel = ({
         <div className={styles.fieldHeader}>
           <span className={styles.fieldLabel}>画像フォルダ</span>
           <RequirementBadge requirement="optional" />
+
+          <details className={styles.hint}>
+            <summary className={styles.hintSummary} aria-label="画像フォルダの説明を表示">
+              ?
+            </summary>
+            <div className={styles.hintBody} role="note">
+              クロッキーで表示する画像フォルダを選択します。<br />
+              クリックするとフォルダ選択画面が開きます。
+            </div>
+          </details>
         </div>
 
         <button
@@ -58,6 +70,16 @@ export const LocalFolderPickerPanel = ({
         <div className={styles.fieldHeader}>
           <span className={styles.fieldLabel}>インターバル（秒）</span>
           <RequirementBadge requirement="optional" />
+
+          <details className={styles.hint}>
+            <summary className={styles.hintSummary} aria-label="画像フォルダの説明を表示">
+              ?
+            </summary>
+            <div className={styles.hintBody} role="note">
+              画像フォルダ選択時は、<br />
+              時間ごとに画像が切り替わります。
+            </div>
+          </details>
         </div>
 
         <div className={`${styles.fieldValue} ${styles.segmentValue}`} role="group" aria-label="インターバル選択">

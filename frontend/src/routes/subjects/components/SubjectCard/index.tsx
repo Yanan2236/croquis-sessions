@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import styles from "./styles.module.css";
+import styles from "../../styles.module.css";
 import { formatHoursFloor } from "@/features/shared/utils/duration";
 import { formatRelativeDate } from "@/features/shared/utils/datetime";
 import type { SubjectOverview } from "@/features/subjects/types";
