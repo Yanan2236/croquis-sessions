@@ -16,7 +16,7 @@ import { AuthGuard } from '@/components/auth/AuthGuard';
 import { PublicGuard } from '@/components/auth/PublicGuard';
 import { Sessions } from '@/routes/sessions';
 import { SignupPage } from '@/routes/auth/signup';
-import { HomePage } from '@/routes';
+import { Navigate } from "react-router-dom";
 import { SubjectSessionsPage } from '@/routes/sessions/$subjectId';
 
 
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         errorElement: <NotFound />,
         children: [
-          { index: true, element: <HomePage />},
+          { index: true, element: <Navigate to="/sessions/new" replace />},
           { path: "sessions", children: [
             {
               element: <SessionsLayout />,
