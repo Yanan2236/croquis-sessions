@@ -87,7 +87,7 @@ export const SessionDetailBody = ({ sessionId }: Props) => {
             {total ? `${safeIndex + 1} / ${total}` : "0 / 0"}
           </div>
 
-          {total > 0 ? (
+          {/* {total > 0 ? (
             <>
               <div className={styles.hintLeft} aria-hidden="true">
                 ← 前
@@ -96,12 +96,12 @@ export const SessionDetailBody = ({ sessionId }: Props) => {
                 次 →
               </div>
             </>
-          ) : null}
+          ) : null} */}
         </div>
 
-        {total > 0 ? (
+        {/* {total > 0 ? (
           <p className={styles.keyHint}>← → でも切り替え</p>
-        ) : null}
+        ) : null} */}
       </section>
     </div>
   );

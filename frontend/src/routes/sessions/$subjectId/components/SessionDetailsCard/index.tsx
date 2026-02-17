@@ -1,7 +1,5 @@
-import { useSearchParams } from "react-router-dom";
 import styles from "./styles.module.css";
 
-import { formatMinutesFloor } from "@/features/shared/utils/duration";
 import { formatRelativeDate } from "@/features/shared/utils/datetime";
 import { useSessionOverlayParam } from "@/features/sessions/navigation/useSessionOverlayParam";
 
@@ -38,7 +36,7 @@ export const SessionDetailsCard = ({ session }: Props) => {
             {thumb ? (
               <img className={styles.thumb} src={thumb} alt="" loading="lazy" />
             ) : (
-              <div className={styles.noImage} aria-label="画像なし">
+              <div className={styles.noImage} role="img" aria-label="画像なし">
                 No image
               </div>
             )}
