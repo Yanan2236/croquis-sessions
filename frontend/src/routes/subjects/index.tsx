@@ -71,6 +71,29 @@ export const SubjectsPage = () => {
           </article>
         </li>
 
+        {subjects.length === 0 && (
+          <li className={styles.subjectItem}>
+            <article className={styles.card}>
+              <header className={styles.header}>
+                <div className={styles.headerRow}>
+                  <h3 className={styles.title}>
+                    モチーフがまだありません
+                  </h3>
+                </div>
+              </header>
+
+              <div className={styles.rows}>
+                <div className={styles.row}>
+                  <span className={styles.label}>状態</span>
+                  <span className={styles.placeholder}>
+                    最初の練習テーマを作成してください
+                  </span>
+                </div>
+              </div>
+            </article>
+          </li>
+        )}
+
         {subjects.map((subject) => (
           <li key={subject.id} className={styles.subjectItem}>
             <SubjectCard subject={subject} />
