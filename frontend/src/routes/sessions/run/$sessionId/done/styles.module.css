@@ -231,6 +231,7 @@
 .actions {
   margin-top: var(--space-md);
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
 }
 

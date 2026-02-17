@@ -72,10 +72,6 @@ export const SessionFinishForm = ({ sessionId, subjectName, currentIntention }: 
               <h1 className={styles.title}>{subjectName}</h1>
             </div>
           </div>
-
-          <p className={styles.hint}>
-            左で今回を確認し、右で次回の課題を書いて保存します。
-          </p>
         </header>
 
         <section className={styles.main} aria-label="完了内容">
@@ -87,10 +83,6 @@ export const SessionFinishForm = ({ sessionId, subjectName, currentIntention }: 
 
               <div className={styles.card}>
                 <div className={styles.field}>
-                  <div className={styles.fieldHeader}>
-                    <span className={styles.fieldLabel}>今回の課題</span>
-                  </div>
-
                   <div className={styles.readonlyBox} data-empty={!currentIntention}>
                     {currentIntention || "—"}
                   </div>
@@ -106,17 +98,12 @@ export const SessionFinishForm = ({ sessionId, subjectName, currentIntention }: 
               <header className={styles.panelHeader}>
                 <div className={styles.panelTitleRow}>
                   <h2 className={styles.panelTitle}>2. 次回の課題</h2>
+                  <RequirementBadge requirement="required" />
                 </div>
               </header>
 
               <div className={styles.card}>
                 <div className={styles.field}>
-                  <div className={styles.fieldHeader}>
-                    <label className={styles.fieldLabel} htmlFor="nextAction">
-                      次回の課題
-                    </label>
-                    <RequirementBadge requirement="required" />
-                  </div>
 
                   <textarea
                     id="nextAction"
