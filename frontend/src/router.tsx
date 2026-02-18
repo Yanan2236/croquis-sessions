@@ -18,6 +18,8 @@ import { Sessions } from '@/routes/sessions';
 import { SignupPage } from '@/routes/auth/signup';
 import { Navigate } from "react-router-dom";
 import { SubjectSessionsPage } from '@/routes/sessions/$subjectId';
+import { VerifyEmailPage } from '@/routes/auth/verify-email';
+import { ResetPasswordPage } from '@/routes/auth/reset-password';
 
 
 export const router = createBrowserRouter([
@@ -32,6 +34,9 @@ export const router = createBrowserRouter([
         children: [
           { path: "login", element: <LoginPage /> },
           { path: "signup", element: <SignupPage /> },
+          { path: "verify-email", element: <VerifyEmailPage /> },
+          { path: "verify-email/:key", element: <VerifyEmailPage /> },
+          { path: "reset-password", element: <ResetPasswordPage /> },
         ],
       },
     ],

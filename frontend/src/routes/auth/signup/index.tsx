@@ -36,7 +36,10 @@ export const SignupPage = () => {
       payload,
     {
       onSuccess: () => {
-        navigate("/sessions", { replace: true });
+        navigate("/auth/verify-email", { 
+          replace: true,
+          state: { email },
+        });
       },
       onError: (error) => {
         const info = classifySignupError(error);
@@ -165,7 +168,7 @@ export const SignupPage = () => {
             <button
               type="button"
               className={styles.linkButton}
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/auth/login")}
             >
               すでにアカウントがある？ログインへ
             </button>
