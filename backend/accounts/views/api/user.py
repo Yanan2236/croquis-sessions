@@ -1,5 +1,9 @@
 from rest_framework import generics
 from django.contrib.auth import get_user_model
+from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import JsonResponse
+
 from accounts.serializers.api.user import UserSerializer, SignupSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -70,3 +74,8 @@ class LogoutView(APIView):
             {"detail": "logged out"},
             status=status.HTTP_200_OK,
         )
+        
+@require_GET
+@ensure_csrf_cookie
+def csrf(request):
+    return JsonResponse({"ok": "True"})

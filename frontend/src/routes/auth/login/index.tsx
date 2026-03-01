@@ -64,6 +64,16 @@ export const LoginPage = () => {
             />
           </div>
 
+          <div className={styles.inlineActions}>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => navigate("/auth/forgot-password")}
+            >
+              パスワードを忘れた？
+            </button>
+          </div>
+
           {loginMutation.isError && (
             <div className={styles.errorBox} role="alert" aria-live="polite">
               <div className={styles.errorTitle}>ログインに失敗しました</div>

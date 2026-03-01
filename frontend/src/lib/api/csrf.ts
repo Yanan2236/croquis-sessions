@@ -18,4 +18,6 @@ export const attachCsrfToken = () => {
   });
 };
 
-
+export const ensureCsrf = async (): Promise<void> => {
+  await api.get("/api/auth/csrf/");
+};
