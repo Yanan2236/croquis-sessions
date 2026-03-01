@@ -24,3 +24,13 @@ export const signup = async (username: string, email: string, password: string, 
   await ensureCsrf();
   return await api.post('/api/auth/registration/', { username, email, password1: password, password2: password_confirm });
 }
+
+export const requestPasswordReset = async (email: string): Promise<void> => {
+  await ensureCsrf();
+  return await api.post('/api/auth/password/reset/', { email });
+};
+
+export const confirmPasswordReset = async (uid: string, token: string, newPassword1: string, newPassword2: string): Promise<void> => {
+  await ensureCsrf();
+  return await api.post('/api/auth/password/reset/confirm/', { uid, token, new_password1: newPassword1, new_password2: newPassword2 });
+};
