@@ -25,7 +25,7 @@ export const LocalFolderPickerPanel = ({
   const folderTitle = dirName ?? "未選択";
   const fileCount = entries.length;
 
-  const intervalDisabled = entries.length === 0;
+  const intervalDisabled = !supported || isPicking || entries.length === 0;
 
   return (
     <>
@@ -88,6 +88,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 20 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(20)}
             aria-pressed={intervalSec === 20}
+            disabled={intervalDisabled}
           >
             20
           </button>
@@ -96,6 +97,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 30 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(30)}
             aria-pressed={intervalSec === 30}
+            disabled={intervalDisabled}
           >
             30
           </button>
@@ -104,6 +106,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 60 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(60)}
             aria-pressed={intervalSec === 60}
+            disabled={intervalDisabled}
           >
             60
           </button>
@@ -112,6 +115,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 120 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(120)}
             aria-pressed={intervalSec === 120}
+            disabled={intervalDisabled}
           >
             120
           </button>
@@ -120,6 +124,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 180 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(180)}
             aria-pressed={intervalSec === 180}
+            disabled={intervalDisabled}
           >
             180
           </button>
@@ -128,6 +133,7 @@ export const LocalFolderPickerPanel = ({
             className={`${styles.localSegBtn} ${intervalSec === 300 ? styles.localSegActive : ""}`}
             onClick={() => setIntervalSec(300)}
             aria-pressed={intervalSec === 300}
+            disabled={intervalDisabled}
           >
             300
           </button>
