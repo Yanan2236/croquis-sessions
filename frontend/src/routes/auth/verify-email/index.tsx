@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import { api } from "@/lib/api";
 import { ensureCsrf } from "@/lib/api/csrf";
+import { extractFirstErrorMessage } from "@/features/shared/utils/extractFirstErrorMessage";
 
 type VerifyResult = { detail?: string };
 
@@ -25,32 +26,55 @@ export const VerifyEmailPage = () => {
     setStatus(hasKey ? "verifying" : "waiting");
   }, [hasKey, status]);
 
-  useEffect(() => {
-    if (!hasKey) return;
-    if (status !== "verifying") return;
+useEffect(() => {
+  if (!hasKey) return;
+  if (status !== "verifying") return;
 
-    const run = async () => {
-      try {
-        await ensureCsrf();
+  const run = async () => {
+    try {
+      console.log("[verify] start", { key });
 
-        const res = await api.post<VerifyResult>(
-          "/api/auth/registration/verify-email/",
-          { key }
-        );
-        setMessage(res.data?.detail ?? "メール認証が完了しました。");
-        setStatus("success");
-      } catch (e: any) {
-        const msg =
-          e?.response?.data?.detail ??
-          e?.response?.data?.key?.[0] ??
-          "メール認証に失敗しました。リンクが期限切れの可能性があります。";
-        setMessage(String(msg));
-        setStatus("error");
-      }
-    };
+      await ensureCsrf();
+      console.log("[verify] csrf ok");
+    } catch (e: any) {
+      console.log("[verify] csrf failed", {
+        status: e?.response?.status,
+        url: e?.config?.url,
+        method: e?.config?.method,
+        data: e?.response?.data,
+      });
+      setMessage("CSRF取得に失敗しました。");
+      setStatus("error");
+      return;
+    }
 
-    run();
-  }, [hasKey, key, status]);
+    try {
+      const res = await api.post<VerifyResult>(
+        "/api/auth/registration/verify-email/",
+        { key }
+      );
+      console.log("[verify] verify ok", res.data);
+      setMessage(res.data?.detail ?? "メール認証が完了しました。");
+      setStatus("success");
+    } catch (e: any) {
+      console.log("[verify] verify failed", {
+        status: e?.response?.status,
+        url: e?.config?.url,
+        method: e?.config?.method,
+        data: e?.response?.data,
+      });
+      setMessage(
+        extractFirstErrorMessage(
+          e?.response?.data,
+          "メール認証に失敗しました。"
+        )
+      );
+      setStatus("error");
+    }
+  };
+
+  run();
+}, [hasKey, key, status]);
 
   // 認証メール再送
   const resend = async () => {
@@ -65,6 +89,8 @@ export const VerifyEmailPage = () => {
       await api.post("/api/auth/registration/resend-email/", { email });
       setMessage("確認メールを再送しました。");
     } catch (e: any) {
+      console.log("resend email error data:", e?.response?.data);
+
       const msg = e?.response?.data?.detail ?? "再送に失敗しました。";
       setMessage(String(msg));
     } finally {

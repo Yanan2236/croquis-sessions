@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { confirmPasswordReset } from "@/features/accounts/api";
+import { extractFirstErrorMessage } from "@/features/shared/utils/extractFirstErrorMessage";
 
 import styles from "./styles.module.css";
 
@@ -42,19 +43,18 @@ export const ResetPasswordPage = () => {
       setMessage("パスワードを更新しました。ログインしてください。");
     } catch (e: any) {
       setStatus("error");
-      const msg =
-        e?.response?.data?.detail ??
-        e?.response?.data?.new_password2?.[0] ??
-        "更新に失敗しました。リンクが期限切れかもしれません。";
-      setMessage(msg);
+
+      const data = e?.response?.data;
       console.log({ uid, token });
-      console.log("reset confirm error data:", e?.response?.data);
+      console.log("reset confirm error data:", data);
       console.log("submit payload", {
         uid,
         token,
         new_password1: newPassword1,
         new_password2: newPassword2,
       });
+
+      setMessage(extractFirstErrorMessage(data, "パスワードの更新に失敗しました。"));
     }
   };
 
