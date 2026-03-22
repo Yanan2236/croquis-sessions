@@ -1,0 +1,24 @@
+.page {
+  padding: var(--space-xl);
+  background: var(--color-bg-app);
+  color: var(--color-text-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.item {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
