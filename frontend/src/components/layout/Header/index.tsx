@@ -12,20 +12,20 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link to="/" className={styles.logoLink}>
+        <Link to="/app/sessions/new" className={styles.logoLink}>
           <span className={styles.logoText}>LineLoop</span>
         </Link>
 
         <nav className={styles.nav} aria-label="Primary">
-          <NavLink to="/subjects" className={navClass} end>
+          <NavLink to="/app/subjects" className={navClass} end>
             モチーフ
           </NavLink>
 
-          <NavLink to="/sessions" className={navClass} end>
+          <NavLink to="/app/sessions" className={navClass} end>
             クロッキー記録
           </NavLink>
 
-          <NavLink to="/sessions/new" className={navClass}>
+          <NavLink to="/app/sessions/new" className={navClass}>
             新規クロッキー
           </NavLink>
 

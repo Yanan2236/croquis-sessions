@@ -18,7 +18,7 @@ export const LoginPage = () => {
       { email, password },
     {
       onSuccess: () => {
-        navigate("/sessions", { replace: true });
+        navigate("/app/sessions/new", { replace: true });
       }
     });
   };
