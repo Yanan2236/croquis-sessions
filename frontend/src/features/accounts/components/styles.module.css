@@ -1,0 +1,15 @@
+.backLink {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+
+  font-size: 14px;
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}

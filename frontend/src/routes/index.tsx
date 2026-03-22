@@ -1,35 +1,62 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Footer } from "@/components/layout/Footer";
 import styles from "./styles.module.css";
 
-export const HomePage = () => {
-  const navigate = useNavigate();
-
-  // ダミー
-  const goal = "キャラの説得力を上げる";
-
-  const onStart = () => {
-    navigate("/sessions/new");
-  };
-
+export const LandingPage = () => {
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Home</h1>
-          <p className={styles.subtitle}>
-            クロッキーは、イラスト上達のための手段
+      <div className={styles.container}>
+        <header className={styles.hero}>
+          <h1 className={styles.title}>LineLoop</h1>
+
+          <p className={styles.catch}>
+            クロッキー練習を、積み上げる。
           </p>
+
+          <p className={styles.subtitle}>
+            課題を持って描き、記録して、次に活かす。
+            <br />
+            LineLoop は、クロッキー練習を管理するためのアプリです。
+          </p>
+
+          <div className={styles.actions}>
+            <Link to="/auth/signup" className={styles.primaryButton}>
+              アカウント作成
+            </Link>
+            <Link to="/auth/login" className={styles.secondaryButton}>
+              ログイン
+            </Link>
+          </div>
         </header>
 
-        <section className={styles.goalSection}>
-          <div className={styles.goalLabel}>目標</div>
-          <div className={styles.goalText}>{goal}</div>
-        </section>
+        <section className={styles.features}>
+          <div className={styles.feature}>
+            <h2>モチーフ管理</h2>
+            <p>
+              モチーフごとに課題を設定し、
+              セッションごとに更新できます。
+            </p>
+          </div>
 
-        <button className={styles.primaryButton} type="button" onClick={onStart}>
-          セッションを始める
-        </button>
+          <div className={styles.feature}>
+            <h2>セッション履歴</h2>
+            <p>
+              練習の記録がモチーフごとに積み上がり、
+              改善の流れを残せます。
+            </p>
+          </div>
+
+          <div className={styles.feature}>
+            <h2>タイマー付きクロッキー</h2>
+            <p>
+              自分で集めた画像フォルダを使って、
+              タイマー付きで練習できます。
+            </p>
+          </div>
+        </section>
       </div>
+
+      <Footer />
     </div>
   );
-}
+};

@@ -1,0 +1,137 @@
+.container {
+  background: var(--color-bg-app);
+  min-height: 100vh;
+}
+
+.backLink {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+  font-size: 14px;
+  color: var(--color-accent-primary);
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.markdown {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: var(--color-text-base);
+}
+
+/* 見出し */
+.markdown h1 {
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+
+.markdown h2 {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.markdown h3 {
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+/* テキスト */
+.markdown p {
+  margin-bottom: 12px;
+}
+
+.markdown ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.markdown li {
+  margin-bottom: 6px;
+}
+
+.lead {
+  margin-bottom: 24px;
+}
+
+.form {
+  display: grid;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-base);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--color-border-subtle, #d8d1c7);
+  border-radius: 12px;
+  background: var(--color-bg-base, #fffdf9);
+  color: var(--color-text-base);
+  font: inherit;
+  padding: 12px 14px;
+  box-sizing: border-box;
+}
+
+.input {
+  min-height: 44px;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 180px;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 3px rgba(160, 120, 80, 0.12);
+}
+
+.submitButton {
+  min-height: 44px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-accent-primary);
+  color: white;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.note {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--color-text-muted, #6f685f);
+}
+
+.successMessage {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--color-text-muted, #6f685f);
+}
