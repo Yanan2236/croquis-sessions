@@ -13,7 +13,7 @@ export const AuthGuard = () => {
   if (!me) {
     return (
       <Navigate
-        to="/auth/login"
+        to="/"
         replace
         state={{ from: location }}
       />

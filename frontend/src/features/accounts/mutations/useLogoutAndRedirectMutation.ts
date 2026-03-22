@@ -12,7 +12,7 @@ export const useLogoutAndRedirectMutation = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.clear();
-      navigate("/auth/login", { replace: true });
+      navigate("/", { replace: true });
     }
   })
 }
