@@ -1,0 +1,59 @@
+.container {
+  background: var(--color-bg-app);
+  min-height: 100vh;
+}
+
+.backLink {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+  font-size: 14px;
+  color: var(--color-accent-primary);
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.markdown {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  line-height: 1.8;
+  font-size: 14px;
+  color: var(--color-text-base);
+}
+
+/* 見出し */
+.markdown h1 {
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+
+.markdown h2 {
+  font-size: 18px;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.markdown h3 {
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+/* テキスト */
+.markdown p {
+  margin-bottom: 12px;
+}
+
+.markdown ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.markdown li {
+  margin-bottom: 6px;
+}
