@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 
 import { BackToLineLoopLink } from "@/features/accounts/components/BackToLineLoopLink";
+import { Seo } from "@/components/seo/Seo";
 import styles from "./styles.module.css";
 
 
@@ -111,12 +112,18 @@ LineLoop（以下、「当サービス」といいます。）は、当サービ
 
 export const PrivacyPage = () => {
   return (
-    <div className={styles.container}>
-      <BackToLineLoopLink />
+    <>
+      <Seo 
+        title="プライバシーポリシー | LineLoop"
+        description="LineLoopにおける個人情報の取り扱いについて説明します。収集する情報の内容、利用目的、管理方法などをご確認いただけます。"
+      />
+      <div className={styles.container}>
+        <BackToLineLoopLink />
 
-      <div className={styles.markdown}>
-        <ReactMarkdown>{privacyMarkdown}</ReactMarkdown>
+        <div className={styles.markdown}>
+          <ReactMarkdown>{privacyMarkdown}</ReactMarkdown>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

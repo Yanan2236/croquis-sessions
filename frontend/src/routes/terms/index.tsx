@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 
 import { BackToLineLoopLink } from "@/features/accounts/components/BackToLineLoopLink";
+import { Seo } from "@/components/seo/Seo";
 import styles from "./styles.module.css";
 
 const termsMarkdown = `
@@ -73,12 +74,18 @@ https://line-loop.com/contact
 
 export const TermsPage = () => {
   return (
-    <div className={styles.container}>
-      <BackToLineLoopLink />
+    <>
+      <Seo 
+        title="利用規約 | LineLoop"
+        description="LineLoopの利用条件について定めた規約です。サービスの利用にあたってのルールや禁止事項、免責事項などをご確認いただけます。"
+      />
+      <div className={styles.container}>
+        <BackToLineLoopLink />
 
-      <div className={styles.markdown}>
-        <ReactMarkdown>{termsMarkdown}</ReactMarkdown>
+        <div className={styles.markdown}>
+          <ReactMarkdown>{termsMarkdown}</ReactMarkdown>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

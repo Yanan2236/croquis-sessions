@@ -83,3 +83,25 @@
   color: var(--color-text-primary);
   box-shadow: 0 0 0 1px rgba(107, 79, 63, 0.25) inset;
 }
+
+/* Logo styles */
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.logoIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.logoText {
+  line-height: 1;
+}

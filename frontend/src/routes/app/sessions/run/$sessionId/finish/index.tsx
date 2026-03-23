@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchSessionDetails } from '@/features/sessions/api';
 import { SessionFinishForm } from '@/routes/app/sessions/run/$sessionId/finish/components/SessionFinishForm';
+import { Seo } from '@/components/seo/Seo';
 
 export const SessionFinishPage = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -33,10 +34,16 @@ export const SessionFinishPage = () => {
   if (!session) return <div>Session not found</div>;
 
   return (
-    <SessionFinishForm
-      sessionId={sessionIdNum}
-      subjectName={session.subject.name}
-      currentIntention={session.intention}
-    />
+    <>
+      <Seo
+        title="クロッキー結果記録"
+        description="クロッキーセッションの結果を記録し、振り返りを行えます。練習の改善につなげましょう。"
+      />
+      <SessionFinishForm
+        sessionId={sessionIdNum}
+        subjectName={session.subject.name}
+        currentIntention={session.intention}
+      />
+    </>
   );
 };

@@ -13,6 +13,11 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link to="/app/sessions/new" className={styles.logoLink}>
+          <img
+            src="/line-loop.png"
+            alt="LineLoop"
+            className={styles.logoIcon}
+          />
           <span className={styles.logoText}>LineLoop</span>
         </Link>
 
