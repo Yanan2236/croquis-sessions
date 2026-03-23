@@ -9,6 +9,7 @@ from dj_rest_auth.registration.views import VerifyEmailView, ResendEmailVerifica
 
 urlpatterns = [
     path('croquis/', include('croquis.urls.api')),
+    path("accounts/", include("allauth.urls")),
     path('accounts/', include('accounts.urls.api')),
 
     path('auth/registration/', SafeRegisterView.as_view(), name='rest_register'),
