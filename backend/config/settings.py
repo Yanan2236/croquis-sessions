@@ -140,6 +140,9 @@ else:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     
+    CSRF_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SAMESITE = "None"
+    
     # AWS構築時の設定
     # フロントエンドとバックエンドでドメインが異なるため、CSRF_COOKIE_DOMAINを設定している。
     # これにより、フロントエンドからのリクエストに対して、バックエンドが発行する
