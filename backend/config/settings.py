@@ -2,6 +2,10 @@ import os
 import environ
 from pathlib import Path
 
+def env_list(name, default=""):
+    value = env(name, default=default)
+    return [item.strip() for item in value.split(",") if item.strip()]
+
 BASE_DIR = Path(__file__).resolve().parent.parent  # backend
 
 env = environ.Env(
@@ -128,21 +132,22 @@ if DEBUG:
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 else:
-    CORS_ALLOWED_ORIGINS = [
-        "https://line-loop.com",
-    ]
-    CSRF_TRUSTED_ORIGINS = [
-        "https://api.line-loop.com",
-        "https://line-loop.com",
-    ]
+    CORS_ALLOWED_ORIGINS = env_list("CORS_ALLOWED_ORIGINS", default="")
+    CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS", default="")
 
+    CSRF_COOKIE_DOMAIN = env("CSRF_COOKIE_DOMAIN", default=None)
+    SESSION_COOKIE_DOMAIN = env("SESSION_COOKIE_DOMAIN", default=None)
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    
+    # AWS構築時の設定
     # フロントエンドとバックエンドでドメインが異なるため、CSRF_COOKIE_DOMAINを設定している。
     # これにより、フロントエンドからのリクエストに対して、バックエンドが発行する
     # CSRFトークンを正しく処理できるようになる。
-    CSRF_COOKIE_DOMAIN = ".line-loop.com"
-    SESSION_COOKIE_DOMAIN = ".line-loop.com"
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_DOMAIN = ".line-loop.com"
+    # SESSION_COOKIE_DOMAIN = ".line-loop.com"
+    # CSRF_COOKIE_SECURE = True
+    # SESSION_COOKIE_SECURE = True
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -163,7 +168,8 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"  # !!!!!開発のためメール認証を無効化!!!!!
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
