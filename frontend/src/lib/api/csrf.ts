@@ -11,7 +11,10 @@ export const getCookie = (name: string) => {
 export const attachCsrfToken = () => {
   api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const csrfToken = getCookie("csrftoken");
-    if (csrfToken) {
+    const method = (config.method ?? "get").toUpperCase();
+    const unsafeMethods = ["POST", "PUT", "PATCH", "DELETE"];
+
+    if (csrfToken && unsafeMethods.includes(method)) {
       config.headers.set("X-CSRFToken", csrfToken);
     }
     return config;
