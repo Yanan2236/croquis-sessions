@@ -135,22 +135,20 @@ else:
     CORS_ALLOWED_ORIGINS = env_list("CORS_ALLOWED_ORIGINS", default="")
     CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS", default="")
 
-    CSRF_COOKIE_DOMAIN = env("CSRF_COOKIE_DOMAIN", default=None)
-    SESSION_COOKIE_DOMAIN = env("SESSION_COOKIE_DOMAIN", default=None)
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_DOMAIN = env("CSRF_COOKIE_DOMAIN", default=None)
+    # SESSION_COOKIE_DOMAIN = env("SESSION_COOKIE_DOMAIN", default=None)
     
+    # フロントエンドとバックエンドでドメインが異なるため、SameSite=None にする。
     CSRF_COOKIE_SAMESITE = "None"
     SESSION_COOKIE_SAMESITE = "None"
     
-    # AWS構築時の設定
     # フロントエンドとバックエンドでドメインが異なるため、CSRF_COOKIE_DOMAINを設定している。
     # これにより、フロントエンドからのリクエストに対して、バックエンドが発行する
     # CSRFトークンを正しく処理できるようになる。
-    # CSRF_COOKIE_DOMAIN = ".line-loop.com"
-    # SESSION_COOKIE_DOMAIN = ".line-loop.com"
-    # CSRF_COOKIE_SECURE = True
-    # SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_DOMAIN = ".line-loop.com"
+    SESSION_COOKIE_DOMAIN = ".line-loop.com"
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 CORS_ALLOW_CREDENTIALS = True
 
