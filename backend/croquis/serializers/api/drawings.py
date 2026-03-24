@@ -14,9 +14,10 @@ class DrawingSerializer(serializers.ModelSerializer):
         if not obj.image_file:
             return None 
         
-        url = obj.image_file.url
-        request = self.context.get("request")
-        return request.build_absolute_uri(url) if request else url
+    def get_image_url(self, obj):
+        if not obj.image_file:
+            return None
+        return obj.image_file.url
 
         
 class DrawingCreateSerializer(serializers.ModelSerializer):
@@ -33,8 +34,5 @@ class DrawingThumbnailSerializer(serializers.ModelSerializer):
         
     def get_image_url(self, obj):
         if not obj.image_file:
-            return None 
-        
-        url = obj.image_file.url
-        request = self.context.get("request")
-        return request.build_absolute_uri(url) if request else url
+            return None
+        return obj.image_file.url
