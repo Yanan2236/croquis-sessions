@@ -170,6 +170,10 @@ Amazon S3
 - ECS Fargate
 - RDS PostgreSQL
 
+### AWS公開時の構成図
+
+![LineLoop AWS公開時の構成図](docs/images/aws-architecture.png)
+
 その後、コストと運用負荷を考慮し、現在は以下の軽量構成にしています。
 
 - Frontend: Vercel
