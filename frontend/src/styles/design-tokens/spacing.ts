@@ -1,4 +1,3 @@
-// src/styles/design-tokens/spacing.ts
 export const spacing = {
   xs: "4px",
   sm: "8px",
